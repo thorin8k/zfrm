@@ -1,5 +1,5 @@
 /**
- * @Author Iago.s
+ * @Author Thorin8k
  * 
  * Clase Game. 
  * 
@@ -9,16 +9,22 @@
 var Game = Class.extend({
     oCanvas: null,
     objectList: [],
+    moduleList: [],
     objectsToRemoveList: [],
-    gmFps: null,
+    messageContainer: null,
+    settings: {
+        fps: 24,
+        
+    },
     
     init: function(canvas){
+        
         this.oCanvas = new CanvasExt(canvas);
-    },    
-    setFps : function (nNewFps) {
-        if (typeof nNewFps === 'number') {
-            this.gmFps = nNewFps;
-        }
+        this.messageContainer = new MessageContainer();
+        
+    },   
+    setSettings:function(settings){
+        this.settings = settings;
     },
     addGameObject: function(sObjectId,object){
         //añade el objeto pasado
@@ -41,27 +47,51 @@ var Game = Class.extend({
                 }
             }
         }
-    },    
+    },
+    addModule: function(moduleId,moduleObj){
+        //añade el objeto pasado
+        if (typeof moduleObj === 'object') { 
+            moduleObj.__id = moduleId;
+            this.moduleList.push(moduleObj);
+        }
+    },
     executionKey: function(event){
         //Llamamos al método de todos los objetos del juego que implementen 
         //este tipo de evento
         var sEventType = event.type;
-        var nKeyCode = event.keyCode;
  
-        if (nKeyCode !== 17 && nKeyCode !== 116) {
+        if (event.keyCode !== 17 && event.keyCode !== 116) {
             event.preventDefault();
         }
  
-        this.callObjectMethods(sEventType, nKeyCode);
+        this.callObjectMethods(sEventType, event);
     },
     startGame:function(){
+        this.preStart();
+        // Notificar a los modulos el estado Start
+        this.messageContainer.speak({
+            message : "#start#",
+            data : null
+        });
         //Bucle principal de juego
         var self = this; //Reasignación por error en set interval en la referencia this
-        setInterval(function(){self.gameLogic();}, 1000 / this.gmFps); 
+        setInterval(function(){self.gameLogic();}, 1000 / this.settings.fps); 
     },    
-    
+        
     /* -----------  Private Methods ------------ */
-    
+    preStart: function(){
+        var moduleTools = new ModuleTools(this.messageContainer,this.oCanvas,this.settings,this.canvasText);
+        var module;
+        var nObjectCount = 0;
+        var nGameObjectsLength = this.moduleList.length;
+        for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
+            module = this.moduleList[nObjectCount];
+            if (typeof module !== 'undefined') {
+                // #2
+                module.loadModule(moduleTools);
+            }
+        }
+    },  
     callObjectMethods:function(methodName,args){
         //Recorre todos los objetos del juego buscando aquellos que tengan el metodo pasado
         //ejecutandolo al encontrarlos.
@@ -109,6 +139,11 @@ var Game = Class.extend({
         this.oCanvas.bufferContext.clearRect(0, 0, this.oCanvas.buffer.width, this.oCanvas.buffer.height);
         // Llamámos el método "draw" de todos los objetos del juego.
         this.callObjectMethods("draw", this.oCanvas);
+        // Notificar a los modulos el estado draw
+        this.messageContainer.speak({
+            message : "#draw#",
+            data : null
+        });
 
         // Limpiamos el área de dibujo de nuestro canvas principal.
         this.oCanvas.mainContext.clearRect(0, 0, this.oCanvas.main.width, this.oCanvas.main.height);
