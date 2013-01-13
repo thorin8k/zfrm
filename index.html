@@ -10,14 +10,35 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/libs/jquery/jquery.js"></script>
         <script type="text/javascript" src="./js/libs/jquery/Class.js"></script>
         
-        <script type="text/javascript" src="./js/libs/game/Character.js"></script>
         <script type="text/javascript" src="./js/libs/game/Game.js"></script>
-        <script type="text/javascript" src="./js/libs/game/testLink.js"></script>
+        <script type="text/javascript" src="./js/libs/game/CanvasExt.js"></script>
+        <script type="text/javascript" src="./js/libs/game/Rectangle.js"></script>
         <style>
             #canvas{
-                background-color: black;
+                background-color: white;
             }
         </style>
+        <script type="text/javascript">
+            var game;
+            $(document).ready(function(){    
+                game = new Game("canvas");
+                game.setFps(24);
+
+                //añadimos rectangulo
+                game.addGameObject("rectangulo", new Rectangle());
+
+                // ¡Iniciamos la ejecución del juego!
+                game.startGame();
+
+            });
+            //Event Handling
+            window.addEventListener("keydown", function (eEvent) {
+                game.executionKey(eEvent);
+            }, false);
+            window.addEventListener("keyup", function (eEvent) {
+                game.executionKey(eEvent);
+            }, false);
+        </script>
     </head>
     <body>
          <canvas id="canvas" width="600" height="480"></canvas>
