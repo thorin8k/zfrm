@@ -11,50 +11,9 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/libs/game/testLink.js"></script>
         <style>
             #canvas {
-                background-color: #eee;
-
-                background-image: -webkit-linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, gray 75%, gray), -webkit-linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, gray 75%, gray);
-
-                background-image: -moz-linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, gray 75%, gray), -moz-linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, gray 75%, gray);    
-                background-image: linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, gray 75%, gray), 
-                    linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, black 75%, gray);
-
-                background-size:60px 60px;
-                background-position:0 0, 30px 30px
+                background-color: black;
             }
         </style>
-        <script type="text/javascript">
-            var game;
-            $(document).ready(function(){
-                game = new Game("canvas");
-                game.setSettings({fps:60});
-                
-                //añadimos un módulo
-                var mod1 = new FpsModule();
-                game.addModule("fpsMod", mod1);
-                
-                //añadimos rectangulo
-                game.addGameObject("rectangulo", new Rectangle());
-                
-                game.addGameObject("rectangulo2", new RectangleClick());
-                
-                game.addGameObject("texto1", new Text('Pruebaaaa!!!'));
-
-                // ¡Iniciamos la ejecución del juego!
-                game.startGame();
-                
-            });
-            //Event Handling
-            window.addEventListener("keydown", function (eEvent) {
-                game.executionKey(eEvent);
-            }, false);
-            window.addEventListener("keyup", function (eEvent) {
-                game.executionKey(eEvent);
-            }, false);
-            window.addEventListener("click", function (eEvent) {
-                game.executionKey(eEvent);
-            }, false);
-        </script>
     </head>
     <body>
          <canvas id="canvas" width="600" height="480"></canvas>
