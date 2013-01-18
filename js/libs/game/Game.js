@@ -13,15 +13,13 @@ var Game = Class.extend({
     objectsToRemoveList: [],
     messageContainer: null,
     settings: {
-        fps: 24,
+        fps: 60,
         
     },
     
     init: function(canvas){
-        
         this.oCanvas = new CanvasExt(canvas);
         this.messageContainer = new MessageContainer();
-        
     },   
     setSettings:function(settings){
         this.settings = settings;
@@ -73,9 +71,9 @@ var Game = Class.extend({
             message : "#start#",
             data : null
         });
+    
         //Bucle principal de juego
-        var self = this; //Reasignación por error en set interval en la referencia this
-        setInterval(function(){self.gameLogic();}, 1000 / this.settings.fps); 
+        this.gameLogic();
     },    
         
     /* -----------  Private Methods ------------ */
@@ -111,6 +109,10 @@ var Game = Class.extend({
         this.executionRemove();
         this.executionUpdate();
         this.executionDraw();
+        
+        //Al final de la ejecución volvemos a llamar al request animation Frame
+        var self = this; //Reasignación por error en set interval en la referencia this
+        requestAnimationFrame(function(){self.gameLogic();});
     },
         
     executionRemove: function(){
