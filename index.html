@@ -7,26 +7,6 @@ and open the template in the editor.
     <head>
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/javascript" src="./js/libs/jquery/jquery.js"></script>
-        <script type="text/javascript" src="./js/libs/jquery/Class.js"></script>
-        <script type="text/javascript" src="./js/libs/canvasText/canvasText.js"></script>
-        
-        <script type="text/javascript" src="./js/libs/game/FrameIntervalImpl.js"></script>
-        
-        <script type="text/javascript" src="./js/libs/game/Game.js"></script>
-        <script type="text/javascript" src="./js/libs/game/CanvasExt.js"></script>
-        <script type="text/javascript" src="./js/libs/game/ModuleTools.js"></script>
-        <script type="text/javascript" src="./js/libs/game/MessageContainer.js"></script>
-        <script type="text/javascript" src="./js/libs/game/iModule.js"></script>
-        
-        <script type="text/javascript" src="./js/libs/game/objects/iObject.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/iClickable.js"></script>
-        
-        <script type="text/javascript" src="./js/libs/game/objects/Rectangle.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/RectangleClick.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/Text.js"></script>
-        
-        <script type="text/javascript" src="./js/libs/game/modules/fpsModule.js"></script>
         <style>
             #canvas {
                 background-color: #eee;
@@ -41,25 +21,181 @@ and open the template in the editor.
                 background-position:0 0, 30px 30px
             }
         </style>
+    </head>
+    <body>
+        <canvas id="canvas" width="600" height="480"></canvas>
+        <script type="text/javascript" src="./js/libs/jquery/jquery.js"></script>
+        <script type="text/javascript" src="./js/libs/jquery/Class.js"></script>
+        <script type="text/javascript" src="./js/libs/canvasText/canvasText.js"></script>
+        
+        <script type="text/javascript" src="./js/libs/game/FrameIntervalImpl.js"></script>
+        
+        
+        <script type="text/javascript" src="./js/libs/game/Game.js"></script>
+        <script type="text/javascript" src="./js/libs/game/CanvasExt.js"></script>
+        <script type="text/javascript" src="./js/libs/game/ModuleTools.js"></script>
+        <script type="text/javascript" src="./js/libs/game/MessageContainer.js"></script>
+        <script type="text/javascript" src="./js/libs/game/modules/interfaces/iModule.js"></script>
+        
+        <script type="text/javascript" src="./js/libs/game/objects/interfaces/iObject.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/interfaces/iClickable.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/interfaces/iCursorMovable.js"></script>
+
+        <script type="text/javascript" src="./js/libs/game/objects/Image.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/ObjectLayer.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/LandscapeLayer.js"></script>
+
+        <script type="text/javascript" src="./js/libs/game/objects/Rectangle.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/RectangleClick.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/Text.js"></script>
+        
+        <script type="text/javascript" src="./js/libs/game/modules/fpsModule.js"></script>
+        <script type="text/javascript" src="./js/libs/game/modules/LayerHandler.js"></script>
+        <script type="text/javascript" src="./js/libs/game/modules/CollisionManager.js"></script>
+        
         <script type="text/javascript">
+            var tileMap = { "height":15,
+ "layers":[
+        {
+         "data":[353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 266, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353],
+         "height":15,
+         "name":"capa1",
+         "opacity":1,
+         "properties":
+            {
+             "z":"0"
+            },
+         "type":"tilelayer",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "height":15,
+         "name":"objects",
+         "objects":[
+                {
+                 "height":46,
+                 "name":"rect1",
+                 "properties":
+                    {
+                     "color":"yellow"
+                    },
+                 "type":"Rectangle",
+                 "width":47,
+                 "x":251,
+                 "y":99
+                }, 
+                {
+                 "height":48,
+                 "name":"rect2",
+                 "properties":
+                    {
+                     "color":"blue"
+                    },
+                 "type":"RectangleClick",
+                 "width":47,
+                 "x":363,
+                 "y":239
+                }],
+         "opacity":1,
+         "properties":
+            {
+             "z":"1"
+            },
+         "type":"objectgroup",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 285, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":15,
+         "name":"capa2",
+         "opacity":1,
+         "properties":
+            {
+             "z":"2"
+            },
+         "type":"tilelayer",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 261, 262, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 268, 269, 270, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 221, 0, 0, 0, 0, 0, 0, 276, 277, 278, 0, 0, 0, 0, 0, 0, 0, 0, 0, 228, 229, 230, 0, 0, 0, 0, 0, 284, 0, 286, 0, 0, 0, 0, 0, 0, 0, 0, 0, 236, 237, 238, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 244, 245, 246, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":15,
+         "name":"capa3",
+         "opacity":1,
+         "properties":
+            {
+             "z":"3"
+            },
+         "type":"tilelayer",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
+        }],
+ "orientation":"orthogonal",
+ "properties":
+    {
+
+    },
+ "tileheight":32,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "image":"img/countrystyle.png",
+         "imageheight":1458,
+         "imagewidth":256,
+         "margin":0,
+         "name":"countrystyle",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }],
+ "tilewidth":32,
+ "version":1,
+ "width":20
+}
             var game;
             $(document).ready(function(){
+                
+                
                 game = new Game("canvas");
                 game.setSettings({fps:60});
                 
-                //añadimos un módulo
+                //añadimos modulos
                 var mod1 = new FpsModule();
                 game.addModule("fpsMod", mod1);
+                var mod2 = new LayerHandler(tileMap);
+                game.addModule("layerMod", mod2);
+                var mod3 = new CollisionManager();
+                game.addModule("CollisionManager", mod3);
                 
-                //añadimos rectangulo
-                game.addGameObject("rectangulo", new Rectangle());
                 
-                game.addGameObject("rectangulo2", new RectangleClick());
                 
-                game.addGameObject("texto1", new Text('Pruebaaaa!!!'));
-
+                
+                //var layer = new ObjectLayer();
+                //layer.addObject("rectangulo", new Rectangle());
+                //layer.addObject("rectangulo2", new RectangleClick());                
+                //game.addGameObject("objLay", layer);
+                var text = new Text('Layers Listas!');
+                text.z = 2;
+                game.addObject("texto1", text);
+                
                 // ¡Iniciamos la ejecución del juego!
                 game.startGame();
+                
+                
                 
             });
             //Event Handling
@@ -73,8 +209,5 @@ and open the template in the editor.
                 game.executionKey(eEvent);
             }, false);
         </script>
-    </head>
-    <body>
-         <canvas id="canvas" width="600" height="480"></canvas>
     </body>
 </html>

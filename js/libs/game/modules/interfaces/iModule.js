@@ -2,7 +2,7 @@
  * Los modulos deben de tener todos un método loadModule para ser cargados
  */
 var IModule = Class.extend({
-   sandbox: null,
+   tools: null,
    init: function(){}, 
    loadModule: function(){}
 });

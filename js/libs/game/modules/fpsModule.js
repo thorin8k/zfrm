@@ -3,7 +3,7 @@ var FpsModule = IModule.extend({
         frameCount: 0,
         lastFps: null,
         oBuffer: null,
-        tools: null,
+        
         
         loadModule : function (tools) {
             this.lastFps = new Date().getTime();
@@ -23,7 +23,7 @@ var FpsModule = IModule.extend({
             }
  
             this.oBuffer.save();
-            this.oBuffer.fillStyle = '#000';
+            this.oBuffer.fillStyle = 'red';
             this.oBuffer.font = 'bold 12px sans-serif';
             this.oBuffer.fillText('FPS: ' + this.currentFps + '/' + this.tools.settings.fps, 10, 15);
             this.oBuffer.restore();

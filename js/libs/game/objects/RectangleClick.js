@@ -7,6 +7,9 @@
  */
 var RectangleClick = IClickable.extend({
     color: 'blue',
+    collideSubscription: function(moduleTools){
+        moduleTools.game.getModule('CollisionManager').add(this,'handleCollision');
+    },
     draw : function (canvas) {
         canvas.bufferContext.beginPath();
         canvas.bufferContext.rect(this.x, this.y, this.width, this.height);
@@ -17,6 +20,12 @@ var RectangleClick = IClickable.extend({
         canvas.bufferContext.strokeStyle = 'black';
         canvas.bufferContext.stroke();
     },
+    handleCollision: function(result){
+        this.speed = 5;
+        if(result){
+            this.speed = 0;
+        }
+    }
 
 });
 

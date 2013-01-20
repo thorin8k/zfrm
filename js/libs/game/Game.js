@@ -12,8 +12,9 @@ var Game = Class.extend({
     moduleList: [],
     objectsToRemoveList: [],
     messageContainer: null,
+    moduleTools: null,
     settings: {
-        fps: 60,
+        fps: 60
         
     },
     
@@ -24,15 +25,14 @@ var Game = Class.extend({
     setSettings:function(settings){
         this.settings = settings;
     },
-    addGameObject: function(sObjectId,object){
+    addObject: function(sObjectId,object){
         //añade el objeto pasado
         if (typeof object === 'object') { 
             object.__id = sObjectId;
             this.objectList.push(object);
         }
     },
-    removeGameObject: function(sObjectId){
-        //Elimina el objeto con el id pasado del array de objetos de juego
+    removeObject:function(sObjectId){
         if (typeof sObjectId === 'string') {
             var oCurrentGameObject = null;
             var nObjectCount = 0;
@@ -46,12 +46,38 @@ var Game = Class.extend({
             }
         }
     },
+    getObject: function(sObjectId){
+        if (typeof sObjectId === 'string') {
+            var oCurrentGameObject = null;
+
+            for (nObjectCount = 0; nObjectCount < this.objectList.length; nObjectCount += 1) {
+                oCurrentGameObject = this.objectList[nObjectCount];
+                if (oCurrentGameObject.__id === sObjectId) {
+                    return oCurrentGameObject;
+                }
+            }
+        }
+        return null;
+    },
     addModule: function(moduleId,moduleObj){
         //añade el objeto pasado
         if (typeof moduleObj === 'object') { 
             moduleObj.__id = moduleId;
             this.moduleList.push(moduleObj);
         }
+    },
+    getModule: function(moduleId){
+        if (typeof moduleId === 'string') {
+            var oCurrentModule = null;
+
+            for (nObjectCount = 0; nObjectCount < this.objectList.length; nObjectCount += 1) {
+                oCurrentModule = this.moduleList[nObjectCount];
+                if (oCurrentModule.__id === moduleId) {
+                    return oCurrentModule;
+                }
+            }
+        }
+        return null;
     },
     executionKey: function(event){
         //Llamamos al método de todos los objetos del juego que implementen 
@@ -66,19 +92,20 @@ var Game = Class.extend({
     },
     startGame:function(){
         this.preStart();
-        // Notificar a los modulos el estado Start
+        // Notificar a los modulos el evento Start
         this.messageContainer.speak({
             message : "#start#",
             data : null
         });
-    
+        //launch the subscriptions to collision manager
+        this.callObjectMethods("collideSubscription", this.moduleTools);
         //Bucle principal de juego
         this.gameLogic();
     },    
         
     /* -----------  Private Methods ------------ */
     preStart: function(){
-        var moduleTools = new ModuleTools(this.messageContainer,this.oCanvas,this.settings,this.canvasText);
+        this.moduleTools = new ModuleTools(this);
         var module;
         var nObjectCount = 0;
         var nGameObjectsLength = this.moduleList.length;
@@ -86,7 +113,7 @@ var Game = Class.extend({
             module = this.moduleList[nObjectCount];
             if (typeof module !== 'undefined') {
                 // #2
-                module.loadModule(moduleTools);
+                module.loadModule(this.moduleTools);
             }
         }
     },  
@@ -101,12 +128,18 @@ var Game = Class.extend({
             oCurrentGameObject = this.objectList[nObjectCount];
             if (oCurrentGameObject[methodName]) {
                 oCurrentGameObject[methodName](args);
+            }else if(oCurrentGameObject['callObjectMethods']){
+                oCurrentGameObject['callObjectMethods'](methodName,args);
             }
         }
     }, 
     gameLogic: function(){
         //Lógica principal del juego
         this.executionRemove();
+        this.messageContainer.speak({
+            message : "#checkCollisions#",
+            data : null
+        });
         this.executionUpdate();
         this.executionDraw();
         
@@ -127,6 +160,25 @@ var Game = Class.extend({
               this.objectList.splice(nCurrentObject, 1);
         }
         this.objectsToRemoveList = [];
+        //Recorre las capas, en caso de existir, buscando objetos en la collección
+        // de removibles y los elimina
+        var oCurrentGameObject = null;
+        var nObjectCount = 0;
+        var nGameObjectsLength = this.objectList.length;
+        for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
+            oCurrentGameObject = this.objectList[nObjectCount];
+            if(oCurrentGameObject.objsToRemove){
+                nRemoveLength = oCurrentGameObject.objsToRemove.length;
+                nCount = 0;
+                nCurrentObject = 0;
+
+                for (nCount = 0; nCount < nRemoveLength; nCount += 1) {
+                      nCurrentObject = oCurrentGameObject.objsToRemove[nCount];
+                      oCurrentGameObject.objList.splice(nCurrentObject, 1);
+                }
+                oCurrentGameObject.objsToRemove = [];
+            }
+        }
     },
     executionUpdate: function(){
         //llama al método update de los objetos de juego
@@ -139,9 +191,10 @@ var Game = Class.extend({
     executionDraw: function(){
         // Limpiamos el área de dibujo de nuestro buffer.
         this.oCanvas.bufferContext.clearRect(0, 0, this.oCanvas.buffer.width, this.oCanvas.buffer.height);
+        
         // Llamámos el método "draw" de todos los objetos del juego.
         this.callObjectMethods("draw", this.oCanvas);
-        // Notificar a los modulos el estado draw
+        // Notificar a los modulos el evento draw
         this.messageContainer.speak({
             message : "#draw#",
             data : null
@@ -151,7 +204,7 @@ var Game = Class.extend({
         this.oCanvas.mainContext.clearRect(0, 0, this.oCanvas.main.width, this.oCanvas.main.height);
         // Finalmente, dibujamos el buffer en nuestro canvas principal.
         this.oCanvas.mainContext.drawImage(this.oCanvas.buffer, 0, 0);
-    },
+    }
     /* ----------- Fin Private Methods ------------ */
          
 });

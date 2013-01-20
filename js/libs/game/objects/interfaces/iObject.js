@@ -6,14 +6,15 @@
  * 
  */
 var IObject= Class.extend({
-    x: 15,
-    y: 15,
-    width: 25,
-    height: 25,
+    x: 0,
+    y: 0,
+    z: 0,
+    width: 0,
+    height: 0,
     speed: 5,
     moving: false, 
     update:function(){},
-    draw : function (canvas) {},
+    draw : function (canvas) {}
 
 });
 

@@ -8,11 +8,14 @@ var ModuleTools = Class.extend({
     canvas : null,
     settings : [],
     canvasText: null,
+    game:null,
     
-    init: function(messageContainer,canvas,settings,canvasText){
-        this.messageContainer = messageContainer;
-        this.canvas = canvas;
-        this.settings = settings;
-        this.canvasText = canvasText;
+    init: function(game){
+        
+        this.messageContainer = game.messageContainer;
+        this.canvas = game.oCanvas;
+        this.settings = game.settings;
+        this.canvasText = game.canvasText;
+        this.game = game;
     }
 });

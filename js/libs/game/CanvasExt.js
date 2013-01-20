@@ -20,15 +20,6 @@ var CanvasExt = Class.extend({
             this.buffer.height = this.main.height;
             this.bufferContext = this.buffer.getContext('2d');
             this.canvasText = new CanvasText();
-            this.canvasText.config({
-                canvas: this.buffer,
-                context: this.bufferContext,
-                fontFamily: "Verdana",
-                fontSize: "14px",
-                fontWeight: "normal",
-                fontColor: "#000",
-                lineHeight: "22"
-            });
             
         }
     }
