@@ -72,7 +72,7 @@ var Game = Class.extend({
 
             for (nObjectCount = 0; nObjectCount < this.objectList.length; nObjectCount += 1) {
                 oCurrentModule = this.moduleList[nObjectCount];
-                if (oCurrentModule.__id === moduleId) {
+                if (oCurrentModule !== null && oCurrentModule !== undefined && oCurrentModule.__id === moduleId) {
                     return oCurrentModule;
                 }
             }

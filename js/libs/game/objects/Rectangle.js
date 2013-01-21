@@ -7,12 +7,14 @@
  */
 var Rectangle = ICursorMovable.extend({
     color: 'red',
-    x: 15,
-    y: 15,
-    width: 25,
-    height: 25,
+    position: {'x': 15, 'y':15 },
+    size: {'width': 25, 'height':25 },
+    
     collideSubscription: function(moduleTools){
-        moduleTools.game.getModule('CollisionManager').add(this,'handleCollision');
+        var handler = moduleTools.game.getModule('CollisionManager');
+        if(handler !== null){
+            handler.add(this,'handleCollision');
+        }
     },
     draw : function (canvas) {
         canvas.bufferContext.beginPath();
@@ -24,11 +26,8 @@ var Rectangle = ICursorMovable.extend({
         canvas.bufferContext.strokeStyle = 'black';
         canvas.bufferContext.stroke();
     },
-    handleCollision: function(result){
-        this.speed = 5;
-        if(result){
-            this.speed = 0;
-        }
+    handleCollision: function(collision){
+        this.collision = collision;
     }
 
 });

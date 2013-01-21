@@ -6,55 +6,37 @@
  * 
  */
 var ICursorMovable = IObject.extend({
-    bMoveRight: false,
-    bMoveLeft: false,
-    bMoveUp: false,
-    bMoveDown: false,
+    movable: null,
+    z: 0,
     update : function (canvas) {
- 
-        if (this.bMoveRight === true) {
-            //Move right
-            this.x += this.speed;
-        }
-        if (this.bMoveLeft === true) {
-            //Move left
-            this.x -= this.speed;
-        }
-        if (this.bMoveUp === true) {
-            //Move Up
-            this.y -= this.speed;
-        }
-        if (this.bMoveDown === true) {
-            //Move Down
-            this.y += this.speed;
-        }
+        this.move(false);
     },
     keydown : function (event) {
         if (event.keyCode === 39) {
-            this.bMoveRight = true;
+            this.movement.setMovement('right', this.speed);
         }
         if (event.keyCode === 37) {
-            this.bMoveLeft = true;
+            this.movement.setMovement('left', this.speed);
         }
         if (event.keyCode === 38) {
-            this.bMoveUp = true;
+            this.movement.setMovement('up', this.speed);
         }
         if (event.keyCode === 40) {
-            this.bMoveDown = true;
+            this.movement.setMovement('down', this.speed);
         }
     },
     keyup : function (event) {
         if (event.keyCode === 39) {
-            this.bMoveRight = false;
+            this.movement.unSetMovement('right');
         }
         if (event.keyCode === 37) {
-            this.bMoveLeft = false;
+            this.movement.unSetMovement('left');
         }
         if (event.keyCode === 38) {
-            this.bMoveUp = false;
+            this.movement.unSetMovement('up');
         }
         if (event.keyCode === 40) {
-            this.bMoveDown = false;
+            this.movement.unSetMovement('down');
         }
     }
 
