@@ -27,37 +27,40 @@ var CollisionManager = IModule.extend({
     collide:function(obj1,obj2){
         obj1.color='yellow';
         
-        if( this.isPointInSQ(obj1.x,obj1.y,obj2)){
+        var point = this.intersect(obj1.x,obj1.y,obj1.x+obj1.width,obj1.y, obj2.x,obj2.y,obj2.x,obj2.y+obj2.height);
+        if( this.isPointInSQ(point[0],point[1] ,obj2)){
             obj1.color='green';
         }
-        if( this.isPointInSQ(obj1.x+obj1.width,obj1.y,obj2)){
-            obj1.color='pink';
-        }
-        if( this.isPointInSQ(obj1.x,obj1.y+obj1.height,obj2)){
-            obj1.color='red';
-        }
-        if( this.isPointInSQ(obj1.x+obj1.width,obj1.y+obj1.height,obj2)){
-            obj1.color='blue';
-        }
         
-//        if (obj1.x + obj1.width < obj2.x) {
+        
+//        if( this.isPointInSQ(obj1.x,obj1.y,obj2)){
 //            obj1.color='green';
 //        }
-//        if (obj1.y + obj1.height < obj2.y) {
-//            obj1.color='green';
+//        if( this.isPointInSQ(obj1.x+obj1.width,obj1.y,obj2)){
+//            obj1.color='pink';
 //        }
-//        if (obj1.x > obj2.x + obj2.width) {
-//            obj1.color='green';
+//        if( this.isPointInSQ(obj1.x,obj1.y+obj1.height,obj2)){
+//            obj1.color='red';
 //        }
-//        if (obj1.y > obj2.y + obj2.height) {
-//            obj1.color='green';
+//        if( this.isPointInSQ(obj1.x+obj1.width,obj1.y+obj1.height,obj2)){
+//            obj1.color='blue';
 //        }
+        
         
     },
     isPointInSQ: function(x,y,obj2){
         var t1 = (x>=obj2.x && x<=obj2.x+obj2.height);
         var t2 = (y>=obj2.y && y<=obj2.y+obj2.height);
         return t1 && t2;
+    },
+    intersect: function(obj1x1,obj1y1,obj1x2,obj1y2,obj2x1,obj2y1,obj2x2,obj2y2){
+        var d = (obj1x1-obj1x2)*(obj2y1-obj2y2) - (obj1y1-obj1y2)*(obj2x1-obj2x2);
+        if (d == 0);
+
+        var xi = ((obj2x1-obj2x2)*(obj1x1*obj1y2-obj1y1*obj1x2)-(obj1x1-obj1x2)*(obj2x1*obj2y2-obj2y1*obj2x2))/d;
+        var yi = ((obj2y1-obj2y2)*(obj1x1*obj1y2-obj1y1*obj1x2)-(obj1y1-obj1y2)*(obj2x1*obj2y2-obj2y1*obj2x2))/d;
+        
+        return [xi,yi];
     }
     
 })
