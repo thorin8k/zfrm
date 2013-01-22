@@ -5,8 +5,8 @@
  * Este rectangulo puede moverse por la pantalla con las flechas.
  * 
  */
-var RectangleClick = IClickable.extend({
-    color: 'blue',
+var Rectangle = IObject.extend({
+    color: 'gray',
     start: function(moduleTools){
         var handler = moduleTools.game.getModule('CollisionManager');
         if(handler !== null){
@@ -28,4 +28,5 @@ var RectangleClick = IClickable.extend({
     }
 
 });
+
 

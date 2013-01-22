@@ -6,10 +6,11 @@
  * 
  */
 var ICursorMovable = IObject.extend({
-    movable: null,
-    z: 0,
     update : function (canvas) {
-        this.move(false);
+        if(this.isMoving()){
+            this.move(false);
+            
+        }
     },
     keydown : function (event) {
         if (event.keyCode === 39) {

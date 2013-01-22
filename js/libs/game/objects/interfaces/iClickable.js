@@ -6,8 +6,6 @@
  * 
  */
 var IClickable = IObject.extend({
-    clickable: null,
-    z: 0,
     update:function(){
         if(this.isMoving()){
             this.move(true);
@@ -36,15 +34,6 @@ var IClickable = IObject.extend({
             //Move down
             this.movement.setMovement('down', this.speed);
         }
-    },
-    isMoving: function(){
-        for(key in this.movement){
-            var current = this.movement[key];
-            if(current != 0){
-                return true;
-            }
-        }
-        return false;
     }
 
 });

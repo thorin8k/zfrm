@@ -9,14 +9,6 @@ var Collision = Class.extend({
     unSetCollision:function(direction){
         this[direction] = false;
     },
-    hasCollisions:function(){
-        for(pos in this){
-            if(this[pos]){
-                return true;
-            }
-        }
-        return false;
-    },
     releaseCollisions:function(){
         this.right= false;
         this.left= false;

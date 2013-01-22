@@ -97,8 +97,8 @@ var Game = Class.extend({
             message : "#start#",
             data : null
         });
-        //launch the subscriptions to collision manager
-        this.callObjectMethods("collideSubscription", this.moduleTools);
+        //launch the start method to the objects
+        this.callObjectMethods("start", this.moduleTools);
         //Bucle principal de juego
         this.gameLogic();
     },    
