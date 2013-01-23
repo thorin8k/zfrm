@@ -8,6 +8,9 @@ var Movement = Class.extend({
     },
     unSetMovement:function(direction){
         this[direction] = 0;
+    },
+    isMoving: function(){
+        return (this.left !== 0 || this.right !== 0 || this.up !== 0 || this.down !== 0);
     }
     
     

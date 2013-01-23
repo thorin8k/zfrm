@@ -5,7 +5,7 @@
  * Este rectangulo puede moverse por la pantalla con las flechas.
  * 
  */
-var ICursorMovable = IObject.extend({
+var CursorMovable = Object.extend({
     update : function (canvas) {
         if(this.isMoving()){
             this.move(false);

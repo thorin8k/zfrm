@@ -5,7 +5,7 @@
  * Este rectangulo puede moverse por la pantalla con las flechas.
  * 
  */
-var Rectangle = ICursorMovable.extend({
+var Rectangle = CursorMovable.extend({
     color: 'red',
     start: function(moduleTools){
         var handler = moduleTools.game.getModule('CollisionManager');

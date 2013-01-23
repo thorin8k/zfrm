@@ -5,7 +5,7 @@
  * Este rectangulo puede moverse por la pantalla con las flechas.
  * 
  */
-var IClickable = IObject.extend({
+var Clickable = Object.extend({
     update:function(){
         if(this.isMoving()){
             this.move(true);

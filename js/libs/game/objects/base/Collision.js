@@ -14,6 +14,9 @@ var Collision = Class.extend({
         this.left= false;
         this.top= false;
         this.bottom= false;
+    },
+    hasCollisions:function(){
+        return this.right || this.left || this.top|| this.bottom;
     }
     
     
