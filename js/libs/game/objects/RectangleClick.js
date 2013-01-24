@@ -23,8 +23,25 @@ var RectangleClick = Clickable.extend({
         canvas.bufferContext.strokeStyle = 'black';
         canvas.bufferContext.stroke();
     },
-    handleCollision: function(collision){
-        this.collision = collision;
+    handleCollision: function(res){
+        var noCollision = true;
+        for(var i = 0;i < res.length; i+=1){
+            if (res[i].x != 0 || res[i].y != 0) {
+                noCollision = false;
+                if (res[i].x != 0) {// x axis
+                    if (res[i].x<0) this.collision.setCollision('left');
+                    if (res[i].x>0) this.collision.setCollision('right');
+                }
+                if (res[i].y != 0) {// y axis
+                    if (res[i].y<0) this.collision.setCollision('top');
+                    if (res[i].y>0) this.collision.setCollision('bottom');
+                }
+            }
+        }
+        if(noCollision){
+            //release all collisions if the object has no collision
+            this.collision.releaseCollisions();
+        }
     }
 
 });

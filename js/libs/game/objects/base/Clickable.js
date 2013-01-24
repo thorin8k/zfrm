@@ -13,6 +13,7 @@ var Clickable = Object.extend({
         }
     },
     click: function(evt){
+        this.movement.stop();
         this.destx = evt.clientX;
         this.destx -= (this.width / 2);
         this.desty = evt.clientY;
