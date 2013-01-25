@@ -7,7 +7,13 @@ var Circle = Object.extend({
         if(handler !== null){
             handler.add(this,'handleCollision');
         }
-//      this.movement.setMovement('right', this.speed);  
+        this.movement.setMovement('right', this.speed);  
+    },
+    update : function (canvas) {
+        if(this.isMoving()){
+            this.move(false);
+            
+        }
     },
     draw: function(canvas){
       canvas.bufferContext.beginPath();
@@ -19,23 +25,30 @@ var Circle = Object.extend({
       canvas.bufferContext.stroke();
     },
     handleCollision: function(res){
-        var noCollision = true;
         for(var i = 0;i < res.length; i+=1){
             if (res[i].x != 0 || res[i].y != 0) {
                 noCollision = false;
                 if (res[i].x != 0) {// x axis
-                    if (res[i].x>0) this.collision.setCollision('left');
-                    if (res[i].x<0) this.collision.setCollision('right');
+                    if (res[i].x>0) {
+                        this.movement.stop();
+                        this.movement.setMovement('left', this.speed);
+                    }
+                    if (res[i].x<0) {
+                        this.movement.stop();
+                        this.movement.setMovement('right', this.speed);
+                    }
                 }
                 if (res[i].y != 0) {// y axis
-                    if (res[i].y>0) this.collision.setCollision('top');
-                    if (res[i].y<0) this.collision.setCollision('bottom');
+                    if (res[i].y>0) {
+                        this.movement.stop();
+                        this.movement.setMovement('up', this.speed);
+                    }
+                    if (res[i].y<0) {
+                        this.movement.stop();
+                        this.movement.setMovement('down', this.speed);
+                    }
                 }
             }
-        }
-        if(noCollision){
-            //release all collisions if the object has no collision
-            this.collision.releaseCollisions();
         }
     }
     

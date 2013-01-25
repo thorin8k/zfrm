@@ -24,7 +24,6 @@ var CollisionManager = IModule.extend({
     },
     checkCollisions:function(notification){
         
-        
         for(var obj1 in this.collideSubscriptions){
             var result = [];
             var object1 = this.collideSubscriptions[obj1].object;
@@ -38,7 +37,6 @@ var CollisionManager = IModule.extend({
             }
             //return all collisions to the object
             object1[this.collideSubscriptions[obj1].functionToAlert](result);
-            
             
         }
     },
