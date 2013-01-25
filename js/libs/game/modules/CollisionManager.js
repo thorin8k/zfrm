@@ -53,28 +53,25 @@ var CollisionManager = IModule.extend({
         if( (obj1 instanceof Rectangle ||  obj1 instanceof CollisionBox )
             && (obj2 instanceof Rectangle ||  obj2 instanceof CollisionBox)){
             if(this.rectCollideRect(obj1,obj2)){
-                return this.getCollisionAxis(obj1,obj2);
+                return obj2;
             }
         }
         if(obj1 instanceof Circle){
             if(this.circleCollideRect(obj1,obj2)){
-                return this.getCollisionAxis(obj1,obj2);
+                return obj2;
             }
-
         }
         if(obj2 instanceof Circle){
             if(this.circleCollideRect(obj2,obj1)){
-                return this.getCollisionAxis(obj2,obj1);
-                
+                return obj2;
             }
-
         }
         if( (obj1 instanceof Circle  ) && (obj2 instanceof Circle)){
             if(this.circleCollideCircle(obj1,obj2)){
-                return this.getCollisionAxis(obj1,obj2);
+                return obj2;
             }
         }
-        return {x:0,y:0};
+        return null;
     },
     valueInRange: function (value, min, max) {
         return (value <= max) && (value >= min);
@@ -108,38 +105,38 @@ var CollisionManager = IModule.extend({
        
         return ( Math.sqrt( ( obj2.x-obj1.x ) * ( obj2.x-obj1.x )  + ( obj2.y-obj1.y ) * ( obj2.y-obj1.y ) ) < ( obj1.radius + obj2.radius )); 
     },
-    getCollisionAxis: function(obj1,obj2){
-        var px = 0,
-        py = 0,
-        o1hWidth = (obj1.width / 2),
-        o1hHeight = (obj1.height / 2),
-        o2hWidth = (obj2.width / 2),
-        o2hHeight = (obj2.height / 2);
-        if(obj1 instanceof Circle){
-            o1hWidth = 0,
-            o1hHeight = 0;
-        }
-        if(obj2 instanceof Circle){
-            o1hWidth = 0,
-            o1hHeight = 0;
-        }
-        // check if both box are overlaping
-        // compute delta between obj1 & obj2
-        var dx = obj1.x + o1hWidth - obj2.x - o2hWidth,
-        dy = obj1.y + o1hHeight - obj2.y - o2hHeight;
-        //compute penetration depth for both axis
-        px = (o2hWidth + o1hWidth) - (dx < 0 ? -dx : dx); // - Math.abs(dx);
-        py = (o2hHeight + o1hHeight) - (dy < 0 ? -dy : dy); // - Math.abs(dy);
-        // check and "normalize" axis
-        if (px < py) {
-            py = 0;
-            px = dx < 0 ? -px : px;
-        } else {
-            px = 0;
-            py = dy < 0 ? -py : py;
-        }
-        return {x:px,y:py};
-    }
+//    getCollisionAxis: function(obj1,obj2){
+//        var px = 0,
+//        py = 0,
+//        o1hWidth = (obj1.width / 2),
+//        o1hHeight = (obj1.height / 2),
+//        o2hWidth = (obj2.width / 2),
+//        o2hHeight = (obj2.height / 2);
+//        if(obj1 instanceof Circle){
+//            o1hWidth = 0,
+//            o1hHeight = 0;
+//        }
+//        if(obj2 instanceof Circle){
+//            o1hWidth = 0,
+//            o1hHeight = 0;
+//        }
+//        // check if both box are overlaping
+//        // compute delta between obj1 & obj2
+//        var dx = obj1.x + o1hWidth - obj2.x - o2hWidth,
+//        dy = obj1.y + o1hHeight - obj2.y - o2hHeight;
+//        //compute penetration depth for both axis
+//        px = (o2hWidth + o1hWidth) - (dx < 0 ? -dx : dx); // - Math.abs(dx);
+//        py = (o2hHeight + o1hHeight) - (dy < 0 ? -dy : dy); // - Math.abs(dy);
+//        // check and "normalize" axis
+//        if (px < py) {
+//            py = 0;
+//            px = dx < 0 ? -px : px;
+//        } else {
+//            px = 0;
+//            py = dy < 0 ? -py : py;
+//        }
+//        return {x:px,y:py};
+//    }
     
 })
 

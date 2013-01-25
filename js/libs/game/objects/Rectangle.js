@@ -26,23 +26,16 @@ var Rectangle = CursorMovable.extend({
     handleCollision: function(res){
         var noCollision = true;
         for(var i = 0;i < res.length; i+=1){
-            if (res[i].x != 0 || res[i].y != 0) {
+            if(res[i] !== null){
                 noCollision = false;
-                if (res[i].x != 0) {// x axis
-                    if (res[i].x<0) this.collision.setCollision('left');
-                    if (res[i].x>0) this.collision.setCollision('right');
-                }
-                if (res[i].y != 0) {// y axis
-                    if (res[i].y<0) this.collision.setCollision('top');
-                    if (res[i].y>0) this.collision.setCollision('bottom');
-                }
+                this.collision.setCollision(getPointPositionFromPoint(this,res[i]));
             }
         }
         if(noCollision){
             //release all collisions if the object has no collision
             this.collision.releaseCollisions();
         }
-    }
+    },
 
 });
 
