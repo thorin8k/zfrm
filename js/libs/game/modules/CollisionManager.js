@@ -105,15 +105,8 @@ var CollisionManager = IModule.extend({
 
     },
     circleCollideCircle: function(obj1,obj2){
-        var a;
-        var x;
-        var y;
-
-        a = obj1.radius + obj2.radius;
-        x = obj1.x - obj2.x;
-        y = obj1.x - obj2.y;
-
-        if ( a > Math.sqrt( (x*x) + (y*y) ) ) {
+       
+        if ( Math.sqrt( ( obj2.x-obj1.x ) * ( obj2.x-obj1.x )  + ( obj2.y-obj1.y ) * ( obj2.y-obj1.y ) ) < ( obj1.radius + obj2.radius )) {
             return true;
         } else {
             return false;

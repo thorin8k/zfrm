@@ -8,6 +8,7 @@ var Circle = Object.extend({
             handler.add(this,'handleCollision');
         }
         this.movement.setMovement('right', this.speed);  
+        this.movement.setMovement('up', this.speed);  
     },
     update : function (canvas) {
         if(this.isMoving()){
@@ -30,21 +31,21 @@ var Circle = Object.extend({
                 noCollision = false;
                 if (res[i].x != 0) {// x axis
                     if (res[i].x>0) {
-                        this.movement.stop();
+                        this.movement.unSetMovement('right');
                         this.movement.setMovement('left', this.speed);
                     }
                     if (res[i].x<0) {
-                        this.movement.stop();
+                        this.movement.unSetMovement('left');
                         this.movement.setMovement('right', this.speed);
                     }
                 }
                 if (res[i].y != 0) {// y axis
                     if (res[i].y>0) {
-                        this.movement.stop();
+                        this.movement.unSetMovement('down');
                         this.movement.setMovement('up', this.speed);
                     }
                     if (res[i].y<0) {
-                        this.movement.stop();
+                        this.movement.unSetMovement('up');
                         this.movement.setMovement('down', this.speed);
                     }
                 }
