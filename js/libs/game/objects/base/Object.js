@@ -5,7 +5,7 @@
  * Este rectangulo puede moverse por la pantalla con las flechas.
  * 
  */
-var IObject= Class.extend({
+var Object= Class.extend({
     x:0,
     y:0,
     width:0,
@@ -60,15 +60,10 @@ var IObject= Class.extend({
         }
     },
     isMoving: function(){
-        var mov = this.movement;
-        if(mov.left !== 0 || mov.right !== 0 || mov.up !== 0 || mov.down !== 0){
-            return true;
-        }
-        return false;
+        return this.movement.isMoving();
     },
     hasCollisions:function(){
-        var col = this.collision;
-        return col.right || col.left || col.top|| col.bottom;
+        return this.collision.hasCollisions();
     }
 });
 

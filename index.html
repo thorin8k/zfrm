@@ -23,7 +23,7 @@ and open the template in the editor.
         </style>
     </head>
     <body>
-        <canvas id="canvas" width="600" height="480"></canvas>
+        <canvas id="canvas" width="640" height="480"></canvas>
         <script type="text/javascript" src="./js/libs/jquery/jquery.js"></script>
         <script type="text/javascript" src="./js/libs/jquery/Class.js"></script>
         <script type="text/javascript" src="./js/libs/canvasText/canvasText.js"></script>
@@ -32,24 +32,25 @@ and open the template in the editor.
         
         
         <script type="text/javascript" src="./js/libs/game/Game.js"></script>
-        <script type="text/javascript" src="./js/libs/game/CanvasExt.js"></script>
-        <script type="text/javascript" src="./js/libs/game/ModuleTools.js"></script>
-        <script type="text/javascript" src="./js/libs/game/MessageContainer.js"></script>
+        <script type="text/javascript" src="./js/libs/game/base/CanvasExt.js"></script>
+        <script type="text/javascript" src="./js/libs/game/base/ModuleTools.js"></script>
+        <script type="text/javascript" src="./js/libs/game/base/MessageContainer.js"></script>
         <script type="text/javascript" src="./js/libs/game/modules/interfaces/iModule.js"></script>
         
-        <script type="text/javascript" src="./js/libs/game/objects/interfaces/iObject.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/interfaces/iClickable.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/interfaces/iCursorMovable.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/base/Object.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/base/Clickable.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/base/CursorMovable.js"></script>
 
-        <script type="text/javascript" src="./js/libs/game/objects/Image.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/ObjectLayer.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/LandscapeLayer.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/Movement.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/Collision.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/base/Image.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/base/ObjectLayer.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/base/LandscapeLayer.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/base/Movement.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/base/Collision.js"></script>
 
         <script type="text/javascript" src="./js/libs/game/objects/Rectangle.js"></script>
         <script type="text/javascript" src="./js/libs/game/objects/RectangleClick.js"></script>
         <script type="text/javascript" src="./js/libs/game/objects/Text.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/CollisionBox.js"></script>
         
         <script type="text/javascript" src="./js/libs/game/modules/fpsModule.js"></script>
         <script type="text/javascript" src="./js/libs/game/modules/LayerHandler.js"></script>
@@ -59,7 +60,7 @@ and open the template in the editor.
             var tileMap = { "height":15,
  "layers":[
         {
-         "data":[353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 266, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353],
+         "data":[353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353],
          "height":15,
          "name":"capa1",
          "opacity":1,
@@ -113,22 +114,7 @@ and open the template in the editor.
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 285, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         "height":15,
-         "name":"capa2",
-         "opacity":1,
-         "properties":
-            {
-             "z":"2"
-            },
-         "type":"tilelayer",
-         "visible":true,
-         "width":20,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 261, 262, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 268, 269, 270, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 221, 0, 0, 0, 0, 0, 0, 276, 277, 278, 0, 0, 0, 0, 0, 0, 0, 0, 0, 228, 229, 230, 0, 0, 0, 0, 0, 284, 0, 286, 0, 0, 0, 0, 0, 0, 0, 0, 0, 236, 237, 238, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 244, 245, 246, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 261, 262, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 268, 269, 270, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 221, 0, 0, 0, 0, 0, 0, 276, 277, 278, 0, 0, 0, 0, 0, 0, 0, 0, 0, 228, 229, 230, 0, 0, 0, 0, 0, 284, 285, 286, 0, 0, 0, 0, 0, 0, 0, 0, 0, 236, 237, 238, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 244, 245, 246, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":15,
          "name":"capa3",
          "opacity":1,
@@ -137,6 +123,89 @@ and open the template in the editor.
              "z":"3"
             },
          "type":"tilelayer",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "height":15,
+         "name":"collisions",
+         "objects":[
+                {
+                 "height":32,
+                 "name":"tree2",
+                 "properties":
+                    {
+
+                    },
+                 "type":"CollisionBox",
+                 "width":32,
+                 "x":383,
+                 "y":167
+                }, 
+                {
+                 "height":32,
+                 "name":"tree1",
+                 "properties":
+                    {
+
+                    },
+                 "type":"CollisionBox",
+                 "width":32,
+                 "x":127,
+                 "y":263
+                }, 
+                {
+                 "height":478,
+                 "name":"rightlimit",
+                 "properties":
+                    {
+
+                    },
+                 "type":"CollisionBox",
+                 "width":5,
+                 "x":637,
+                 "y":1
+                }, 
+                {
+                 "height":2,
+                 "name":"toplimit",
+                 "properties":
+                    {
+
+                    },
+                 "type":"CollisionBox",
+                 "width":620,
+                 "x":13,
+                 "y":-1
+                }, 
+                {
+                 "height":3,
+                 "name":"botlimit",
+                 "properties":
+                    {
+
+                    },
+                 "type":"CollisionBox",
+                 "width":622,
+                 "x":10,
+                 "y":474
+                }, 
+                {
+                 "height":462,
+                 "name":"leftlimit",
+                 "properties":
+                    {
+
+                    },
+                 "type":"CollisionBox",
+                 "width":4,
+                 "x":0,
+                 "y":4
+                }],
+         "opacity":1,
+         "type":"objectgroup",
          "visible":true,
          "width":20,
          "x":0,
@@ -182,14 +251,6 @@ and open the template in the editor.
                 game.addModule("layerMod", mod2);
                 var mod3 = new CollisionManager();
                 game.addModule("CollisionManager", mod3);
-                
-                
-                
-                
-                //var layer = new ObjectLayer();
-                //layer.addObject("rectangulo", new Rectangle());
-                //layer.addObject("rectangulo2", new RectangleClick());                
-                //game.addGameObject("objLay", layer);
                 
                 
                 var text = new Text('Layers Listas!');

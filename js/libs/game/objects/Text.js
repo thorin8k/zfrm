@@ -1,4 +1,4 @@
-var Text = IObject.extend({
+var Text = Object.extend({
     text : '',
     x: 100,
     y:10,

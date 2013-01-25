@@ -2,6 +2,7 @@ var ObjectLayer = Class.extend({
     z:0,
     objList : [],
     objsToRemove: [],
+    tools : null,
     init: function(objs){
         this.objList = [];
         if(objs !== null && objs !== undefined){
@@ -26,6 +27,10 @@ var ObjectLayer = Class.extend({
                 oCurrentGameObject = this.objList[nObjectCount];
                 if (oCurrentGameObject.__id === sObjectId) {
                     this.objsToRemove.push(nObjectCount);
+                    this.tools.game.messageContainer.speak({
+                        message : "#objRemoved#",
+                        data : sObjectId
+                    });
                 }
             }
         }

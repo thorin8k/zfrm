@@ -1,8 +1,4 @@
-var ImageObj = IObject.extend({
-    
-    
-    position: {'x': 0, 'y':0 },
-    size: {'width': 32, 'height':32 },    
+var ImageObj = Object.extend({   
     oImage : null,
     nSourceX :32,
     nSourceY :32,
