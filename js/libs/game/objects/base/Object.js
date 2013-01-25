@@ -13,7 +13,7 @@ var Object= Class.extend({
     destx: 0,
     desty: 0,   
     movement: null,
-    collision: null,    
+    collision: null,
     speed: 5,
     weight:0,
     z: 0,

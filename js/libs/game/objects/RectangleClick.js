@@ -25,6 +25,8 @@ var RectangleClick = Clickable.extend({
     },
     handleCollision: function(res){
         var noCollision = true;
+        
+
         for(var i = 0;i < res.length; i+=1){
             if (res[i].x != 0 || res[i].y != 0) {
                 noCollision = false;
