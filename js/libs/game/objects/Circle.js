@@ -1,6 +1,6 @@
 var Circle = Object.extend({
 
-    
+    colisionType: 'Circle',
     radius : 0,
     start: function(moduleTools){
         var handler = moduleTools.game.getModule('CollisionManager');
@@ -26,28 +26,28 @@ var Circle = Object.extend({
       canvas.bufferContext.stroke();
     },
     handleCollision: function(res){
+        
         for(var i = 0;i < res.length; i+=1){
-            if (res[i].x != 0 || res[i].y != 0) {
-                noCollision = false;
-                if (res[i].x != 0) {// x axis
-                    if (res[i].x>0) {
-                        this.movement.unSetMovement('right');
-                        this.movement.setMovement('left', this.speed);
-                    }
-                    if (res[i].x<0) {
+            if(res[i] !== null){
+                var side = this.tools.collisionUtils.getCollisionSide(this,res[i],false);
+                if(side != null){
+                    if(side === 'right'){
                         this.movement.unSetMovement('left');
-                        this.movement.setMovement('right', this.speed);
+                        this.movement.setMovement(side,this.speed);
                     }
-                }
-                if (res[i].y != 0) {// y axis
-                    if (res[i].y>0) {
+                    if(side === 'left'){
+                        this.movement.unSetMovement('right');
+                        this.movement.setMovement(side,this.speed);
+                    }
+                    if(side === 'top'){
                         this.movement.unSetMovement('down');
-                        this.movement.setMovement('up', this.speed);
+                        this.movement.setMovement('up',this.speed);
                     }
-                    if (res[i].y<0) {
+                    if(side === 'bottom'){
                         this.movement.unSetMovement('up');
-                        this.movement.setMovement('down', this.speed);
+                        this.movement.setMovement('down',this.speed);
                     }
+
                 }
             }
         }

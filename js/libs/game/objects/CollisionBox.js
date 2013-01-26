@@ -12,6 +12,8 @@ var CollisionBox = Class.extend({
     weight:0,
     z: 0,
     collision: null,
+    color: 'grey',
+    colisionType: 'Rectangle',
     init:function(){
         this.collision = new Collision();
         
@@ -21,6 +23,16 @@ var CollisionBox = Class.extend({
         if(handler !== null){
             handler.add(this,'handleCollision');
         }
+    },
+    draw : function (canvas) {
+        canvas.bufferContext.beginPath();
+        canvas.bufferContext.rect(this.x, this.y, this.width, this.height);
+        canvas.bufferContext.fillStyle = this.color;
+        canvas.bufferContext.closePath();
+        canvas.bufferContext.fill();
+        canvas.bufferContext.lineWidth = 2;
+        canvas.bufferContext.strokeStyle = 'black';
+        canvas.bufferContext.stroke();
     },
     handleCollision: function(res){
         //can add here especial collisions

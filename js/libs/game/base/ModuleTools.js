@@ -8,10 +8,11 @@ var ModuleTools = Class.extend({
     canvas : null,
     settings : [],
     canvasText: null,
+    collisionUtils: null,
     game:null,
     
     init: function(game){
-        
+        this.collisionUtils = new CollisionUtils();
         this.messageContainer = game.messageContainer;
         this.canvas = game.oCanvas;
         this.settings = game.settings;

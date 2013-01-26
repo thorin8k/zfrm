@@ -7,6 +7,7 @@
  */
 var Rectangle = CursorMovable.extend({
     color: 'red',
+    colisionType: 'Rectangle',
     start: function(moduleTools){
         var handler = moduleTools.game.getModule('CollisionManager');
         if(handler !== null){
@@ -28,14 +29,14 @@ var Rectangle = CursorMovable.extend({
         for(var i = 0;i < res.length; i+=1){
             if(res[i] !== null){
                 noCollision = false;
-                this.collision.setCollision(getPointPositionFromPoint(this,res[i]));
+                this.collision.setCollision(this.tools.collisionUtils.getCollisionSide(this,res[i],false));
             }
         }
         if(noCollision){
             //release all collisions if the object has no collision
             this.collision.releaseCollisions();
         }
-    },
+    }
 
 });
 

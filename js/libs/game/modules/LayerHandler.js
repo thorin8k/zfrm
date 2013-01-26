@@ -122,7 +122,7 @@
          for (var nDataCount = 0; nDataCount < currentLayer.objects.length; nDataCount += 1) {
              var currObj = currentLayer.objects[nDataCount];
              
-             var object = new window[currObj.type]();
+             var object = new window[currObj.type](this.tools);
              object.x=currObj.x;
              object.y=currObj.y;
              object.width=currObj.width;

@@ -49,8 +49,8 @@ var Game = Class.extend({
     getObject: function(sObjectId){
         if (typeof sObjectId === 'string') {
             var oCurrentGameObject = null;
-
-            for (nObjectCount = 0; nObjectCount < this.objectList.length; nObjectCount += 1) {
+            var objListLength = this.objectList.length;
+            for (nObjectCount = 0; nObjectCount < objListLength; nObjectCount += 1) {
                 oCurrentGameObject = this.objectList[nObjectCount];
                 if (oCurrentGameObject.__id === sObjectId) {
                     return oCurrentGameObject;

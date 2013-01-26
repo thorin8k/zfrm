@@ -9,7 +9,19 @@ var ObjectLayer = Class.extend({
             this.objList = objs;
         }
     },
-    
+    getObject: function(sObjectId){
+        if (typeof sObjectId === 'string') {
+            var oCurrentGameObject = null;
+            var objLength = this.objList.length;
+            for (nObjectCount = 0; nObjectCount < objLength; nObjectCount += 1) {
+                oCurrentGameObject = this.objList[nObjectCount];
+                if (oCurrentGameObject.__id === sObjectId) {
+                    return oCurrentGameObject;
+                }
+            }
+        }
+        return null;
+    },
     addObject: function(sObjectId,object){
         //añade el objeto pasado
         if (typeof object === 'object') { 
