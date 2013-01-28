@@ -27,7 +27,8 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/libs/jquery/jquery.js"></script>
         <script type="text/javascript" src="./js/libs/jquery/Class.js"></script>
         <script type="text/javascript" src="./js/libs/canvasText/canvasText.js"></script>
-        
+        <script type="text/javascript" src="./js/libs/game/commons/Constants.js"></script>
+
         <script type="text/javascript" src="./js/libs/game/FrameIntervalImpl.js"></script>
         
         
@@ -51,7 +52,6 @@ and open the template in the editor.
 
         <script type="text/javascript" src="./js/libs/game/objects/Rectangle.js"></script>
         <script type="text/javascript" src="./js/libs/game/objects/Circle.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/Circle_1.js"></script>
         <script type="text/javascript" src="./js/libs/game/objects/RectangleClick.js"></script>
         <script type="text/javascript" src="./js/libs/game/objects/Text.js"></script>
         <script type="text/javascript" src="./js/libs/game/objects/CollisionBox.js"></script>
@@ -103,7 +103,7 @@ and open the template in the editor.
                      "color":"yellow",
                      "radius":20
                     },
-                 "type":"Circle",
+                 "type":"Rectangle",
                  "width":40,
                  "x":401,
                  "y":99
@@ -114,10 +114,9 @@ and open the template in the editor.
                  "properties":
                     {
                      "color":"yellow",
-                     "radius":40,
                      'weight':20,
                     },
-                 "type":"Circle",
+                 "type":"RectangleClick",
                  "width":80,
                  "x":301,
                  "y":199

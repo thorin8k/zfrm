@@ -13,6 +13,8 @@ var Game = Class.extend({
     objectsToRemoveList: [],
     messageContainer: null,
     moduleTools: null,
+    status: STATUS_STOPPED,
+    animFrame: null,
     settings: {
         fps: 60
         
@@ -100,8 +102,17 @@ var Game = Class.extend({
         //launch the start method to the objects
         this.callObjectMethods("start", this.moduleTools);
         //Bucle principal de juego
+        this.status = STATUS_RUNNING;
         this.gameLogic();
     },    
+    pauseGame: function(){
+        this.status = STATUS_IDDLE;
+        cancelAnimationFrame(this.animFrame);
+    },
+    resumeGame: function(){
+        this.status = STATUS_RUNNING;
+        this.gameLogic();
+    },
         
     /* -----------  Private Methods ------------ */
     preStart: function(){
@@ -112,7 +123,6 @@ var Game = Class.extend({
         for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
             module = this.moduleList[nObjectCount];
             if (typeof module !== 'undefined') {
-                // #2
                 module.loadModule(this.moduleTools);
             }
         }
@@ -145,9 +155,9 @@ var Game = Class.extend({
         
         //Al final de la ejecución volvemos a llamar al request animation Frame
         var self = this; //Reasignación por error en set interval en la referencia this
-        requestAnimationFrame(function(){self.gameLogic();});
+        this.animFrame = requestAnimationFrame(function(){self.gameLogic();});
     },
-        
+    
     executionRemove: function(){
         //Elimina los objetos presentes en el array de objetos para eliminar
         //del array principal de objetos

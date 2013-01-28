@@ -3,10 +3,11 @@ var Circle = Object.extend({
     collisionType: 'Circle',
     radius : 0,
     start: function(moduleTools){
-        var handler = moduleTools.game.getModule('CollisionManager');
-        if(handler !== null){
-            handler.add(this,'handleCollision');
-        }
+        moduleTools.messageContainer.speak({
+            message : "#collisionSubs#",
+            obj : this,
+            callback: 'handleCollision'
+        });
         this.movement.setMovement('right', this.speed);  
         this.movement.setMovement('up', this.speed);  
     },

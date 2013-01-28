@@ -5,14 +5,15 @@
  * Este rectangulo puede moverse por la pantalla con las flechas.
  * 
  */
-var Rectangle = CursorMovable.extend({
+var Rectangle = Object.extend({
     color: 'red',
     collisionType: 'Rectangle',
     start: function(moduleTools){
-        var handler = moduleTools.game.getModule('CollisionManager');
-        if(handler !== null){
-            handler.add(this,'handleCollision');
-        }
+        moduleTools.messageContainer.speak({
+            message : "#collisionSubs#",
+            obj : this,
+            callback: 'handleCollision'
+        });
     },
     draw : function (canvas) {
         canvas.bufferContext.beginPath();

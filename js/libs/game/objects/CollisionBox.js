@@ -22,20 +22,21 @@ var CollisionBox = Class.extend({
         
     },
     start: function(moduleTools){
-        var handler = moduleTools.game.getModule('CollisionManager');
-        if(handler !== null){
-            handler.add(this,'handleCollision');
-        }
+        moduleTools.messageContainer.speak({
+            message : "#collisionSubs#",
+            obj : this,
+            callback: 'handleCollision'
+        });
     },
     draw : function (canvas) {
-        canvas.bufferContext.beginPath();
-        canvas.bufferContext.rect(this.x, this.y, this.width, this.height);
-        canvas.bufferContext.fillStyle = this.color;
-        canvas.bufferContext.closePath();
-        canvas.bufferContext.fill();
-        canvas.bufferContext.lineWidth = 2;
-        canvas.bufferContext.strokeStyle = 'black';
-        canvas.bufferContext.stroke();
+//        canvas.bufferContext.beginPath();
+//        canvas.bufferContext.rect(this.x, this.y, this.width, this.height);
+//        canvas.bufferContext.fillStyle = this.color;
+//        canvas.bufferContext.closePath();
+//        canvas.bufferContext.fill();
+//        canvas.bufferContext.lineWidth = 2;
+//        canvas.bufferContext.strokeStyle = 'black';
+//        canvas.bufferContext.stroke();
     },
     handleCollision: function(res){
         //can add here especial collisions

@@ -1,7 +1,8 @@
 var CollisionManager = IModule.extend({
     collideSubscriptions : [],
-    add:function(object, functionToAlert){
-        this.collideSubscriptions.push({object:object,functionToAlert:functionToAlert});  
+    
+    addSubscription:function(notification){
+        this.collideSubscriptions.push({object:notification.obj,functionToAlert:notification.callback});  
     },
     remove:function(notification){
         if (typeof notification.data === 'string') {
@@ -19,6 +20,7 @@ var CollisionManager = IModule.extend({
     },
     loadModule: function(tools){
         this.tools = tools;
+        tools.messageContainer.listen(["#collisionSubs#"], this.addSubscription, this);
         tools.messageContainer.listen(["#checkCollisions#"], this.checkCollisions, this);
         tools.messageContainer.listen(["#objRemoved#"], this.remove, this);
     },
