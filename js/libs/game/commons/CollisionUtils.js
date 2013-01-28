@@ -1,7 +1,7 @@
 var CollisionUtils = Class.extend({
-    getCollisionSide: function (obj1,obj2,reverse){
+    getCollisionSide: function (obj1,obj2){
         var axis = this.getCollisionAxis(obj1, obj2);
-
+        var reverse = obj1.collisionType === 'Circle' || obj2.collisionType === 'Circle';
         if(axis.x != 0 || axis.y != 0){
             if(axis.x != 0){
                 if(axis.x > 0){
@@ -76,9 +76,18 @@ var CollisionUtils = Class.extend({
         return ((obj1.x - testX) * (obj1.x - testX) + (obj1.y - testY) * (obj1.y - testY)) < obj1.radius * obj1.radius;
 
     },
-    circleCollideCircle: function (obj1,obj2){
+    circleCollideCircle: function (obj1,obj2){ 
+        var dx = obj2.x - obj1.x,
+         dy = obj2.y - obj1.y,
+        dist = Math.sqrt(dx * dx + dy * dy);
 
-         return ( Math.sqrt( ( obj2.x-obj1.x ) * ( obj2.x-obj1.x )  + ( obj2.y-obj1.y ) * ( obj2.y-obj1.y ) ) < ( obj1.radius + obj2.radius )); 
+        //collision handling code here
+        if (dist <= obj1.radius + obj2.radius) {
+              
+              return true;
+        }
+        return false;
+        //return ( Math.sqrt( ( obj2.x-obj1.x ) * ( obj2.x-obj1.x )  + ( obj2.y-obj1.y ) * ( obj2.y-obj1.y ) ) < ( obj1.radius + obj2.radius )); 
      },
     getCollisionAxis: function (obj1,obj2){
         var px = 0,
@@ -87,13 +96,13 @@ var CollisionUtils = Class.extend({
         o1hHeight = (obj1.height / 2),
         o2hWidth = (obj2.width / 2),
         o2hHeight = (obj2.height / 2);
-        if(obj1.colisionType === 'Circle'){
+        if(obj1.collisionType === 'Circle'){
             o1hWidth = 0,
             o1hHeight = 0;
         }
-        if(obj2.colisionType === 'Circle'){
-            o1hWidth = 0,
-            o1hHeight = 0;
+        if(obj2.collisionType === 'Circle'){
+            o2hWidth = 0,
+            o2hHeight = 0;
         }
         // check if both box are overlaping
         // compute delta between obj1 & obj2

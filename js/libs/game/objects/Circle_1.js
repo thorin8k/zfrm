@@ -1,4 +1,4 @@
-var Circle = Object.extend({
+var CircleMovable = CursorMovable.extend({
 
     collisionType: 'Circle',
     radius : 0,
@@ -7,15 +7,10 @@ var Circle = Object.extend({
         if(handler !== null){
             handler.add(this,'handleCollision');
         }
-        this.movement.setMovement('right', this.speed);  
-        this.movement.setMovement('up', this.speed);  
     },
     update : function (canvas) {
         if(this.reaction.isMoving()){
-            this.movement.left = this.reaction.left;
-            this.movement.right = this.reaction.right;
-            this.movement.up = this.reaction.up;
-            this.movement.down = this.reaction.down;
+            this.movement = this.reaction;
             this.reaction.stop();
         }
         if(this.isMoving()){
@@ -39,30 +34,32 @@ var Circle = Object.extend({
             if(res[i] !== null){
                 if(res[i].collisionType === 'Circle'){
                     
-                    var o1speed = this.movement.getSignedActualSpeed(),
-                    o2speed = res[i].movement.getSignedActualSpeed();
-                    
-                    var newVelX1 = (o1speed.x * (this.weight- res[i].weight) + (2 * res[i].weight * o2speed.x)) / (this.weight + res[i].weight);
-                    var newVelY1 = (o1speed.y * (this.weight - res[i].weight) + (2 * res[i].weight * o2speed.y)) / (this.weight + res[i].weight);                    
-                    
-                    if(newVelX1 > 0){
-                        this.reaction.unSetMovement('left');
-                        this.reaction.right = Math.abs(newVelX1);
-                    }
-                    if(newVelX1 < 0){
-                        this.reaction.unSetMovement('right');
-                        this.reaction.left = Math.abs(newVelX1);
-                    }
-                    if(newVelY1 < 0){
-                        this.reaction.unSetMovement('down');
-                        this.reaction.up = Math.abs(newVelY1);
-                    }
-                    if(newVelY1 > 0){
-                        this.reaction.unSetMovement('up');
-                        this.reaction.down = Math.abs(newVelY1);
-                    }
-                    
-                    this.color = 'red';
+//                    var o1speed = this.movement.getSignedActualSpeed(),
+//                    o2speed = res[i].movement.getSignedActualSpeed();
+//                    
+//                    var newVelX1 = (o1speed.x * (this.weight- res[i].weight) + (2 * res[i].weight * o2speed.x)) / (this.weight + res[i].weight);
+//                    var newVelY1 = (o1speed.y * (this.weight - res[i].weight) + (2 * res[i].weight * o2speed.y)) / (this.weight + res[i].weight);                    
+//                    
+//                    if(newVelX1 > 0){
+//                        this.movement.unSetMovement('left');
+//                        this.movement.right = Math.abs(newVelX1);
+//                    }
+//                    if(newVelX1 < 0){
+//                        this.movement.unSetMovement('right');
+//                        this.movement.left = Math.abs(newVelX1);
+//                    }
+//                    if(newVelY1 < 0){
+//                        this.movement.unSetMovement('down');
+//                        this.movement.up = Math.abs(newVelY1);
+//                    }
+//                    if(newVelY1 > 0){
+//                        this.movement.unSetMovement('up');
+//                        this.movement.down = Math.abs(newVelY1);
+//                    }
+//                    
+//                    this.x += newVelX1;
+//                    this.y += newVelY1;
+//                    this.color = 'red';
                     
                 }
                 if(res[i].collisionType === 'Rectangle'){

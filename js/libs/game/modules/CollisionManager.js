@@ -46,22 +46,22 @@ var CollisionManager = IModule.extend({
     collide : function(obj1,obj2) {
         //TODO: check the weight and z-index between obj1 & obj1 to handle 
         //the collision and notify
-        if( obj1.colisionType === 'Rectangle' && obj2.colisionType === 'Rectangle' ){
+        if( obj1.collisionType === 'Rectangle' && obj2.collisionType === 'Rectangle' ){
             if(this.tools.collisionUtils.rectCollideRect(obj1,obj2)){
                 return obj2;
             }
         }
-        if( (obj1.colisionType === 'Circle' ) && (obj2.colisionType === 'Circle')){
+        if( (obj1.collisionType === 'Circle' ) && (obj2.collisionType === 'Circle')){
             if(this.tools.collisionUtils.circleCollideCircle(obj1,obj2)){
                 return obj2;
             }
         }
-        if(obj1.colisionType === 'Circle' && obj2.colisionType === 'Rectangle'){
+        if(obj1.collisionType === 'Circle' && obj2.collisionType === 'Rectangle'){
             if(this.tools.collisionUtils.circleCollideRect(obj1,obj2)){
                 return obj2;
             }
         }
-        if(obj1.colisionType === 'Rectangle' && obj2.colisionType === 'Circle'){
+        if(obj1.collisionType === 'Rectangle' && obj2.collisionType === 'Circle'){
             if(this.tools.collisionUtils.circleCollideRect(obj2,obj1)){
                 return obj2;
             }

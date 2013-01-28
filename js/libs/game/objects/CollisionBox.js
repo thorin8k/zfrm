@@ -9,13 +9,16 @@ var CollisionBox = Class.extend({
     y:0,
     width:0,
     height:0,
-    weight:0,
+    weight:100,
+    speed: 0,
+    movement: null,
     z: 0,
     collision: null,
     color: 'grey',
-    colisionType: 'Rectangle',
+    collisionType: 'Rectangle',
     init:function(){
         this.collision = new Collision();
+        this.movement = new Movement();
         
     },
     start: function(moduleTools){

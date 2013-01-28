@@ -17,6 +17,21 @@ var Movement = Class.extend({
         this.right =0;
         this.up =0;
         this.down =0;
+    },
+    
+    getSignedActualSpeed: function(){
+        var speedx = 0, speedy = 0;
+        if(this.right !== 0){
+            speedx = this.right;
+        }else if(this.left !== 0){
+            speedx = - this.left;
+        }
+        if(this.down !== 0){
+            speedy = this.down;
+        }else if(this.up !== 0){
+            speedy = - this.up;
+        }
+        return {x:speedx,y:speedy};
     }
     
     
