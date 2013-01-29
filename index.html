@@ -59,7 +59,8 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/libs/game/modules/fpsModule.js"></script>
         <script type="text/javascript" src="./js/libs/game/modules/LayerHandler.js"></script>
         <script type="text/javascript" src="./js/libs/game/modules/CollisionManager.js"></script>
-        
+        <script type="text/javascript" src="./js/libs/game/modules/ImageManager.js"></script>
+
         <script type="text/javascript">
             var tileMap = { "height":15,
  "layers":[
@@ -257,6 +258,9 @@ and open the template in the editor.
  "version":1,
  "width":20
 }
+
+
+            
             var game;
             $(document).ready(function(){
                 
@@ -265,6 +269,11 @@ and open the template in the editor.
                 game.setSettings({fps:60});
                 
                 //añadimos modulos
+                var imgMan = new ImageManager();
+                // Añadimos algunas imágenes a la lista de descarga
+                imgMan.addImage('countrystyle','img/countrystyle.png');
+                // Iniciamos la descarga y creamos la función de callback.
+                game.addModule("imgMan", imgMan);
                 var mod1 = new FpsModule();
                 game.addModule("fpsMod", mod1);
                 var mod2 = new LayerHandler(tileMap);
