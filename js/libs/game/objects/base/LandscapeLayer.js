@@ -9,6 +9,7 @@ var LandscapeLayer = Class.extend({
         }
     },
     preRender:function(canvas){
+        //TESTING
         var actualImg;
         var layBuffer = document.createElement('canvas');
         layBuffer.width = canvas.main.width;
@@ -22,15 +23,12 @@ var LandscapeLayer = Class.extend({
         this.layBuffer = layBuffer;
     },
     draw : function (canvas) {
-//        var actualImg;
-//        for (var i = 0; i < this.imagesList.length; i += 1) {
-//            actualImg = this.imagesList[i];
-//            canvas.bufferContext.drawImage(actualImg.oImage, actualImg.nSourceX, actualImg.nSourceY, actualImg.width, actualImg.height, actualImg.x, actualImg.y, actualImg.width, actualImg.height);
-//        }
-        if(this.layBuffer === null){
-            this.preRender(canvas);
+        var actualImg;
+        for (var i = 0; i < this.imagesList.length; i += 1) {
+            actualImg = this.imagesList[i];
+            canvas.bufferContext.drawImage(actualImg.oImage, actualImg.nSourceX, actualImg.nSourceY, actualImg.width, actualImg.height, actualImg.x, actualImg.y, actualImg.width, actualImg.height);
         }
-        canvas.bufferContext.drawImage(this.layBuffer,0,0);
+        
     },
     addImage: function(image){
         this.imagesList.push(image);

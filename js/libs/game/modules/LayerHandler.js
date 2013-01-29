@@ -114,7 +114,6 @@
             var prop = currentLayer.properties[i];
             layer[i] = prop;
         }
-        layer.preRender(this.tools.canvas);
         this.layerList.push(layer);
      },
      addObjectLayer:function(currentLayer){
