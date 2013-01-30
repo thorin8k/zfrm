@@ -13,6 +13,7 @@ var Game = Class.extend({
     objectsToRemoveList: [],
     messageContainer: null,
     moduleTools: null,
+    imageManager : null,
     status: STATUS_STOPPED,
     animFrame: null,
     settings: {
@@ -21,6 +22,7 @@ var Game = Class.extend({
     },
     
     init: function(canvas){
+        this.imageManager = new ImageManager();
         this.oCanvas = new CanvasExt(canvas);
         this.messageContainer = new MessageContainer();
     },   
@@ -93,17 +95,20 @@ var Game = Class.extend({
         this.callObjectMethods(sEventType, event);
     },
     startGame:function(){
-        this.preStart();
-        // Notificar a los modulos el evento Start
-        this.messageContainer.speak({
-            message : "#start#",
-            data : null
+        var game = this;
+        this.imageManager.load(function(){ 
+            game.preStart();
+            // Notificar a los modulos el evento Start
+            game.messageContainer.speak({
+                message : "#start#",
+                data : null
+            });
+            //launch the start method to the objects
+            game.callObjectMethods("start", game.moduleTools);
+            //Bucle principal de juego
+            game.status = STATUS_RUNNING;
+            game.gameLogic();
         });
-        //launch the start method to the objects
-        this.callObjectMethods("start", this.moduleTools);
-        //Bucle principal de juego
-        this.status = STATUS_RUNNING;
-        this.gameLogic();
     },    
     pauseGame: function(){
         this.status = STATUS_IDDLE;
@@ -113,7 +118,9 @@ var Game = Class.extend({
         this.status = STATUS_RUNNING;
         this.gameLogic();
     },
-        
+    changeViewPort: function(x,y){
+        this.callObjectMethods('changeViewPort',{x:x,y:y});
+    },
     /* -----------  Private Methods ------------ */
     preStart: function(){
         this.moduleTools = new ModuleTools(this);

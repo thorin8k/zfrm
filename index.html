@@ -36,6 +36,7 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/libs/game/base/CanvasExt.js"></script>
         <script type="text/javascript" src="./js/libs/game/base/ModuleTools.js"></script>
         <script type="text/javascript" src="./js/libs/game/base/MessageContainer.js"></script>
+        <script type="text/javascript" src="./js/libs/game/base/ImageManager.js"></script>
         <script type="text/javascript" src="./js/libs/game/modules/interfaces/iModule.js"></script>
         
         <script type="text/javascript" src="./js/libs/game/commons/CollisionUtils.js"></script>
@@ -53,13 +54,13 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/libs/game/objects/Rectangle.js"></script>
         <script type="text/javascript" src="./js/libs/game/objects/Circle.js"></script>
         <script type="text/javascript" src="./js/libs/game/objects/RectangleClick.js"></script>
+        <script type="text/javascript" src="./js/libs/game/objects/FirstPlayer.js"></script>
         <script type="text/javascript" src="./js/libs/game/objects/Text.js"></script>
         <script type="text/javascript" src="./js/libs/game/objects/CollisionBox.js"></script>
         
         <script type="text/javascript" src="./js/libs/game/modules/fpsModule.js"></script>
         <script type="text/javascript" src="./js/libs/game/modules/LayerHandler.js"></script>
         <script type="text/javascript" src="./js/libs/game/modules/CollisionManager.js"></script>
-        <script type="text/javascript" src="./js/libs/game/modules/ImageManager.js"></script>
 
         <script type="text/javascript">
             var tileMap = { "height":15,
@@ -102,26 +103,12 @@ and open the template in the editor.
                  "properties":
                     {
                      "color":"yellow",
-                     "radius":20
                     },
-                 "type":"Rectangle",
+                 "type":"FirstPlayer",
                  "width":40,
                  "x":401,
                  "y":99
-                },
-                {
-                 "height":80,
-                 "name":"circ3",
-                 "properties":
-                    {
-                     "color":"yellow",
-                     'weight':20,
-                    },
-                 "type":"RectangleClick",
-                 "width":80,
-                 "x":301,
-                 "y":199
-                },
+                }
                 ],
          "opacity":1,
          "properties":
@@ -241,7 +228,7 @@ and open the template in the editor.
  "tilesets":[
         {
          "firstgid":1,
-         "image":"img/countrystyle.png",
+         "image":"countrystyle.png",
          "imageheight":1458,
          "imagewidth":256,
          "margin":0,
@@ -259,7 +246,6 @@ and open the template in the editor.
  "width":20
 }
 
-
             
             var game;
             $(document).ready(function(){
@@ -269,11 +255,7 @@ and open the template in the editor.
                 game.setSettings({fps:60});
                 
                 //añadimos modulos
-                var imgMan = new ImageManager();
-                // Añadimos algunas imágenes a la lista de descarga
-                imgMan.addImage('countrystyle','img/countrystyle.png');
-                // Iniciamos la descarga y creamos la función de callback.
-                game.addModule("imgMan", imgMan);
+               
                 var mod1 = new FpsModule();
                 game.addModule("fpsMod", mod1);
                 var mod2 = new LayerHandler(tileMap);
@@ -286,8 +268,15 @@ and open the template in the editor.
                 text.z = 2;
                 game.addObject("texto1", text);
                 
-                // ¡Iniciamos la ejecución del juego!
-                game.startGame();
+                
+                // Añadimos algunas imágenes a la lista de descarga
+                game.imageManager.addImage('countrystyle.png','img/countrystyle.png');
+                
+                
+                game.startGame() 
+                
+                
+                
                 
                 
                 

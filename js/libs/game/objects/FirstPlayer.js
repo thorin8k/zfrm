@@ -8,7 +8,9 @@
 var FirstPlayer = CursorMovable.extend({
     color: 'red',
     collisionType: 'Rectangle',
+    tools: null,
     start: function(moduleTools){
+        this.tools = moduleTools;
         moduleTools.messageContainer.speak({
             message : "#collisionSubs#",
             obj : this,
@@ -17,10 +19,10 @@ var FirstPlayer = CursorMovable.extend({
     },
     update: function(canvas){
         if(this.movement.left !== 0){
-            canvas.bufferContext.translate (-this.speed, 0);
+            this.tools.game.changeViewPort(-this.speed,0);
         }
         if(this.movement.right !== 0){
-            canvas.bufferContext.translate (+this.speed, 0);
+            this.tools.game.changeViewPort(+this.speed,0);
         }
         
     },

@@ -1,7 +1,7 @@
 /**
  * Función importada del proyecto cyan
  */
- ImageManager = IModule.extend({
+ ImageManager = Class.extend({
     // Número de imágenes cargadas correctamente.
     successCount: 0,
     // Número de imágenes cargadas erróneamente.
@@ -10,8 +10,8 @@
     ImageCollection: {},
     // Listado de imágenes en cola de espera.
     ImageList: [],
- 
-    loadModule: function(tools) {
+    init:function(){},
+    load: function(callback) {
         // Comprobamos que haya alguna imagen en la lista de descarga.
         if (this.ImageList.length === 0) {
             callback();
@@ -33,7 +33,7 @@
                 // elementos en cola dentro.
                 if (ImageManager.isDone()) {
                     // Llamamos la función callback.
-                    //callback();
+                    callback();
                 }
             }, false);
             // Creamos un listener "error" con su callback correspondiente.
@@ -41,14 +41,14 @@
                 // Incrementamos el valor del contador de cargas erróneas.
                 ImageManager.errorCount += 1;
                 if (ImageManager.isDone()) {
-                    //callback();
+                    callback();
                 }
             }, false);
             // Establecemos el atributo "src" de la imagen actual.
             img.src = path;
             // Guardamos la imagen en nuestra colección.
             this.ImageCollection[id] = img;
-        }
+        }        
     },
     /**
      * Añade una imagen a la lista de descarga.
