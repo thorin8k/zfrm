@@ -2,7 +2,6 @@ var ObjectLayer = Class.extend({
     z:0,
     objList : [],
     objsToRemove: [],
-    tools : null,
     init: function(objs){
         this.objList = [];
         if(objs !== null && objs !== undefined){

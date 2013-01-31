@@ -9,6 +9,7 @@ var Rectangle = Object.extend({
     color: 'red',
     collisionType: 'Rectangle',
     start: function(moduleTools){
+        this._super(moduleTools);
         moduleTools.messageContainer.speak({
             message : "#collisionSubs#",
             obj : this,

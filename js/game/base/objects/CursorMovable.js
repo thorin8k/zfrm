@@ -12,6 +12,10 @@ var CursorMovable = Object.extend({
             
         }
     },
+    start:function(tools){
+        
+        this._super(tools);
+    },
     keydown : function (event) {
         if (event.keyCode === 39) {
             this.movement.setMovement('right', this.speed);

@@ -12,6 +12,11 @@ var Clickable = Object.extend({
             
         }
     },
+    
+    start:function(tools){
+        
+        this._super(tools);
+    },
     click: function(evt){
         this.movement.stop();
         this.destx = evt.clientX;

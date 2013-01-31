@@ -8,6 +8,10 @@ var Text = Object.extend({
     init:function(text){
         this.text = text;
     },
+    start:function(tools){
+        
+        this._super = tools;
+    },
     draw : function(canvas) {
         canvas.canvasText.config({
             canvas: canvas.buffer,

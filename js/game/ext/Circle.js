@@ -2,8 +2,9 @@ var Circle = Object.extend({
 
     collisionType: 'Circle',
     radius : 0,
-    start: function(moduleTools){
-        moduleTools.messageContainer.speak({
+    start: function(tools){
+        this._super(tools);
+        tools.messageContainer.speak({
             message : "#collisionSubs#",
             obj : this,
             callback: 'handleCollision'

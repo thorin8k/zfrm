@@ -7,12 +7,17 @@ var LandscapeLayer = Class.extend({
     actualY:0,
     width:0,
     height:0,
+    tools: null,
     init: function(images){
         this.imagesList = [];
         if(images !== null && images !== undefined){
             this.imagesList = images;
         }
         
+    },
+    start:function(tools){
+        
+        this.tools = tools;
     },
     preRender:function(){
         var actualImg;

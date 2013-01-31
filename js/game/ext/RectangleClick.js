@@ -5,26 +5,17 @@
  * Este rectangulo puede moverse por la pantalla con las flechas.
  * 
  */
-var FirstPlayer = CursorMovable.extend({
-    color: 'red',
+var RectangleClick = Clickable.extend({
+    color: 'blue',
     collisionType: 'Rectangle',
-    tools: null,
+
     start: function(moduleTools){
-        this.tools = moduleTools;
+        this._super(moduleTools);
         moduleTools.messageContainer.speak({
             message : "#collisionSubs#",
             obj : this,
             callback: 'handleCollision'
         });
-    },
-    update: function(canvas){
-        if(this.movement.left !== 0){
-            this.tools.game.changeViewPort(-this.speed,0);
-        }
-        if(this.movement.right !== 0){
-            this.tools.game.changeViewPort(+this.speed,0);
-        }
-        
     },
     draw : function (canvas) {
         canvas.bufferContext.beginPath();

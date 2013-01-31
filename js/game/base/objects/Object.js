@@ -18,11 +18,14 @@ var Object= Class.extend({
     speed: 5,
     weight:10,
     z: 0,
-
-    init:function(tools){
+    tools:null,
+    init:function(){
         this.movement = new Movement();
         this.reaction = new Movement();
         this.collision = new Collision();
+    },
+    start:function(tools){
+        
         this.tools = tools;
     },
     update:function(){},

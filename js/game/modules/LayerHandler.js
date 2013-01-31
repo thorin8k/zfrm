@@ -121,7 +121,7 @@
      },
      addObjectLayer:function(currentLayer){
          var layer = new ObjectLayer();
-         layer.tools = this.tools;
+         
          for (var nDataCount = 0; nDataCount < currentLayer.objects.length; nDataCount += 1) {
              var currObj = currentLayer.objects[nDataCount];
              

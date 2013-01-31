@@ -16,12 +16,16 @@ var CollisionBox = Class.extend({
     collision: null,
     color: 'grey',
     collisionType: 'Rectangle',
+    tools:null,
     init:function(){
         this.collision = new Collision();
         this.movement = new Movement();
         
     },
     start: function(moduleTools){
+        
+        this.tools = moduleTools;
+    
         moduleTools.messageContainer.speak({
             message : "#collisionSubs#",
             obj : this,
