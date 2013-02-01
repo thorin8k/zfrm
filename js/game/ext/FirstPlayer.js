@@ -5,13 +5,25 @@
  * Este rectangulo puede moverse por la pantalla con las flechas.
  * 
  */
-var RectangleClick = Clickable.extend({
-    color: 'blue',
+var FirstPlayer = CursorMovable.extend({
+    color: 'red',
+    collisionType: 'Rectangle',
     start: function(moduleTools){
-        var handler = moduleTools.game.getModule('CollisionManager');
-        if(handler !== null){
-            handler.add(this,'handleCollision');
+        this._super(moduleTools);
+        moduleTools.messageContainer.speak({
+            message : "#collisionSubs#",
+            obj : this,
+            callback: 'handleCollision'
+        });
+    },
+    update: function(canvas){
+        if(this.movement.left !== 0){
+            this.tools.game.changeViewPort(-this.speed,0);
         }
+        if(this.movement.right !== 0){
+            this.tools.game.changeViewPort(+this.speed,0);
+        }
+        
     },
     draw : function (canvas) {
         canvas.bufferContext.beginPath();
@@ -25,23 +37,17 @@ var RectangleClick = Clickable.extend({
     },
     handleCollision: function(res){
         var noCollision = true;
-        
-
         for(var i = 0;i < res.length; i+=1){
-            if (res[i].x != 0 || res[i].y != 0) {
+            if(res[i] !== null){
                 noCollision = false;
-                if (res[i].x != 0) {// x axis
-                    if (res[i].x<0) this.collision.setCollision('left');
-                    if (res[i].x>0) this.collision.setCollision('right');
-                }
-                if (res[i].y != 0) {// y axis
-                    if (res[i].y<0) this.collision.setCollision('top');
-                    if (res[i].y>0) this.collision.setCollision('bottom');
-                }
+                this.color = 'red';
+                var side = this.tools.collisionUtils.getCollisionSide(this,res[i]);
+                this.collision.setCollision(side);
             }
         }
         if(noCollision){
             //release all collisions if the object has no collision
+            this.color = "yellow";
             this.collision.releaseCollisions();
         }
     }

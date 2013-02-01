@@ -5,13 +5,16 @@
  * Este rectangulo puede moverse por la pantalla con las flechas.
  * 
  */
-var Rectangle = CursorMovable.extend({
+var Rectangle = Object.extend({
     color: 'red',
+    collisionType: 'Rectangle',
     start: function(moduleTools){
-        var handler = moduleTools.game.getModule('CollisionManager');
-        if(handler !== null){
-            handler.add(this,'handleCollision');
-        }
+        this._super(moduleTools);
+        moduleTools.messageContainer.speak({
+            message : "#collisionSubs#",
+            obj : this,
+            callback: 'handleCollision'
+        });
     },
     draw : function (canvas) {
         canvas.bufferContext.beginPath();
@@ -26,20 +29,16 @@ var Rectangle = CursorMovable.extend({
     handleCollision: function(res){
         var noCollision = true;
         for(var i = 0;i < res.length; i+=1){
-            if (res[i].x != 0 || res[i].y != 0) {
+            if(res[i] !== null){
                 noCollision = false;
-                if (res[i].x != 0) {// x axis
-                    if (res[i].x<0) this.collision.setCollision('left');
-                    if (res[i].x>0) this.collision.setCollision('right');
-                }
-                if (res[i].y != 0) {// y axis
-                    if (res[i].y<0) this.collision.setCollision('top');
-                    if (res[i].y>0) this.collision.setCollision('bottom');
-                }
+                this.color = 'red';
+                var side = this.tools.collisionUtils.getCollisionSide(this,res[i]);
+                this.collision.setCollision(side);
             }
         }
         if(noCollision){
             //release all collisions if the object has no collision
+            this.color = "yellow";
             this.collision.releaseCollisions();
         }
     }

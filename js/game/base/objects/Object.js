@@ -14,19 +14,24 @@ var Object= Class.extend({
     desty: 0,   
     movement: null,
     collision: null,
+    reaction: null,
     speed: 5,
-    weight:0,
+    weight:10,
     z: 0,
-
+    tools:null,
     init:function(){
         this.movement = new Movement();
+        this.reaction = new Movement();
         this.collision = new Collision();
+    },
+    start:function(tools){
         
+        this.tools = tools;
     },
     update:function(){},
     draw : function (canvas) {},
     move:function(checkDestination){
-        if (this.movement.right !== 0 && !this.collision.left) {
+        if (this.movement.right !== 0 && !this.collision.right) {
             //Move right
             this.x += this.movement.right;
             if(checkDestination && this.x >= this.destx){
@@ -34,7 +39,7 @@ var Object= Class.extend({
                 this.movement.unSetMovement('right');                
             }
         }
-        if (this.movement.left !== 0 && !this.collision.right) {
+        if (this.movement.left !== 0 && !this.collision.left) {
             //Move left
             this.x -= this.movement.left;
             if(checkDestination && this.x <= this.destx){
@@ -42,7 +47,7 @@ var Object= Class.extend({
                 this.movement.unSetMovement('left');
             }
         }
-        if (this.movement.up !== 0 && !this.collision.bottom) {
+        if (this.movement.up !== 0 && !this.collision.top) {
             //Move Up
             this.y -= this.movement.up;
             if(checkDestination && this.y <= this.desty){
@@ -50,7 +55,7 @@ var Object= Class.extend({
                 this.movement.unSetMovement('up');
             }
         }
-        if (this.movement.down !== 0 && !this.collision.top) {
+        if (this.movement.down !== 0 && !this.collision.bottom) {
             //Move Down
             this.y += this.movement.down;
             if(checkDestination && this.y >= this.desty){

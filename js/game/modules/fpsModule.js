@@ -25,7 +25,7 @@ var FpsModule = IModule.extend({
             this.oBuffer.save();
             this.oBuffer.fillStyle = 'red';
             this.oBuffer.font = 'bold 12px sans-serif';
-            this.oBuffer.fillText('FPS: ' + this.currentFps + '/' + this.tools.settings.fps, 10, 15);
+            this.oBuffer.fillText('FPS: ' + this.currentFps , 10, 15);
             this.oBuffer.restore();
             this.frameCount += 1;
  

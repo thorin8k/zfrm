@@ -7,6 +7,7 @@ and open the template in the editor.
     <head>
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link  rel="stylesheet" type="text/css" href="./css/dbg.css"/>
         <style>
             #canvas {
                 background-color: #eee;
@@ -23,41 +24,84 @@ and open the template in the editor.
         </style>
     </head>
     <body>
-        <canvas id="canvas" width="640" height="480"></canvas>
+        <canvas id="canvas" width="640" height="480"></canvas>   
+        
         <script type="text/javascript" src="./js/libs/jquery/jquery.js"></script>
         <script type="text/javascript" src="./js/libs/jquery/Class.js"></script>
         <script type="text/javascript" src="./js/libs/canvasText/canvasText.js"></script>
+        <script type="text/javascript" src="./js/game/base/commons/Constants.js"></script>
+        <script type="text/javascript" src="./js/game/base/commons/CollisionUtils.js"></script>
+        <script type="text/javascript" src="./js/game/base/components/FrameIntervalImpl.js"></script>
         
-        <script type="text/javascript" src="./js/libs/game/FrameIntervalImpl.js"></script>
+        
+        <script type="text/javascript" src="./js/game/base/Game.js"></script>
+        <script type="text/javascript" src="./js/game/base/components/CanvasExt.js"></script>
+        <script type="text/javascript" src="./js/game/base/components/ModuleTools.js"></script>
+        <script type="text/javascript" src="./js/game/base/components/MessageContainer.js"></script>
+        <script type="text/javascript" src="./js/game/base/components/ImageManager.js"></script>
+        <script type="text/javascript" src="./js/game/base/interfaces/iModule.js"></script>
         
         
-        <script type="text/javascript" src="./js/libs/game/Game.js"></script>
-        <script type="text/javascript" src="./js/libs/game/base/CanvasExt.js"></script>
-        <script type="text/javascript" src="./js/libs/game/base/ModuleTools.js"></script>
-        <script type="text/javascript" src="./js/libs/game/base/MessageContainer.js"></script>
-        <script type="text/javascript" src="./js/libs/game/modules/interfaces/iModule.js"></script>
         
-        <script type="text/javascript" src="./js/libs/game/objects/base/Object.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/base/Clickable.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/base/CursorMovable.js"></script>
+        <script type="text/javascript" src="./js/game/base/objects/Object.js"></script>
+        <script type="text/javascript" src="./js/game/base/objects/Clickable.js"></script>
+        <script type="text/javascript" src="./js/game/base/objects/CursorMovable.js"></script>
+        <script type="text/javascript" src="./js/game/base/objects/Image.js"></script>
+        <script type="text/javascript" src="./js/game/base/objects/ObjectLayer.js"></script>
+        <script type="text/javascript" src="./js/game/base/objects/LandscapeLayer.js"></script>
+        <script type="text/javascript" src="./js/game/base/objects/Movement.js"></script>
+        <script type="text/javascript" src="./js/game/base/objects/Collision.js"></script>
 
-        <script type="text/javascript" src="./js/libs/game/objects/base/Image.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/base/ObjectLayer.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/base/LandscapeLayer.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/base/Movement.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/base/Collision.js"></script>
+        <script type="text/javascript" src="./js/game/ext/Rectangle.js"></script>
+        <script type="text/javascript" src="./js/game/ext/Circle.js"></script>
+        <script type="text/javascript" src="./js/game/ext/RectangleClick.js"></script>
+        <script type="text/javascript" src="./js/game/ext/FirstPlayer.js"></script>
+        <script type="text/javascript" src="./js/game/ext/Text.js"></script>
+        <script type="text/javascript" src="./js/game/ext/CollisionBox.js"></script>
+        
+        <script type="text/javascript" src="./js/game/modules/fpsModule.js"></script>
+        <script type="text/javascript" src="./js/game/modules/LayerHandler.js"></script>
+        <script type="text/javascript" src="./js/game/modules/CollisionManager.js"></script>
+        <script type="text/javascript" src="./js/game/modules/DebugModule.js"></script>
 
-        <script type="text/javascript" src="./js/libs/game/objects/Rectangle.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/Circle.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/RectangleClick.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/Text.js"></script>
-        <script type="text/javascript" src="./js/libs/game/objects/CollisionBox.js"></script>
-        
-        <script type="text/javascript" src="./js/libs/game/modules/fpsModule.js"></script>
-        <script type="text/javascript" src="./js/libs/game/modules/LayerHandler.js"></script>
-        <script type="text/javascript" src="./js/libs/game/modules/CollisionManager.js"></script>
-        
         <script type="text/javascript">
+            var game;
+            $(document).ready(function(){
+                
+                
+                game = new Game("canvas");
+                game.setSettings({fps:60});
+                
+                //añadimos modulos
+               
+                game.addModule("fpsMod", new FpsModule());
+                game.addModule("LayerMod", new LayerHandler(tileMap));
+                game.addModule("CollisionManager", new CollisionManager());
+                game.addModule("DbgModule", new DebugModule());
+                                
+                //var text = new Text('Layers Listas!');
+                //text.z = 2;
+                //game.addObject("texto1", text);
+                               
+                // Añadimos algunas imágenes a la lista de descarga
+                game.imageManager.addImage('countrystyle.png','img/countrystyle.png');
+                
+                game.startGame();
+                
+            });
+            //Event Handling
+            window.addEventListener("keydown", function (eEvent) {
+                game.executionKey(eEvent);
+            }, false);
+            window.addEventListener("keyup", function (eEvent) {
+                game.executionKey(eEvent);
+            }, false);
+            window.addEventListener("click", function (eEvent) {
+                game.executionKey(eEvent);
+            }, false);
+            
+            
+            
             var tileMap = { "height":15,
  "layers":[
         {
@@ -78,32 +122,47 @@ and open the template in the editor.
         {
          "height":15,
          "name":"objects",
-         "objects":[
+         "objects":[  
                 {
-                 "height":46,
-                 "name":"rect1",
+                 "height":40,
+                 "name":"circ0",
                  "properties":
                     {
-                     "color":"yellow"
+                     "color":"yellow",
+                     "radius":20
                     },
-                 "type":"Rectangle",
-                 "width":47,
-                 "x":251,
+                 "type":"Circle",
+                 "width":40,
+                 "x":201,
                  "y":99
-                }, 
+                },
                 {
                  "height":40,
                  "name":"circ1",
                  "properties":
                     {
-                     "color":"blue",
+                     "color":"yellow",
                      "radius":20
                     },
                  "type":"Circle",
                  "width":40,
-                 "x":363,
-                 "y":239
-                }],
+                 "x":305,
+                 "y":111
+                },
+                {
+                 "height":40,
+                 "name":"circ2",
+                 "properties":
+                    {
+                     "color":"yellow",
+                     "radius":20
+                    },
+                 "type":"Circle",
+                 "width":40,
+                 "x":450,
+                 "y":99
+                }
+                ],
          "opacity":1,
          "properties":
             {
@@ -222,7 +281,7 @@ and open the template in the editor.
  "tilesets":[
         {
          "firstgid":1,
-         "image":"img/countrystyle.png",
+         "image":"countrystyle.png",
          "imageheight":1458,
          "imagewidth":256,
          "margin":0,
@@ -239,42 +298,6 @@ and open the template in the editor.
  "version":1,
  "width":20
 }
-            var game;
-            $(document).ready(function(){
-                
-                
-                game = new Game("canvas");
-                game.setSettings({fps:60});
-                
-                //añadimos modulos
-                var mod1 = new FpsModule();
-                game.addModule("fpsMod", mod1);
-                var mod2 = new LayerHandler(tileMap);
-                game.addModule("layerMod", mod2);
-                var mod3 = new CollisionManager();
-                game.addModule("CollisionManager", mod3);
-                
-                
-                var text = new Text('Layers Listas!');
-                text.z = 2;
-                game.addObject("texto1", text);
-                
-                // ¡Iniciamos la ejecución del juego!
-                game.startGame();
-                
-                
-                
-            });
-            //Event Handling
-            window.addEventListener("keydown", function (eEvent) {
-                game.executionKey(eEvent);
-            }, false);
-            window.addEventListener("keyup", function (eEvent) {
-                game.executionKey(eEvent);
-            }, false);
-            window.addEventListener("click", function (eEvent) {
-                game.executionKey(eEvent);
-            }, false);
         </script>
     </body>
 </html>

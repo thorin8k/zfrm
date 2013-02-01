@@ -8,14 +8,17 @@ var ModuleTools = Class.extend({
     canvas : null,
     settings : [],
     canvasText: null,
+    collisionUtils: null,
+    imageList: null,
     game:null,
     
     init: function(game){
-        
+        this.collisionUtils = new CollisionUtils();
         this.messageContainer = game.messageContainer;
         this.canvas = game.oCanvas;
         this.settings = game.settings;
         this.canvasText = game.canvasText;
+        this.imageList = game.imageManager.ImageCollection;
         this.game = game;
     }
 });

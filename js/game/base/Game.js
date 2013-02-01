@@ -13,12 +13,15 @@ var Game = Class.extend({
     objectsToRemoveList: [],
     messageContainer: null,
     moduleTools: null,
+    imageManager : null,
+    status: STATUS_STOPPED,
+    animFrame: null,
     settings: {
-        fps: 60
         
     },
     
     init: function(canvas){
+        this.imageManager = new ImageManager();
         this.oCanvas = new CanvasExt(canvas);
         this.messageContainer = new MessageContainer();
     },   
@@ -49,8 +52,8 @@ var Game = Class.extend({
     getObject: function(sObjectId){
         if (typeof sObjectId === 'string') {
             var oCurrentGameObject = null;
-
-            for (nObjectCount = 0; nObjectCount < this.objectList.length; nObjectCount += 1) {
+            var objListLength = this.objectList.length;
+            for (nObjectCount = 0; nObjectCount < objListLength; nObjectCount += 1) {
                 oCurrentGameObject = this.objectList[nObjectCount];
                 if (oCurrentGameObject.__id === sObjectId) {
                     return oCurrentGameObject;
@@ -91,18 +94,32 @@ var Game = Class.extend({
         this.callObjectMethods(sEventType, event);
     },
     startGame:function(){
-        this.preStart();
-        // Notificar a los modulos el evento Start
-        this.messageContainer.speak({
-            message : "#start#",
-            data : null
+        var game = this;
+        this.imageManager.load(function(){ 
+            game.preStart();
+            // Notificar a los modulos el evento Start
+            game.messageContainer.speak({
+                message : "#start#",
+                data : null
+            });
+            //launch the start method to the objects
+            game.callObjectMethods("start", game.moduleTools);
+            //Bucle principal de juego
+            game.status = STATUS_RUNNING;
+            game.gameLogic();
         });
-        //launch the start method to the objects
-        this.callObjectMethods("start", this.moduleTools);
-        //Bucle principal de juego
-        this.gameLogic();
     },    
-        
+    pauseGame: function(){
+        this.status = STATUS_IDDLE;
+        cancelAnimationFrame(this.animFrame);
+    },
+    resumeGame: function(){
+        this.status = STATUS_RUNNING;
+        this.gameLogic();
+    },
+    changeViewPort: function(x,y){
+        this.callObjectMethods('changeViewPort',{x:x,y:y});
+    },
     /* -----------  Private Methods ------------ */
     preStart: function(){
         this.moduleTools = new ModuleTools(this);
@@ -112,7 +129,6 @@ var Game = Class.extend({
         for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
             module = this.moduleList[nObjectCount];
             if (typeof module !== 'undefined') {
-                // #2
                 module.loadModule(this.moduleTools);
             }
         }
@@ -145,9 +161,9 @@ var Game = Class.extend({
         
         //Al final de la ejecución volvemos a llamar al request animation Frame
         var self = this; //Reasignación por error en set interval en la referencia this
-        requestAnimationFrame(function(){self.gameLogic();});
+        this.animFrame = requestAnimationFrame(function(){self.gameLogic();});
     },
-        
+    
     executionRemove: function(){
         //Elimina los objetos presentes en el array de objetos para eliminar
         //del array principal de objetos

@@ -5,6 +5,11 @@ var ImageObj = Object.extend({
     init: function(image){
         this.oImage = image;
     },
+    
+    start:function(tools){
+        
+      this._super(tools);
+    },
     draw : function (canvas) {
         canvas.bufferContext.drawImage(this.oImage, this.nSourceX, this.nSourceY, this.size.width, this.size.height, this.position.x, this.position.y, this.size.width, this.size.height);
     }

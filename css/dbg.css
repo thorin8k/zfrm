@@ -1,0 +1,89 @@
+/* 
+    Document   : dbg
+    Created on : 01-feb-2013, 15:57:41
+    Author     : thorin
+    Description:
+        debug template
+*/
+body{
+    color: #555;
+    font: normal 10pt Arial,Helvetica,sans-serif;
+}
+#title{
+    font-weight: bold;    
+    float:left;
+}
+div{
+    padding: 5px;
+}
+span{
+    display:block;
+}
+.clear{
+    clear:both;
+    padding:0;
+}
+button,input[type=button],input[type=submit],.specBtn{
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border: 2px solid white;
+    padding: .55em .8em;
+    text-decoration: none;
+    background:#888 !important; 
+}
+button:hover,input[type=button]:hover,input[type=submit]:hover,.specBtn:hover{
+   color:white !important;
+   background:#999 !important;
+   cursor:pointer;
+}
+button:hover,active[type=button]:active,input[type=submit]:active,.specBtn:active{
+    background:#DD5F3B !important;
+}
+/* Game Info*/
+.right_canvas{
+    float:right;
+    min-width:200px;
+}
+.right_canvas .info{
+    clear:both;
+}
+
+/* Object Debug*/
+.bottom_canvas #title{
+    margin-top:8px;
+}
+.bottom_canvas{
+    display:block;
+    width:650px;
+}
+.bottom_canvas input{
+    margin-left: 15px;
+    width:80px;
+}
+.buttons{
+    float:left;
+    padding: 0;
+}
+.object_cont{
+    padding:0;
+}
+.object{
+    width:300px;
+    float:left;
+    border:1px solid silver;
+}
+.object_combos{
+    width:612px;
+    clear:both;
+    border:1px solid silver;
+}
+.object_combos label{
+    margin-left:25px;
+}
+.object_combos select{
+    width: 150px;
+    margin-left:15px;
+    margin-right:65px;
+
+}

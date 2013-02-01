@@ -27,11 +27,11 @@
     },
     loadModule:function(tools){
         this.tools = tools;
-        this.image = new Image();
-        this.image.src = this.tileMap.tilesets[0].image
+        this.image = tools.imageList[this.tileMap.tilesets[0].image];
         this.tileWidth = this.tileMap.tilewidth;
         this.tileHeight = this.tileMap.tileheight;
         this.mapWidth = this.tileWidth * this.tileMap.width;
+        this.mapHeight = this.tileHeight * this.tileMap.height;
         this.layers = this.tileMap.layers;
         this.imageCols = this.tileMap.tilesets[0].imagewidth / this.tileWidth;
         this.imageRows = this.tileMap.tilesets[0].imageheight / this.tileHeight;
@@ -114,15 +114,18 @@
             var prop = currentLayer.properties[i];
             layer[i] = prop;
         }
+        layer.width = this.mapWidth;
+        layer.height = this.mapHeight;
+        layer.preRender();
         this.layerList.push(layer);
      },
      addObjectLayer:function(currentLayer){
          var layer = new ObjectLayer();
-         layer.tools = this.tools;
+         
          for (var nDataCount = 0; nDataCount < currentLayer.objects.length; nDataCount += 1) {
              var currObj = currentLayer.objects[nDataCount];
              
-             var object = new window[currObj.type]();
+             var object = new window[currObj.type](this.tools);
              object.x=currObj.x;
              object.y=currObj.y;
              object.width=currObj.width;
