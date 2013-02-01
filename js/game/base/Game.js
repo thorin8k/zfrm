@@ -17,7 +17,6 @@ var Game = Class.extend({
     status: STATUS_STOPPED,
     animFrame: null,
     settings: {
-        fps: 60
         
     },
     

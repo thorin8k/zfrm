@@ -7,6 +7,7 @@ and open the template in the editor.
     <head>
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link  rel="stylesheet" type="text/css" href="./css/dbg.css"/>
         <style>
             #canvas {
                 background-color: #eee;
@@ -23,7 +24,8 @@ and open the template in the editor.
         </style>
     </head>
     <body>
-        <canvas id="canvas" width="640" height="480"></canvas>        
+        <canvas id="canvas" width="640" height="480"></canvas>   
+        
         <script type="text/javascript" src="./js/libs/jquery/jquery.js"></script>
         <script type="text/javascript" src="./js/libs/jquery/Class.js"></script>
         <script type="text/javascript" src="./js/libs/canvasText/canvasText.js"></script>
@@ -76,13 +78,11 @@ and open the template in the editor.
                 game.addModule("LayerMod", new LayerHandler(tileMap));
                 game.addModule("CollisionManager", new CollisionManager());
                 game.addModule("DbgModule", new DebugModule());
-                
-                
-                var text = new Text('Layers Listas!');
-                text.z = 2;
-                game.addObject("texto1", text);
-                
-                
+                                
+                //var text = new Text('Layers Listas!');
+                //text.z = 2;
+                //game.addObject("texto1", text);
+                               
                 // Añadimos algunas imágenes a la lista de descarga
                 game.imageManager.addImage('countrystyle.png','img/countrystyle.png');
                 
@@ -142,10 +142,24 @@ and open the template in the editor.
                  "properties":
                     {
                      "color":"yellow",
+                     "radius":20
                     },
-                 "type":"FirstPlayer",
+                 "type":"Circle",
                  "width":40,
-                 "x":401,
+                 "x":305,
+                 "y":111
+                },
+                {
+                 "height":40,
+                 "name":"circ2",
+                 "properties":
+                    {
+                     "color":"yellow",
+                     "radius":20
+                    },
+                 "type":"Circle",
+                 "width":40,
+                 "x":450,
                  "y":99
                 }
                 ],
