@@ -42,6 +42,14 @@ var RectangleClick = Clickable.extend({
             this.color = "yellow";
             this.collision.releaseCollisions();
         }
+    },
+    toString:function(){
+        var test = this._super();
+        var result = "";
+        result += test;
+        result += "color:"+this.color+'</br>';
+        result += "collisionType:"+this.collisionType+'</br>';
+        return  result;
     }
 
 });

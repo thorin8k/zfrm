@@ -11,7 +11,7 @@
     // Listado de imágenes en cola de espera.
     ImageList: [],
     init:function(){},
-    load: function(callback) {
+    load: function(callback,loadingScreen) {
         // Comprobamos que haya alguna imagen en la lista de descarga.
         if (this.ImageList.length === 0) {
             callback();
@@ -24,11 +24,12 @@
             img = new Image(),
             id = this.ImageList[i].id,
             path = this.ImageList[i].path;
- 
+            
             // Creamos un listener "load" con su callback correspondiente.
             img.addEventListener("load", function() {
                 // Incrementamos el valor del contador de cargas satisfactorias.
                 ImageManager.successCount += 1;
+                loadingScreen.setValue(ImageManager.getProgress());
                 // Comprobamos si hemos terminado con la carga de todos los
                 // elementos en cola dentro.
                 if (ImageManager.isDone()) {
@@ -66,7 +67,8 @@
      * Devuelve el % del progreso de carga actual.
      */
     getProgress : function() {
-        return ((this.successCount + this.errorCount)*100)/this.ImageList.length;
+        var progress = ((this.successCount + this.errorCount)*300)/this.ImageList.length;
+        return progress;
     },
     /**
      * Devuelve true o false dependiendo de si se han cargado todas las imágenes

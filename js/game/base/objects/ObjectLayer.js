@@ -57,6 +57,9 @@ var ObjectLayer = Class.extend({
                 oCurrentGameObject[methodName](args);
             }
         }
+    },
+    changeViewPort: function(pos){
+         this.callObjectMethods('changeViewPort',pos);
     }
 });
 

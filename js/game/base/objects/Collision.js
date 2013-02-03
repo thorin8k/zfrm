@@ -17,6 +17,6 @@ var Collision = Class.extend({
     },
     hasCollisions:function(){
         return this.right || this.left || this.top|| this.bottom;
-    }   
+    }
 });
 

@@ -20,6 +20,8 @@ var LandscapeLayer = Class.extend({
         this.tools = tools;
     },
     preRender:function(){
+        
+        //Prerender de todas las tiles en una sola imagen.
         var actualImg;
         this.layBuffer = document.createElement('canvas');
         this.layBuffer.width = this.width;

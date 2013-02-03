@@ -69,6 +69,22 @@ var Object= Class.extend({
     },
     hasCollisions:function(){
         return this.collision.hasCollisions();
+    },
+    toString:function(){
+        var result = "";
+        result += "x: "+this.x+"</br>";
+        result += "y: "+this.y+"</br>";
+        result += "z: "+this.z+"</br>";
+        result += "width: "+this.width+"</br>";
+        result += "height: "+this.height+"</br>";
+        result += "destx: "+this.destx+"</br>";
+        result += "desty: "+this.desty+"</br>";
+        result += this.movement.toString()+"</br>";
+        result += "speed: "+this.speed+"</br>";
+        result += "weight: "+this.weight+"</br>";
+        
+        
+        return result;
     }
 });
 

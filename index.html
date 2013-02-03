@@ -24,8 +24,7 @@ and open the template in the editor.
         </style>
     </head>
     <body>
-        <canvas id="canvas" width="640" height="480"></canvas>   
-        
+        <canvas id="canvas" width="640" height="480"></canvas>
         <script type="text/javascript" src="./js/libs/jquery/jquery.js"></script>
         <script type="text/javascript" src="./js/libs/jquery/Class.js"></script>
         <script type="text/javascript" src="./js/libs/canvasText/canvasText.js"></script>
@@ -39,6 +38,9 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/game/base/components/ModuleTools.js"></script>
         <script type="text/javascript" src="./js/game/base/components/MessageContainer.js"></script>
         <script type="text/javascript" src="./js/game/base/components/ImageManager.js"></script>
+        <script type="text/javascript" src="./js/game/base/components/SpriteSheet.js"></script>
+        <script type="text/javascript" src="./js/game/base/components/Animation.js"></script>
+        <script type="text/javascript" src="./js/game/base/components/FrameTimer.js"></script>
         <script type="text/javascript" src="./js/game/base/interfaces/iModule.js"></script>
         
         
@@ -51,6 +53,7 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/game/base/objects/LandscapeLayer.js"></script>
         <script type="text/javascript" src="./js/game/base/objects/Movement.js"></script>
         <script type="text/javascript" src="./js/game/base/objects/Collision.js"></script>
+        <script type="text/javascript" src="./js/game/base/objects/LoadingScreen.js"></script>
 
         <script type="text/javascript" src="./js/game/ext/Rectangle.js"></script>
         <script type="text/javascript" src="./js/game/ext/Circle.js"></script>
@@ -66,27 +69,55 @@ and open the template in the editor.
 
         <script type="text/javascript">
             var game;
+            
             $(document).ready(function(){
                 
                 
+                
                 game = new Game("canvas");
-                game.setSettings({fps:60});
                 
                 //añadimos modulos
                
-                game.addModule("fpsMod", new FpsModule());
-                game.addModule("LayerMod", new LayerHandler(tileMap));
+                game.addModule("fpsMod", new FpsModule());  
+                game.addModule("LayerMod", new LayerHandler());
+                
+                
                 game.addModule("CollisionManager", new CollisionManager());
                 game.addModule("DbgModule", new DebugModule());
-                                
+                      
+                
                 //var text = new Text('Layers Listas!');
                 //text.z = 2;
                 //game.addObject("texto1", text);
                                
                 // Añadimos algunas imágenes a la lista de descarga
                 game.imageManager.addImage('countrystyle.png','img/countrystyle.png');
+                game.imageManager.addImage('link.png','img/oorjG.png');
+                game.imageManager.addImage('tilea1','img/tilea1.png');
+                game.imageManager.addImage('tilea2','img/tilea2.png');
+                game.imageManager.addImage('tilea3','img/tilea3.png');
+                game.imageManager.addImage('tilea4','img/tilea4.png');
+                game.imageManager.addImage('tilea5','img/tilea5.png');
+                game.imageManager.addImage('tileb','img/tileb.png');
+                game.imageManager.addImage('tilec','img/tilec.png');
+                game.imageManager.addImage('tiled','img/tiled.png');
+                game.imageManager.addImage('tilee','img/tilee.png');
+                game.imageManager.addImage('tilef','img/tilef.png');
+                game.imageManager.addImage('tileg','img/tileg.png');
+                game.imageManager.addImage('tilej','img/tilej.png');
+                game.imageManager.addImage('tilek','img/tilek.png');
+                game.imageManager.addImage('tilesetsall','img/tilesetsall.png');
+                
                 
                 game.startGame();
+                
+                //var layer = new ObjectLayer();
+                //layer.addObject('fp',new FirstPlayer());
+                //layer.z = 3;
+                
+                //game.addLayer('objects',layer);
+                
+                
                 
             });
             //Event Handling
@@ -100,205 +131,6 @@ and open the template in the editor.
                 game.executionKey(eEvent);
             }, false);
             
-            
-            
-            var tileMap = { "height":15,
- "layers":[
-        {
-         "data":[353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353, 353],
-         "height":15,
-         "name":"capa1",
-         "opacity":1,
-         "properties":
-            {
-             "z":"0"
-            },
-         "type":"tilelayer",
-         "visible":true,
-         "width":20,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "height":15,
-         "name":"objects",
-         "objects":[  
-                {
-                 "height":40,
-                 "name":"circ0",
-                 "properties":
-                    {
-                     "color":"yellow",
-                     "radius":20
-                    },
-                 "type":"Circle",
-                 "width":40,
-                 "x":201,
-                 "y":99
-                },
-                {
-                 "height":40,
-                 "name":"circ1",
-                 "properties":
-                    {
-                     "color":"yellow",
-                     "radius":20
-                    },
-                 "type":"Circle",
-                 "width":40,
-                 "x":305,
-                 "y":111
-                },
-                {
-                 "height":60,
-                 "name":"circ2",
-                 "properties":
-                    {
-                     "color":"yellow",
-                     "radius":30,
-                     'weight':15
-                    },
-                 "type":"Circle",
-                 "width":60,
-                 "x":450,
-                 "y":99
-                }
-                ],
-         "opacity":1,
-         "properties":
-            {
-             "z":"1"
-            },
-         "type":"objectgroup",
-         "visible":true,
-         "width":20,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 261, 262, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 268, 269, 270, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 221, 0, 0, 0, 0, 0, 0, 276, 277, 278, 0, 0, 0, 0, 0, 0, 0, 0, 0, 228, 229, 230, 0, 0, 0, 0, 0, 284, 285, 286, 0, 0, 0, 0, 0, 0, 0, 0, 0, 236, 237, 238, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 244, 245, 246, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 253, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         "height":15,
-         "name":"capa3",
-         "opacity":1,
-         "properties":
-            {
-             "z":"3"
-            },
-         "type":"tilelayer",
-         "visible":true,
-         "width":20,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "height":15,
-         "name":"collisions",
-         "objects":[
-                {
-                 "height":32,
-                 "name":"tree2",
-                 "properties":
-                    {
-
-                    },
-                 "type":"CollisionBox",
-                 "width":32,
-                 "x":383,
-                 "y":167
-                }, 
-                {
-                 "height":32,
-                 "name":"tree1",
-                 "properties":
-                    {
-
-                    },
-                 "type":"CollisionBox",
-                 "width":32,
-                 "x":127,
-                 "y":263
-                }, 
-                {
-                 "height":478,
-                 "name":"rightlimit",
-                 "properties":
-                    {
-
-                    },
-                 "type":"CollisionBox",
-                 "width":5,
-                 "x":637,
-                 "y":1
-                }, 
-                {
-                 "height":2,
-                 "name":"toplimit",
-                 "properties":
-                    {
-
-                    },
-                 "type":"CollisionBox",
-                 "width":620,
-                 "x":13,
-                 "y":-1
-                }, 
-                {
-                 "height":3,
-                 "name":"botlimit",
-                 "properties":
-                    {
-
-                    },
-                 "type":"CollisionBox",
-                 "width":622,
-                 "x":10,
-                 "y":474
-                }, 
-                {
-                 "height":462,
-                 "name":"leftlimit",
-                 "properties":
-                    {
-
-                    },
-                 "type":"CollisionBox",
-                 "width":4,
-                 "x":0,
-                 "y":4
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "width":20,
-         "x":0,
-         "y":0
-        }],
- "orientation":"orthogonal",
- "properties":
-    {
-
-    },
- "tileheight":32,
- "tilesets":[
-        {
-         "firstgid":1,
-         "image":"countrystyle.png",
-         "imageheight":1458,
-         "imagewidth":256,
-         "margin":0,
-         "name":"countrystyle",
-         "properties":
-            {
-
-            },
-         "spacing":0,
-         "tileheight":32,
-         "tilewidth":32
-        }],
- "tilewidth":32,
- "version":1,
- "width":20
-}
         </script>
     </body>
 </html>
