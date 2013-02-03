@@ -65,9 +65,9 @@ var FirstPlayer = Object.extend({
         this.timer = new FrameTimer();
         this.timer.tick();
         this.image = moduleTools.imageList["link.png"];
-//        this.tools.game.changeViewPort(-(this.x-300),-(this.y-240));
-//        this.x = 300;
-//        this.y = 240;
+        this.tools.game.changeViewPort(-(this.x-300),-(this.y-240));
+        this.x = 300;
+        this.y = 240;
         
     },
     update: function(canvas){
