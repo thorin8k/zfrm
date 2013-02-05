@@ -83,18 +83,16 @@ var DebugModule = IModule.extend({
         );
         this.dbgContainer.append("<div  class='object_cont'></div>");
         //Game Info
-       
-            this.gameInfo.append(
-                '<div class="info">'+
-                '<span><b>Game Layers:</b> '+this.tools.game.layerList.length+'</span>'+
-                 
-                '<span><b>Game Objects:</b> '+this.objList.length+'</span>'+
-                 
-                '<span><b>Collidable Objects:</b> '+this.colList.length+'</span>'+
-                
-                '<span><b>Draw Collisions:</b> <select id="drawColRect"><option value="1">No</option><option value="0">Yes</option></select></span>'+
-                '</div>'
-            );
+        var txt = "";
+        
+        
+        txt +='<span><b>Game Layers:</b> '+this.tools.game.layerList.length+'</span>'
+        txt += '<span><b>Game Objects:</b> '+this.objList !== null ? 0 : this.objList.length  +'</span>';
+        txt += '<span><b>Collidable Objects:</b> '+this.colList !== null ? 0 :  this.colList.length  +'</span>';
+        txt +='<span><b>Draw Collisions:</b> <select id="drawColRect"><option value="1">No</option><option value="0">Yes</option></select></span>';
+        this.gameInfo.append(
+            '<div class="info">'+txt+'</div>'
+        );
         
         if(this.tools.game.moduleList.length !== 0){
             var txt = "<span><b>Modules - </b></span>";

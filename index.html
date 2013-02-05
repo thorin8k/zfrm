@@ -81,8 +81,8 @@ and open the template in the editor.
                 game.addModule("fpsMod", new FpsModule());  
                 game.addModule("LayerMod", new LayerHandler());
                 //$.getJSON("./map/tileMap.json", function(data) {
-                $.getJSON("./map/test2.json", function(data) {
-                    game.getModule('LayerMod').setTileMap(data);
+                $.getJSON("./map/testcute.json", function(data) {
+                    //game.getModule('LayerMod').setTileMap(data);
                 });
                 
                 game.addModule("CollisionManager", new CollisionManager());
@@ -94,7 +94,7 @@ and open the template in the editor.
                 //game.addObject("texto1", text);
                                
                 // Añadimos algunas imágenes a la lista de descarga
-                game.imageManager.addImage('countrystyle.png','img/countrystyle.png');
+                game.imageManager.addImage('pokeset','img/pokeset.png');
                 game.imageManager.addImage('link.png','img/oorjG.png');
                 game.imageManager.addImage('tilea1','img/tilea1.png');
                 game.imageManager.addImage('tilea2','img/tilea2.png');
@@ -113,14 +113,18 @@ and open the template in the editor.
                 game.imageManager.addImage('01_background','img/01_background.jpg');
                 
                 
+                
                 game.startGame();
                 
-                //var layer = new ObjectLayer();
-                //layer.addObject('fp',new FirstPlayer());
-                //layer.z = 3;
                 
-                //game.addLayer('objects',layer);
+                var layer = new ObjectLayer();
+                var fp = new FirstPlayer();
+                fp.x=200;
+                fp.y= 200;
+                layer.addObject('fp',fp);
+                layer.z = 3;
                 
+                game.addLayer('objects',layer);
                 
                 
             });

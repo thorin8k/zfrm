@@ -65,15 +65,15 @@ var FirstPlayer = Object.extend({
         this.timer = new FrameTimer();
         this.timer.tick();
         this.image = moduleTools.imageList["link.png"];
-        this.tools.game.changeViewPort(-(this.x-300),-(this.y-291));
+        this.tools.game.changeViewPort(-(this.x-300),-(this.y-240));
         this.x = 300;
         this.y = 240;
         
     },
     update: function(canvas){
-        if(!this.collision.bottom){
-            this.y+=5
-        }
+//        if(!this.collision.top){
+//            this.y+=5
+//        }
         //this._super();
         if (this.movement.left !== 0 && !this.collision.left) {
             this.animation._frames = [
@@ -95,27 +95,27 @@ var FirstPlayer = Object.extend({
             ];
             this.tools.game.changeViewPort(-this.speed,0);
         }
-//        if (this.movement.up !== 0 && !this.collision.top) {
-//            this.animation._frames = [
-//                 { sprite: 'walk_up_1', time: 0.1 },
-//                 { sprite: 'walk_up_2', time: 0.1 },
-//                 { sprite: 'walk_up_3', time: 0.1 },
-//                 { sprite: 'walk_up_4', time: 0.1 },
-//                 { sprite: 'walk_up_5', time: 0.1 },
-//            ];
-//            this.tools.game.changeViewPort(0,+this.speed);
-//        }
-//        if (this.movement.down !== 0 && !this.collision.bottom) {
-//            
-//            this.animation._frames = [
-//                 { sprite: 'walk_down_1', time: 0.1 },
-//                 { sprite: 'walk_down_2', time: 0.1 },
-//                 { sprite: 'walk_down_3', time: 0.1 },
-//                 { sprite: 'walk_down_4', time: 0.1 },
-//                 { sprite: 'walk_down_5', time: 0.1 },
-//            ];
-//            this.tools.game.changeViewPort(0,-this.speed);
-//        }
+        if (this.movement.up !== 0 && !this.collision.top) {
+            this.animation._frames = [
+                 { sprite: 'walk_up_1', time: 0.1 },
+                 { sprite: 'walk_up_2', time: 0.1 },
+                 { sprite: 'walk_up_3', time: 0.1 },
+                 { sprite: 'walk_up_4', time: 0.1 },
+                 { sprite: 'walk_up_5', time: 0.1 },
+            ];
+            this.tools.game.changeViewPort(0,+this.speed);
+        }
+        if (this.movement.down !== 0 && !this.collision.bottom) {
+            
+            this.animation._frames = [
+                 { sprite: 'walk_down_1', time: 0.1 },
+                 { sprite: 'walk_down_2', time: 0.1 },
+                 { sprite: 'walk_down_3', time: 0.1 },
+                 { sprite: 'walk_down_4', time: 0.1 },
+                 { sprite: 'walk_down_5', time: 0.1 },
+            ];
+            this.tools.game.changeViewPort(0,-this.speed);
+        }
         
 //        correción de la posición del collisionbox
         this.collisionBox.x = this.x+22;

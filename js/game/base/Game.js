@@ -27,7 +27,7 @@ var Game = Class.extend({
     animFrame: null,
     //opciones
     settings: {
-        debug:false,
+        debug:true,
         drawCollisionRects:false
     },
     //Constructor
