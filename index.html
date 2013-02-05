@@ -80,7 +80,8 @@ and open the template in the editor.
                
                 game.addModule("fpsMod", new FpsModule());  
                 game.addModule("LayerMod", new LayerHandler());
-                $.getJSON("./map/tileMap.json", function(data) {
+                //$.getJSON("./map/tileMap.json", function(data) {
+                $.getJSON("./map/test2.json", function(data) {
                     game.getModule('LayerMod').setTileMap(data);
                 });
                 
@@ -109,6 +110,7 @@ and open the template in the editor.
                 game.imageManager.addImage('tilej','img/tilej.png');
                 game.imageManager.addImage('tilek','img/tilek.png');
                 game.imageManager.addImage('tilesetsall','img/tilesetsall.png');
+                game.imageManager.addImage('01_background','img/01_background.jpg');
                 
                 
                 game.startGame();
