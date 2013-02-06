@@ -35,6 +35,7 @@
         if(this.tileMap === null || this.tileMap === undefined){
             return;
         }
+        
         this.image = this.tools.imageList[this.tileMap.tilesets[0].name];
         this.tileWidth = this.tileMap.tilewidth;
         this.tileHeight = this.tileMap.tileheight;

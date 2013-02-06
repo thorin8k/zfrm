@@ -54,6 +54,12 @@ var Game = Class.extend({
         if (typeof object === 'object') { 
             object.__id = sObjectId;
             this.layerList.push(object);
+            if(this.status === STATUS_RUNNING){
+                //Si el juego esta en ejecución se inicia
+                if(object['callObjectMethods']){
+                    object.callObjectMethods("start", this.moduleTools);
+                }
+            }
         }
     },
     //agregador de capas
@@ -92,6 +98,27 @@ var Game = Class.extend({
             }
         }
         return null;
+    },
+    clearLandscape: function(){
+        var count = 0;
+        var len = this.layerList.length;
+        var currObj = null;
+        for (count = 0; count < len; count += 1){
+            currObj = this.layerList[count];
+                if(currObj instanceof LandscapeLayer || currObj.__id !== 'objects'){
+                    this.removeLayer(currObj.__id);
+                }else if(currObj instanceof ObjectLayer){
+                    var subcount= 0;
+                    var sublen = currObj.objList.length;
+                    var subObj = null;
+                    for(subcount = 0;subcount < sublen;subcount += 1){
+                          subObj = currObj.objList[subcount];
+                          if(!subObj instanceof FirstPlayer){
+                              currObj.removeObject(subObj.__id);
+                          }
+                    }
+                }
+        }
     },
     //añade el módulo pasado
     addModule: function(moduleId,moduleObj){
@@ -227,14 +254,18 @@ var Game = Class.extend({
         //Elimina los objetos presentes en el array de objetos para eliminar
         //del array principal de capas
         var nRemoveLength = this.layersToRemoveList.length;
+        
         var nCount = 0;
         var nCurrentObject = 0;
  
         for (nCount = 0; nCount < nRemoveLength; nCount += 1) {
               nCurrentObject = this.layersToRemoveList[nCount];
-              this.layerList.splice(nCurrentObject, 1);
+              //this.layerList.splice(nCurrentObject, 1);
+              delete this.layerList[nCurrentObject];
         }
+        this.layerList = cleanArray(this.layerList);
         this.layersToRemoveList = [];
+        
         //Recorre las capas, en caso de existir, buscando objetos en la collección
         // de removibles y los elimina
         var oCurrentGameObject = null;
@@ -249,8 +280,10 @@ var Game = Class.extend({
 
                 for (nCount = 0; nCount < nRemoveLength; nCount += 1) {
                       nCurrentObject = oCurrentGameObject.objsToRemove[nCount];
-                      oCurrentGameObject.objList.splice(nCurrentObject, 1);
+                      //oCurrentGameObject.objList.splice(nCurrentObject, 1);
+                      delete oCurrentGameObject.objList[nCurrentObject];
                 }
+                oCurrentGameObject.objList = cleanArray(oCurrentGameObject.objList);
                 oCurrentGameObject.objsToRemove = [];
             }
         }

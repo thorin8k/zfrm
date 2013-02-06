@@ -119,8 +119,8 @@ var FirstPlayer = Object.extend({
         }
         
 //        correción de la posición del collisionbox
-//        this.collisionBox.x = this.x+22;
-//        this.collisionBox.y = this.y+12;
+        this.collisionBox.x = this.x+22;
+        this.collisionBox.y = this.y+12;
     },
     draw : function (canvas) {
         
