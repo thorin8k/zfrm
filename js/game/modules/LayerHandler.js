@@ -26,12 +26,16 @@
     },
     loadModule:function(tools){
         this.tools = tools;
-        this.tools.messageContainer.listen(["#start#"], this.parseFromJSON, this);
+        this.tools.messageContainer.listen(["#loadMap#"], this.loadMap, this);
     },
     setTileMap:function(jsonMap){
+        this.layerList= [];
         this.tileMap = jsonMap;
     },
-    parseFromJSON: function(){
+    loadMap: function(notification){
+        this.tools.game.clearLandscape();
+        this.setTileMap(this.tools.mapList[notification.mapName]);
+        
         if(this.tileMap === null || this.tileMap === undefined){
             return;
         }
@@ -59,11 +63,9 @@
             }
             
 	}
-        var index = 0;
          for(lay in this.layerList){
              //añadimos toda la colección a las capas del juego
              this.tools.game.addLayer(this.layerList[lay].__id,this.layerList[lay]);
-             index++;
          }
          
      },

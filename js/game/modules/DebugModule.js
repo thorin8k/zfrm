@@ -14,20 +14,14 @@ var DebugModule = IModule.extend({
         
     },
     start:function(){
-        if(this.tools.game.getLayer('objects') !== null){
-            this.objList = this.tools.game.getLayer('objects').objList;
-            
-        }
-        if(this.tools.game.getLayer('collisions') !== null){
-            this.colList = this.tools.game.getLayer('collisions').objList;
-            
-        }
+        
         if(this.tools.settings.debug){
             this.constructDbgView();
         }
         
     },
     getObjectInfo: function(notification){
+        
         var obj = this.tools.game.getLayer('objects').getObject(notification.data);
         var txt = "<div class='object' id='object_cont"+notification.id+"' id='"+notification.data+"'>";
 //        for (var myKey in obj){
@@ -43,6 +37,14 @@ var DebugModule = IModule.extend({
         this.dbgContainer.children('.object_cont').append(txt);
     },
     constructDbgView:function(){
+        if(this.tools.game.getLayer('objects') !== null){
+            this.objList = this.tools.game.getLayer('objects').objList;
+            
+        }
+        if(this.tools.game.getLayer('collisions') !== null){
+            this.colList = this.tools.game.getLayer('collisions').objList;
+            
+        }
         //Game Info Container
         $('#game_info').remove();
         $('body').append('<div class="right_canvas" id="game_info"><label id="title">Game Info -</label></div>');
@@ -87,23 +89,42 @@ var DebugModule = IModule.extend({
         
         
         txt +='<span><b>Game Layers:</b> '+this.tools.game.layerList.length+'</span>'
-        txt += '<span><b>Game Objects:</b> '+this.objList !== null ? 0 : this.objList.length  +'</span>';
-        txt += '<span><b>Collidable Objects:</b> '+this.colList !== null ? 0 :  this.colList.length  +'</span>';
-        txt +='<span><b>Draw Collisions:</b> <select id="drawColRect"><option value="1">No</option><option value="0">Yes</option></select></span>';
+        if(this.objList !== null){
+            txt += '<span><b>Game Objects:</b> '+ this.objList.length  +'</span>';
+        }
+        if(this.colList !== null){
+            txt += '<span><b>Collidable Objects:</b> '+ this.colList.length  +'</span>';
+        }
+        txt +='<span><b>Draw Collisions</b></span> <select id="drawColRect"><option value="1">No</option><option value="0">Yes</option></select>';
         this.gameInfo.append(
             '<div class="info">'+txt+'</div>'
         );
         
         if(this.tools.game.moduleList.length !== 0){
-            var txt = "<span><b>Modules - </b></span>";
+            var txt = "<span><b>Modules </b></span>";
             for(var modK in this.tools.game.moduleList){
                 txt += '<span>'+this.tools.game.moduleList[modK].__id+'</span>';
             }
             this.gameInfo.append('<div class="info">'+txt+'</div>');
         }
+        
+        var mapList = '<option></option>';
+        for (var myKey in this.tools.mapList){
+            mapList += '<option value="'+myKey+'">'+myKey+'</option>'
+            
+        }
+        mapList += '</select>';
+        this.gameInfo.append('<div class="info"><span><b>Mapas</b></span><select id="map_sel">'+mapList+'</div>');
+        
         this.dbgContainer.append('<div class="clear"></div>');
         /*--------------- Events ------------*/
         var self = this;
+        $('#map_sel').change(function(){
+           self.tools.messageContainer.speak({
+                message : "#loadMap#",
+                mapName : $(this).val()
+            });
+        });
         $('#object_selc1').change(function(){
            self.selectedObj1 = $(this).val();
         });
