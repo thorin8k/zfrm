@@ -38,6 +38,7 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/game/base/components/ModuleTools.js"></script>
         <script type="text/javascript" src="./js/game/base/components/MessageContainer.js"></script>
         <script type="text/javascript" src="./js/game/base/components/ImageManager.js"></script>
+        <script type="text/javascript" src="./js/game/base/components/AssetManager.js"></script>
         <script type="text/javascript" src="./js/game/base/components/SpriteSheet.js"></script>
         <script type="text/javascript" src="./js/game/base/components/Animation.js"></script>
         <script type="text/javascript" src="./js/game/base/components/FrameTimer.js"></script>
@@ -80,37 +81,34 @@ and open the template in the editor.
                
                 game.addModule("fpsMod", new FpsModule());  
                 game.addModule("LayerMod", new LayerHandler());
-                //$.getJSON("./map/tileMap.json", function(data) {
-                $.getJSON("./map/testcute.json", function(data) {
-                    //game.getModule('LayerMod').setTileMap(data);
-                });
-                
                 game.addModule("CollisionManager", new CollisionManager());
                 game.addModule("DbgModule", new DebugModule());
                       
-                
-                //var text = new Text('Layers Listas!');
-                //text.z = 2;
-                //game.addObject("texto1", text);
-                               
+                /*
+                game.getModule('LayerMod').setTileMap(game.moduleTools.mapList["testcute"]);
+
+                game.getModule('LayerMod').parseFromJSON();
+                */
+                                               
                 // Añadimos algunas imágenes a la lista de descarga
-                game.imageManager.addImage('pokeset','img/pokeset.png');
-                game.imageManager.addImage('link.png','img/oorjG.png');
-                game.imageManager.addImage('tilea1','img/tilea1.png');
-                game.imageManager.addImage('tilea2','img/tilea2.png');
-                game.imageManager.addImage('tilea3','img/tilea3.png');
-                game.imageManager.addImage('tilea4','img/tilea4.png');
-                game.imageManager.addImage('tilea5','img/tilea5.png');
-                game.imageManager.addImage('tileb','img/tileb.png');
-                game.imageManager.addImage('tilec','img/tilec.png');
-                game.imageManager.addImage('tiled','img/tiled.png');
-                game.imageManager.addImage('tilee','img/tilee.png');
-                game.imageManager.addImage('tilef','img/tilef.png');
-                game.imageManager.addImage('tileg','img/tileg.png');
-                game.imageManager.addImage('tilej','img/tilej.png');
-                game.imageManager.addImage('tilek','img/tilek.png');
-                game.imageManager.addImage('tilesetsall','img/tilesetsall.png');
-                game.imageManager.addImage('01_background','img/01_background.jpg');
+                game.imageManager.addAsset('image','pokeset','img/pokeset.png');
+                game.imageManager.addAsset('image','link.png','img/oorjG.png');
+                game.imageManager.addAsset('image','tilea1','img/tilea1.png');
+                game.imageManager.addAsset('image','tilea2','img/tilea2.png');
+                game.imageManager.addAsset('image','tilea3','img/tilea3.png');
+                game.imageManager.addAsset('image','tilea4','img/tilea4.png');
+                game.imageManager.addAsset('image','tilea5','img/tilea5.png');
+                game.imageManager.addAsset('image','tileb','img/tileb.png');
+                game.imageManager.addAsset('image','tilec','img/tilec.png');
+                game.imageManager.addAsset('image','tiled','img/tiled.png');
+                game.imageManager.addAsset('image','tilee','img/tilee.png');
+                game.imageManager.addAsset('image','tilef','img/tilef.png');
+                game.imageManager.addAsset('image','tileg','img/tileg.png');
+                game.imageManager.addAsset('image','tilej','img/tilej.png');
+                game.imageManager.addAsset('image','tilek','img/tilek.png');
+                game.imageManager.addAsset('image','tilesetsall','img/tilesetsall.png');
+                game.imageManager.addAsset('image','01_background','img/01_background.jpg');
+                game.imageManager.addAsset('map','testcute','map/testcute.json');
                 
                 var layer = new ObjectLayer();
                 var fp = new FirstPlayer();
@@ -122,10 +120,6 @@ and open the template in the editor.
                 game.addLayerToQueue('objects',layer);
                 
                 game.startGame();
-                
-                
-                
-                
                 
             });
             //Event Handling

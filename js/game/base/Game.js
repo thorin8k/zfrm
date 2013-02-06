@@ -34,9 +34,10 @@ var Game = Class.extend({
     },
     //Constructor
     init: function(canvas){
-        this.imageManager = new ImageManager();
+        this.imageManager = new AssetManager();
         this.oCanvas = new CanvasExt(canvas);
         this.messageContainer = new MessageContainer();
+        //pantalla de carga mientras se descargan los mapas e imagenes
         this.addLayer('loadingScreen',new LoadingScreen());
     },
     //setter
@@ -135,7 +136,6 @@ var Game = Class.extend({
         game.gameLogic();
         //función callback cuando se cargan todas las imagenes.
         this.imageManager.load(function(){ 
-            
             // Notificar a los modulos el evento Start
             game.messageContainer.speak({
                 message : "#start#",
@@ -144,7 +144,7 @@ var Game = Class.extend({
             //launch the start method to the objects
             game.callObjectMethods("start", game.moduleTools);
             game.status = STATUS_RUNNING;
-            
+            //eliminar layer de carga
             game.removeLayer('loadingScreen');
         },this.getLayer('loadingScreen'));
     },
