@@ -15,6 +15,8 @@ var Game = Class.extend({
     moduleList: [],
     //listado de capas a remover
     layersToRemoveList: [],
+    //cola de añadidos
+    layersToAddList: [],
     //observer
     messageContainer: null,
     //tools necesarias para los obj o modulos
@@ -238,6 +240,22 @@ var Game = Class.extend({
                 oCurrentGameObject.objsToRemove = [];
             }
         }
+    },
+    executionAddFromQeue: function(){
+        //Añade los objetos existentes el la cola a la coleción principal
+        var nRemoveLength = this.layersToAddList.length;
+        var nCount = 0;
+        var nCurrentObject = 0;
+ 
+        for (nCount = 0; nCount < nRemoveLength; nCount += 1) {
+              nCurrentObject = this.layersToAddList[nCount];
+              this.layerList.push(nCurrentObject);
+              if(nCurrentObject['start']){
+                  //Ejecuta su método start si lo tienen
+                  nCurrentObject['start']();
+              }
+        }
+        this.layersToAddList = [];
     },
     executionUpdate: function(){
         //llama al método update de los objetos de juego
