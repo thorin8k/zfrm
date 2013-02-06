@@ -112,11 +112,6 @@ and open the template in the editor.
                 game.imageManager.addImage('tilesetsall','img/tilesetsall.png');
                 game.imageManager.addImage('01_background','img/01_background.jpg');
                 
-                
-                
-                game.startGame();
-                
-                
                 var layer = new ObjectLayer();
                 var fp = new FirstPlayer();
                 fp.x=200;
@@ -124,7 +119,12 @@ and open the template in the editor.
                 layer.addObject('fp',fp);
                 layer.z = 3;
                 
-                game.addLayer('objects',layer);
+                game.addLayerToQueue('objects',layer);
+                
+                game.startGame();
+                
+                
+                
                 
                 
             });

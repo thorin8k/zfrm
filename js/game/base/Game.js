@@ -53,12 +53,14 @@ var Game = Class.extend({
         if (typeof object === 'object') { 
             object.__id = sObjectId;
             this.layerList.push(object);
-            if(this.status === STATUS_RUNNING){
-                //Si el juego esta en ejecución se inicia
-                if(object['callObjectMethods']){
-                    object.callObjectMethods("start", this.moduleTools);
-                }
-            }
+        }
+    },
+    //agregador de capas
+    addLayerToQueue: function(sObjectId,object){
+        //añade el objeto pasado a la cola de añadido.
+        if (typeof object === 'object') { 
+            object.__id = sObjectId;
+            this.layersToAddList.push(object);
         }
     },
     //añade la capa pasada al array de objetos por remover
@@ -175,6 +177,14 @@ var Game = Class.extend({
                 module.loadModule(this.moduleTools);
             }
         }
+        
+        // Notificar a los modulos el evento Start
+        this.messageContainer.speak({
+            message : "#prestart#",
+            data : null
+        });
+        //launch the start method to the objects
+        this.callObjectMethods("prestart", this.moduleTools);
     },
     //realiza una llamada en cascada a los métodos pasados.
     callObjectMethods:function(methodName,args){
@@ -197,6 +207,10 @@ var Game = Class.extend({
     //Lógica de ejecución
     gameLogic: function(){
         this.executionRemove();
+        if(this.status === STATUS_RUNNING){
+            //añadir los objetos en la cola a la ejecución principal
+            this.executionAddFromQueue();
+        }
         this.messageContainer.speak({
             message : "#checkCollisions#",
             data : null
@@ -241,7 +255,7 @@ var Game = Class.extend({
             }
         }
     },
-    executionAddFromQeue: function(){
+    executionAddFromQueue: function(){
         //Añade los objetos existentes el la cola a la coleción principal
         var nRemoveLength = this.layersToAddList.length;
         var nCount = 0;
@@ -249,10 +263,14 @@ var Game = Class.extend({
  
         for (nCount = 0; nCount < nRemoveLength; nCount += 1) {
               nCurrentObject = this.layersToAddList[nCount];
+              //Añade los obj al array principal
               this.layerList.push(nCurrentObject);
+              //ejecuta su método start en caso de disponer de el
               if(nCurrentObject['start']){
                   //Ejecuta su método start si lo tienen
                   nCurrentObject['start']();
+              }else if(nCurrentObject['callObjectMethods']){
+                  nCurrentObject['callObjectMethods']('start',this.moduleTools);
               }
         }
         this.layersToAddList = [];

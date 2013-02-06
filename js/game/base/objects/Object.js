@@ -24,6 +24,10 @@ var Object= Class.extend({
         this.reaction = new Movement();
         this.collision = new Collision();
     },
+    prestart:function(tools){
+        
+        this.tools = tools;
+    },
     start:function(tools){
         
         this.tools = tools;

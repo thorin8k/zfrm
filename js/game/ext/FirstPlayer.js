@@ -24,8 +24,9 @@ var FirstPlayer = Object.extend({
             //asignar una llamada a handle collision que redireccione a la de este objeto
             self.handleCollision(res);
         }
+        
         //añadir la collision box al módulo de collisiones
-        moduleTools.messageContainer.speak({
+        this.tools.messageContainer.speak({
             message : "#collisionSubs#",
             obj : this.collisionBox,
             callback: 'handleCollision'
@@ -64,7 +65,7 @@ var FirstPlayer = Object.extend({
             ],this.sprite);
         this.timer = new FrameTimer();
         this.timer.tick();
-        this.image = moduleTools.imageList["link.png"];
+        this.image = this.tools.imageList["link.png"];
         this.tools.game.changeViewPort(-(this.x-300),-(this.y-240));
         this.x = 300;
         this.y = 240;
@@ -118,8 +119,8 @@ var FirstPlayer = Object.extend({
         }
         
 //        correción de la posición del collisionbox
-        this.collisionBox.x = this.x+22;
-        this.collisionBox.y = this.y+12;
+//        this.collisionBox.x = this.x+22;
+//        this.collisionBox.y = this.y+12;
     },
     draw : function (canvas) {
         
