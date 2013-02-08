@@ -28,6 +28,16 @@ var Text = Object.extend({
             
         });
 
+    },
+    toString:function(){
+        var test = this._super();
+        var result = "";
+        result += test;
+        result += "fontColor:"+this.fontColor+'</br>';
+        result += "fontSize:"+this.fontSize+'</br>';
+        result += "fontWeight:"+this.fontWeight+'</br>';
+        result += "text:"+this.text+'</br>';
+        return  result;
     }
 });
 

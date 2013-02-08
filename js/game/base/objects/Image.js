@@ -12,6 +12,13 @@ var ImageObj = Object.extend({
     },
     draw : function (canvas) {
         canvas.bufferContext.drawImage(this.oImage, this.nSourceX, this.nSourceY, this.size.width, this.size.height, this.position.x, this.position.y, this.size.width, this.size.height);
+    },
+    toString: function(){
+        var result = "";
+        var res = this._super();
+        result += res;
+        result += "image:"+this.oImage.src;
+        return result;
     }
 });
 

@@ -2,11 +2,15 @@ var ObjectLayer = Class.extend({
     z:0,
     objList : [],
     objsToRemove: [],
+    tools:null,
     init: function(objs){
         this.objList = [];
         if(objs !== null && objs !== undefined){
             this.objList = objs;
         }
+    },
+    prestart:function(tools){
+        this.tools = tools;
     },
     getObject: function(sObjectId){
         if (typeof sObjectId === 'string') {
@@ -57,6 +61,25 @@ var ObjectLayer = Class.extend({
                 oCurrentGameObject[methodName](args);
             }
         }
+    },
+    mergeWith: function(obj){
+        //Combinar capas solo afectará a las siguientes propiedades
+        //x,y,z
+        for(var key in obj.objList){
+            var exists = this.getObject(obj.objList[key].__id);
+            if(exists === null){
+                this.addObject(obj.objList[key].__id, obj.objList[key]);
+            }else{
+                exists.x = obj.objList[key].x;
+                exists.y = obj.objList[key].y;
+                exists.z = obj.objList[key].z;
+                exists.speed = obj.objList[key].speed;
+                exists.gravity = obj.objList[key].gravity;
+                //TODO: More properties?
+            }
+            
+        }
+        
     }
 });
 

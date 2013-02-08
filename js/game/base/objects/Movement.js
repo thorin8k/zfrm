@@ -32,6 +32,10 @@ var Movement = Class.extend({
             speedy = - this.up;
         }
         return {x:speedx,y:speedy};
+    },
+    toString: function(){
+        var result = this.getSignedActualSpeed();
+        return 'movement.x:'+result.x+' <br/> movement.y:'+result.y;
     }
     
     

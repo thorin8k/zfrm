@@ -4,10 +4,13 @@
   * 
   * Lo convierte en una colección de objetos utilizable por el framework
   * 
+  * 
+  * FIXME : en ocasiones genera algun tile extraño, revisar si es culpa de esto
+  * o del propio tiled
   */
  var LayerHandler = IModule.extend({
     image: null,
-    tileMap: '',
+    tileMap: null,
     mapWidth: '',
     tileWidth: '',
     tileHeight: '',
@@ -22,12 +25,31 @@
     nAxisY: '',
     layerList: [],
     init:function(jsonMap){
-        this.tileMap = jsonMap;
-
+        this.setTileMap(jsonMap);
     },
     loadModule:function(tools){
         this.tools = tools;
-        this.image = tools.imageList[this.tileMap.tilesets[0].image];
+        this.tools.messageContainer.listen(["#loadMap#"], this.preloadMap, this);
+        this.tools.messageContainer.listen(["#draw#"], this.loadMap, this);
+    },
+    setTileMap:function(jsonMap){
+        this.layerList= [];
+        this.tileMap = jsonMap;
+        
+    },
+    preloadMap:function(notification){
+        this.tools.game.clearLandscape();
+        this.tools.game.actualMap = notification.mapName;
+        this.setTileMap(this.tools.mapList[notification.mapName]);
+        this.canLoadMap = true;
+    },
+    loadMap: function(notification){
+        
+        if(!this.canLoadMap || this.tileMap === null || this.tileMap === undefined){
+            return;
+        }
+        
+        this.image = this.tools.imageList[this.tileMap.tilesets[0].name];
         this.tileWidth = this.tileMap.tilewidth;
         this.tileHeight = this.tileMap.tileheight;
         this.mapWidth = this.tileWidth * this.tileMap.width;
@@ -35,11 +57,6 @@
         this.layers = this.tileMap.layers;
         this.imageCols = this.tileMap.tilesets[0].imagewidth / this.tileWidth;
         this.imageRows = this.tileMap.tilesets[0].imageheight / this.tileHeight;
-        
-        this.tools.messageContainer.listen(["#start#"], this.parseFromJSON, this);
-    },
-    parseFromJSON: function(){
-         
         var currentLayer;
         var currentLayerLen;
         // Vamos a pintar todos los elementos de una capa, y al finalizar, pasaremos a la siguiente capa.
@@ -47,7 +64,7 @@
 	// capa contiene el suelo, y la segunda capa elementos como las sillas, mesas, etc.
 	for (var nCount = 0; nCount < this.layers.length; nCount += 1) { 
             currentLayer = this.layers[nCount];
-            
+            //en función del tipo creamos un tipo de capa o otro
             if(this.layers[nCount].type === 'tilelayer'){
                 this.addLandscapeLayer(currentLayer,currentLayer.data.length);
             }else if(this.layers[nCount].type === 'objectgroup'){
@@ -55,12 +72,35 @@
             }
             
 	}
-        var index = 0;
          for(lay in this.layerList){
-             this.tools.game.addObject(this.layerList[lay].__id,this.layerList[lay]);
-             index++;
+             //añadimos toda la colección a las capas del juego
+             this.tools.game.addLayer(this.layerList[lay].__id,this.layerList[lay]);
          }
-         
+         this.canLoadMap = false;
+         //center on screen
+         this.tools.game.callObjectMethods('centerOnScreen',null);
+     },
+     getActualTileset:function(tileId){
+         var length = this.tileMap.tilesets.length;
+         for(var i = 0;i<length;i+=1){
+             var actualTileset = this.tileMap.tilesets[i];
+             var nextTileset = this.tileMap.tilesets[i+1];
+             if(tileId >=  actualTileset.firstgid){
+                 if(nextTileset === undefined){
+                     this.image = this.tools.imageList[actualTileset.name];
+                     this.imageCols = actualTileset.imagewidth / this.tileWidth;
+                     this.imageRows = actualTileset.imageheight / this.tileHeight;
+                     this.nTileId = this.nTileId-actualTileset.firstgid+1;
+                     break;
+                 }else if(tileId <= nextTileset.firstgid){
+                     this.image = this.tools.imageList[actualTileset.name];
+                     this.imageCols = actualTileset.imagewidth / this.tileWidth;
+                     this.imageRows = actualTileset.imageheight / this.tileHeight;
+                     this.nTileId = this.nTileId-actualTileset.firstgid+1;
+                     break;
+                 }
+             }
+         }
      },
      addLandscapeLayer: function(currentLayer,currentLayerDataLen){
          // Variables para controlar en qué posición del Canvas debemos pintar.
@@ -71,6 +111,7 @@
 
             // nTileId contiene el ID del tile que queremos dibujar.
             this.nTileId = currentLayer.data[nDataCount];
+            this.getActualTileset(this.nTileId);
             // Necesitamos saber en que columna de la imagen se encuentra el tile
             // con nTileId. Restamos una unidad ya que los arrays empiezan por el índice 0,
             // en lugar del índice 1.
@@ -117,11 +158,13 @@
         layer.width = this.mapWidth;
         layer.height = this.mapHeight;
         layer.preRender();
+        
         this.layerList.push(layer);
      },
      addObjectLayer:function(currentLayer){
+         //añade una capa de objetos.
          var layer = new ObjectLayer();
-         
+         //recorre todos los objetos en la capa y los genera
          for (var nDataCount = 0; nDataCount < currentLayer.objects.length; nDataCount += 1) {
              var currObj = currentLayer.objects[nDataCount];
              
@@ -137,10 +180,12 @@
              layer.addObject(currObj.name,object);
          }
          layer.__id= currentLayer.name;
+         //establece sus propiedades
          for(i in currentLayer.properties){
             var prop = currentLayer.properties[i];
             layer[i] = prop;
-            }
+         }
+         //lo añadimos a la colleción   
          this.layerList.push(layer);
      }
      

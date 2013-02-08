@@ -10,6 +10,7 @@ var ModuleTools = Class.extend({
     canvasText: null,
     collisionUtils: null,
     imageList: null,
+    mapList: null,
     game:null,
     
     init: function(game){
@@ -19,6 +20,7 @@ var ModuleTools = Class.extend({
         this.settings = game.settings;
         this.canvasText = game.canvasText;
         this.imageList = game.imageManager.ImageCollection;
+        this.mapList = game.imageManager.MapCollection;
         this.game = game;
     }
 });

@@ -20,6 +20,8 @@ var LandscapeLayer = Class.extend({
         this.tools = tools;
     },
     preRender:function(){
+        
+        //Prerender de todas las tiles en una sola imagen.
         var actualImg;
         this.layBuffer = document.createElement('canvas');
         this.layBuffer.width = this.width;
@@ -32,14 +34,14 @@ var LandscapeLayer = Class.extend({
             layBufferContext.drawImage(actualImg.oImage, actualImg.nSourceX, actualImg.nSourceY, actualImg.width, actualImg.height, actualImg.x, actualImg.y, actualImg.width, actualImg.height);
         }
         //store in image
-        this.test=new Image();
-        this.test.src = this.layBuffer.toDataURL('image/png');
+//        this.test=new Image();
+//        this.test.src = this.layBuffer.toDataURL('image/png');
         
     },
     draw : function (canvas) {
         
-        if(this.test !== null){
-           canvas.bufferContext.drawImage(this.test,this.actualX,this.actualY);
+        if(this.layBuffer !== null){
+           canvas.bufferContext.drawImage(this.layBuffer,this.actualX,this.actualY);
         }
         
     },

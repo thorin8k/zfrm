@@ -42,8 +42,10 @@ button:hover,active[type=button]:active,input[type=submit]:active,.specBtn:activ
 }
 /* Game Info*/
 .right_canvas{
-    float:right;
-    min-width:200px;
+    position:fixed;
+    right:30px;
+    top: 30px;
+    min-width:160px;
 }
 .right_canvas .info{
     clear:both;
@@ -59,7 +61,7 @@ button:hover,active[type=button]:active,input[type=submit]:active,.specBtn:activ
 }
 .bottom_canvas input{
     margin-left: 15px;
-    width:80px;
+    
 }
 .buttons{
     float:left;

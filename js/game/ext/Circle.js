@@ -49,19 +49,19 @@ var Circle = Object.extend({
                     
                     if(newVelX1 > 0){
                         this.reaction.unSetMovement('left');
-                        this.reaction.right = Math.abs(newVelX1);
+                        this.reaction.setMovement('right',Math.abs(newVelX1));
                     }
                     if(newVelX1 < 0){
                         this.reaction.unSetMovement('right');
-                        this.reaction.left = Math.abs(newVelX1);
+                        this.reaction.setMovement('left', Math.abs(newVelX1));
                     }
                     if(newVelY1 < 0){
                         this.reaction.unSetMovement('down');
-                        this.reaction.up = Math.abs(newVelY1);
+                        this.reaction.setMovement('up',Math.abs(newVelY1));
                     }
                     if(newVelY1 > 0){
                         this.reaction.unSetMovement('up');
-                        this.reaction.down = Math.abs(newVelY1);
+                        this.reaction.setMovement('down',Math.abs(newVelY1));
                     }
                     
                     this.color = 'red';
@@ -98,6 +98,15 @@ var Circle = Object.extend({
                 
             }
         }
+    },
+    toString:function(){
+        var test = this._super();
+        var result = "";
+        result += test;
+        result += "radius:"+this.radius+'</br>';
+        result += "color:"+this.color+'</br>';
+        result += "collisionType:"+this.collisionType+'</br>';
+        return  result;
     }
     
 
