@@ -16,7 +16,9 @@
             nListenersLength = aMeetingList.length;
             for (nCount = 0; nCount < nListenersLength; nCount += 1) {
                 oListener = aMeetingList[nCount];
-                oListener.handler.call(oListener.module, oNotification);
+                if(oListener !== undefined){
+                    oListener.handler.call(oListener.module, oNotification);
+                }
             }
         }
     },
@@ -37,6 +39,27 @@
                 module: oModule,
                 handler: fpHandler
             });
+        }
+    },
+    unlisten:function(message,module){
+        //FIXME Testing
+        var sMessage = '',
+            nMessage = 0,
+            nMessages = message.length;
+        for (nMessage = 0; nMessage < nMessages; nMessage += 1) {
+            sMessage = message[nMessage];
+            // Si el mensaje no existe, creamos un array para
+            // dicho mensaje.
+            if (typeof this[sMessage] !== 'undefined') {
+                var nListenersLength = this[sMessage].length;
+                for (var nCount = 0; nCount < nListenersLength; nCount += 1) {
+                    var oListener = this[sMessage][nCount];
+                    if(oListener.module === module){
+                        delete this[sMessage][nCount];
+                    }
+                }
+            }
+            
         }
     }
 });

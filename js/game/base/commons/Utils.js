@@ -8,3 +8,12 @@ function cleanArray(actual){
   return newArray;
 }
 
+function isInArray(array,index){
+    for(var key in array){
+        if(array[key] === index){
+            return key;
+        }
+    }
+    return 0;
+}
+

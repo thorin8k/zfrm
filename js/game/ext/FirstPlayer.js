@@ -12,6 +12,7 @@ var FirstPlayer = Object.extend({
     animation: null,
     image: null,
     collisionBox:null,
+    gravity:0,
     start: function(moduleTools){
         this._super(moduleTools);
         var self= this;
@@ -66,16 +67,20 @@ var FirstPlayer = Object.extend({
         this.timer = new FrameTimer();
         this.timer.tick();
         this.image = this.tools.imageList["link.png"];
+        this.centerOnScreen();
+        
+    },
+    centerOnScreen:function(){
         this.tools.game.changeViewPort(-(this.x-300),-(this.y-240));
         this.x = 300;
         this.y = 240;
-        
     },
     update: function(canvas){
-//        if(!this.collision.top){
-//            this.y+=5
-//        }
-        //this._super();
+        if(this.gravity!==0){
+            if(!this.collision.bottom){
+                this.y+=this.gravity;
+            }
+        }
         if (this.movement.left !== 0 && !this.collision.left) {
             this.animation._frames = [
                  { sprite: 'walk_left_1', time: 0.1 },
@@ -96,7 +101,7 @@ var FirstPlayer = Object.extend({
             ];
             this.tools.game.changeViewPort(-this.speed,0);
         }
-        if (this.movement.up !== 0 && !this.collision.top) {
+        if (this.gravity===0 && this.movement.up !== 0 && !this.collision.top) {
             this.animation._frames = [
                  { sprite: 'walk_up_1', time: 0.1 },
                  { sprite: 'walk_up_2', time: 0.1 },
@@ -118,7 +123,7 @@ var FirstPlayer = Object.extend({
             this.tools.game.changeViewPort(0,-this.speed);
         }
         
-//        correción de la posición del collisionbox
+//      correción de la posición del collisionbox
         this.collisionBox.x = this.x+22;
         this.collisionBox.y = this.y+12;
     },
@@ -201,7 +206,6 @@ var FirstPlayer = Object.extend({
         }
     },
     kill:function(test){
-        this.status="Dead";
         this.tools.game.getLayer('objects').removeObject('fp');
     }
 

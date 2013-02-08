@@ -13,10 +13,6 @@ var Game = Class.extend({
     layerList: [],
     //listado de modulos
     moduleList: [],
-    //listado de capas a remover
-    layersToRemoveList: [],
-    //cola de añadidos
-    layersToAddList: [],
     //observer
     messageContainer: null,
     //tools necesarias para los obj o modulos
@@ -27,6 +23,7 @@ var Game = Class.extend({
     status: STATUS_STOPPED,
     //bucle de ejecución (requestAnimFrame)
     animFrame: null,
+    actualMap: "",
     //opciones
     settings: {
         debug:true,
@@ -34,92 +31,16 @@ var Game = Class.extend({
     },
     //Constructor
     init: function(canvas){
+        
         this.imageManager = new AssetManager();
         this.oCanvas = new CanvasExt(canvas);
         this.messageContainer = new MessageContainer();
+        this.moduleTools = new ModuleTools(this);
+        this.layerList = new LayerList(this.moduleTools);
         //pantalla de carga mientras se descargan los mapas e imagenes
         this.addLayer('loadingScreen',new LoadingScreen());
     },
-    //setter
-    setSettings:function(settings){
-        this.settings = settings;
-    },
-    updOrSetSetting:function(key,value){
-        this.settings[key]= value;
-        this.moduleTools.settings = this.settings;
-    },
-    //agregador de capas
-    addLayer: function(sObjectId,object){
-        //añade el objeto pasado
-        if (typeof object === 'object') { 
-            object.__id = sObjectId;
-            this.layerList.push(object);
-            if(this.status === STATUS_RUNNING){
-                //Si el juego esta en ejecución se inicia
-                if(object['callObjectMethods']){
-                    object.callObjectMethods("start", this.moduleTools);
-                }
-            }
-        }
-    },
-    //agregador de capas
-    addLayerToQueue: function(sObjectId,object){
-        //añade el objeto pasado a la cola de añadido.
-        if (typeof object === 'object') { 
-            object.__id = sObjectId;
-            this.layersToAddList.push(object);
-        }
-    },
-    //añade la capa pasada al array de objetos por remover
-    removeLayer:function(sObjectId){
-        if (typeof sObjectId === 'string') {
-            var oCurrentGameObject = null;
-            var nObjectCount = 0;
-            var nGameObjectsLength = this.layerList.length;
- 
-            for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
-                oCurrentGameObject = this.layerList[nObjectCount];
-                if (oCurrentGameObject.__id === sObjectId) {
-                    this.layersToRemoveList.push(nObjectCount);
-                }
-            }
-        }
-    },
-    //obtiene una capa por nombre
-    getLayer: function(sObjectId){
-        if (typeof sObjectId === 'string') {
-            var oCurrentGameObject = null;
-            var objListLength = this.layerList.length;
-            for (nObjectCount = 0; nObjectCount < objListLength; nObjectCount += 1) {
-                oCurrentGameObject = this.layerList[nObjectCount];
-                if (oCurrentGameObject.__id === sObjectId) {
-                    return oCurrentGameObject;
-                }
-            }
-        }
-        return null;
-    },
-    clearLandscape: function(){
-        var count = 0;
-        var len = this.layerList.length;
-        var currObj = null;
-        for (count = 0; count < len; count += 1){
-            currObj = this.layerList[count];
-                if(currObj instanceof LandscapeLayer || currObj.__id !== 'objects'){
-                    this.removeLayer(currObj.__id);
-                }else if(currObj instanceof ObjectLayer){
-                    var subcount= 0;
-                    var sublen = currObj.objList.length;
-                    var subObj = null;
-                    for(subcount = 0;subcount < sublen;subcount += 1){
-                          subObj = currObj.objList[subcount];
-                          if(!subObj instanceof FirstPlayer){
-                              currObj.removeObject(subObj.__id);
-                          }
-                    }
-                }
-        }
-    },
+    
     //añade el módulo pasado
     addModule: function(moduleId,moduleObj){
         //añade el objeto pasado
@@ -131,9 +52,12 @@ var Game = Class.extend({
     //obtiene un módulo
     getModule: function(moduleId){
         if (typeof moduleId === 'string') {
-            var oCurrentModule = null;
-
-            for (nObjectCount = 0; nObjectCount < this.moduleList.length; nObjectCount += 1) {
+            var oCurrentModule = null, 
+            nObjectCount = 0,
+            moduleLength = this.moduleList.length;
+            
+            
+            for (nObjectCount = 0; nObjectCount < moduleLength; nObjectCount += 1) {
                 oCurrentModule = this.moduleList[nObjectCount];
                 if (oCurrentModule !== null && oCurrentModule !== undefined && oCurrentModule.__id === moduleId) {
                     return oCurrentModule;
@@ -142,7 +66,7 @@ var Game = Class.extend({
         }
         return null;
     },
-    //TODO: método para descargar un módulo
+    //TODO: método para descargar un módulo (descargar todos sus listeners)
     //forma de implementar los eventos de teclado y ratón
     executionKey: function(event){
         //Llamamos al método de todos los objetos del juego que implementen 
@@ -188,16 +112,15 @@ var Game = Class.extend({
     },
     //llama a change viewport de las capas
     changeViewPort: function(x,y){
-        //TODO : Implementar esto en la capa de collisionables
         this.callObjectMethods('changeViewPort',{x:x,y:y});
     },
     /* -----------  Private Methods ------------ */
     //Precarga de los módulos
     preStart: function(){
-        this.moduleTools = new ModuleTools(this);
         var module;
         var nObjectCount = 0;
         var nGameObjectsLength = this.moduleList.length;
+        
         for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
             module = this.moduleList[nObjectCount];
             if (typeof module !== 'undefined') {
@@ -205,12 +128,12 @@ var Game = Class.extend({
             }
         }
         
-        // Notificar a los modulos el evento Start
+        // Notificar a los modulos el evento preStart
         this.messageContainer.speak({
             message : "#prestart#",
             data : null
         });
-        //launch the start method to the objects
+        //launch the prestart method to the objects
         this.callObjectMethods("prestart", this.moduleTools);
     },
     //realiza una llamada en cascada a los métodos pasados.
@@ -219,13 +142,14 @@ var Game = Class.extend({
         //ejecutandolo al encontrarlos.
         var oCurrentGameObject = null;
         var nObjectCount = 0;
-        var nGameObjectsLength = this.layerList.length;
+        var nGameObjectsLength = this.layerList.count();
  
         for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
-            oCurrentGameObject = this.layerList[nObjectCount];
+            oCurrentGameObject = this.layerList.getItemByIdx(nObjectCount);
             if (oCurrentGameObject[methodName]) {
                 oCurrentGameObject[methodName](args);
-            }else if(oCurrentGameObject['callObjectMethods']){
+            }
+            if(oCurrentGameObject['callObjectMethods']){
                 //Si la capa en cuestión implementa este método se ejecuta también
                 oCurrentGameObject['callObjectMethods'](methodName,args);
             }
@@ -233,16 +157,18 @@ var Game = Class.extend({
     }, 
     //Lógica de ejecución
     gameLogic: function(){
+        //Procesar la cola de elimación
         this.executionRemove();
-        if(this.status === STATUS_RUNNING){
-            //añadir los objetos en la cola a la ejecución principal
-            this.executionAddFromQueue();
-        }
+        //añadir los objetos en la cola a la ejecución principal
+        this.executionAddFromQueue();
+        //Procesar colisiones
         this.messageContainer.speak({
             message : "#checkCollisions#",
             data : null
         });
+        //Actualizar objetos
         this.executionUpdate();
+        //Dibujar
         this.executionDraw();
         
         //Al final de la ejecución volvemos a llamar al request animation Frame
@@ -253,60 +179,12 @@ var Game = Class.extend({
     executionRemove: function(){
         //Elimina los objetos presentes en el array de objetos para eliminar
         //del array principal de capas
-        var nRemoveLength = this.layersToRemoveList.length;
-        
-        var nCount = 0;
-        var nCurrentObject = 0;
- 
-        for (nCount = 0; nCount < nRemoveLength; nCount += 1) {
-              nCurrentObject = this.layersToRemoveList[nCount];
-              //this.layerList.splice(nCurrentObject, 1);
-              delete this.layerList[nCurrentObject];
-        }
-        this.layerList = cleanArray(this.layerList);
-        this.layersToRemoveList = [];
-        
-        //Recorre las capas, en caso de existir, buscando objetos en la collección
-        // de removibles y los elimina
-        var oCurrentGameObject = null;
-        var nObjectCount = 0;
-        var nGameObjectsLength = this.layerList.length;
-        for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
-            oCurrentGameObject = this.layerList[nObjectCount];
-            if(oCurrentGameObject.objsToRemove){
-                nRemoveLength = oCurrentGameObject.objsToRemove.length;
-                nCount = 0;
-                nCurrentObject = 0;
-
-                for (nCount = 0; nCount < nRemoveLength; nCount += 1) {
-                      nCurrentObject = oCurrentGameObject.objsToRemove[nCount];
-                      //oCurrentGameObject.objList.splice(nCurrentObject, 1);
-                      delete oCurrentGameObject.objList[nCurrentObject];
-                }
-                oCurrentGameObject.objList = cleanArray(oCurrentGameObject.objList);
-                oCurrentGameObject.objsToRemove = [];
-            }
-        }
+        this.layerList.clearRemoveds();
     },
     executionAddFromQueue: function(){
-        //Añade los objetos existentes el la cola a la coleción principal
-        var nRemoveLength = this.layersToAddList.length;
-        var nCount = 0;
-        var nCurrentObject = 0;
- 
-        for (nCount = 0; nCount < nRemoveLength; nCount += 1) {
-              nCurrentObject = this.layersToAddList[nCount];
-              //Añade los obj al array principal
-              this.layerList.push(nCurrentObject);
-              //ejecuta su método start en caso de disponer de el
-              if(nCurrentObject['start']){
-                  //Ejecuta su método start si lo tienen
-                  nCurrentObject['start']();
-              }else if(nCurrentObject['callObjectMethods']){
-                  nCurrentObject['callObjectMethods']('start',this.moduleTools);
-              }
+        if(this.status === STATUS_RUNNING){
+            this.layerList.processQueue();
         }
-        this.layersToAddList = [];
     },
     executionUpdate: function(){
         //llama al método update de los objetos de juego
@@ -332,8 +210,31 @@ var Game = Class.extend({
         this.oCanvas.mainContext.clearRect(0, 0, this.oCanvas.main.width, this.oCanvas.main.height);
         // Finalmente, dibujamos el buffer en nuestro canvas principal.
         this.oCanvas.mainContext.drawImage(this.oCanvas.buffer, 0, 0);
-    }
+    },
     /* ----------- Fin Private Methods ------------ */
-         
+    /* ---- WRAPPERS -----*/
+    setSettings:function(settings){
+        this.settings = settings;
+    },
+    updOrSetSetting:function(key,value){
+        this.settings[key]= value;
+        this.moduleTools.settings = this.settings;
+    },
+    addLayer: function(sObjectId,object){
+        this.layerList.addItem(sObjectId,object);
+    },
+    addLayerToQueue: function(sObjectId,object){
+        this.layerList.addToQueue(sObjectId,object);
+    },
+    removeLayer:function(sObjectId){
+        this.layerList.removeItem(sObjectId);
+    },
+    getLayer: function(sObjectId){
+        return this.layerList.getItem(sObjectId);
+    },
+    clearLandscape: function(){
+        this.layerList.clearLandscape();
+    }
+    /* ---- FIN WRAPPERS -----*/
 });
 

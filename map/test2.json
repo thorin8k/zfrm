@@ -31,7 +31,7 @@
                  "name":"fp",
                  "properties":
                     {
-
+                        "gravity":5
                     },
                  "type":"FirstPlayer",
                  "visible":true,

@@ -4,6 +4,9 @@
   * 
   * Lo convierte en una colección de objetos utilizable por el framework
   * 
+  * 
+  * FIXME : en ocasiones genera algun tile extraño, revisar si es culpa de esto
+  * o del propio tiled
   */
  var LayerHandler = IModule.extend({
     image: null,
@@ -26,17 +29,23 @@
     },
     loadModule:function(tools){
         this.tools = tools;
-        this.tools.messageContainer.listen(["#loadMap#"], this.loadMap, this);
+        this.tools.messageContainer.listen(["#loadMap#"], this.preloadMap, this);
+        this.tools.messageContainer.listen(["#draw#"], this.loadMap, this);
     },
     setTileMap:function(jsonMap){
         this.layerList= [];
         this.tileMap = jsonMap;
+        
+    },
+    preloadMap:function(notification){
+        this.tools.game.clearLandscape();
+        this.tools.game.actualMap = notification.mapName;
+        this.setTileMap(this.tools.mapList[notification.mapName]);
+        this.canLoadMap = true;
     },
     loadMap: function(notification){
-        this.tools.game.clearLandscape();
-        this.setTileMap(this.tools.mapList[notification.mapName]);
         
-        if(this.tileMap === null || this.tileMap === undefined){
+        if(!this.canLoadMap || this.tileMap === null || this.tileMap === undefined){
             return;
         }
         
@@ -67,7 +76,9 @@
              //añadimos toda la colección a las capas del juego
              this.tools.game.addLayer(this.layerList[lay].__id,this.layerList[lay]);
          }
-         
+         this.canLoadMap = false;
+         //center on screen
+         this.tools.game.callObjectMethods('centerOnScreen',null);
      },
      getActualTileset:function(tileId){
          var length = this.tileMap.tilesets.length;

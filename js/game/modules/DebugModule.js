@@ -37,6 +37,7 @@ var DebugModule = IModule.extend({
         this.dbgContainer.children('.object_cont').append(txt);
     },
     constructDbgView:function(){
+        this.cancelChecking();
         if(this.tools.game.getLayer('objects') !== null){
             this.objList = this.tools.game.getLayer('objects').objList;
             
@@ -64,7 +65,7 @@ var DebugModule = IModule.extend({
             '<input type="button" value="Show!" id="showDBG"/>'+
             '<input type="button" value="Pause!" id="pauseGame"/>'+
             '<input type="button" value="UpdateDbg!" id="updateDBG"/>'+
-            '<input type="button" value="Kill Link!" id="killLink"/>'+
+            //'<input type="button" value="Kill Link!" id="killLink"/>'+
             '</div>'
         );
         
@@ -88,7 +89,7 @@ var DebugModule = IModule.extend({
         var txt = "";
         
         
-        txt +='<span><b>Game Layers:</b> '+this.tools.game.layerList.length+'</span>'
+        txt +='<span><b>Game Layers:</b> '+this.tools.game.layerList.count()+'</span>'
         if(this.objList !== null){
             txt += '<span><b>Game Objects:</b> '+ this.objList.length  +'</span>';
         }
@@ -110,11 +111,19 @@ var DebugModule = IModule.extend({
         
         var mapList = '<option></option>';
         for (var myKey in this.tools.mapList){
-            mapList += '<option value="'+myKey+'">'+myKey+'</option>'
+            var selected = "";
+            if(myKey == this.tools.game.actualMap){
+                selected = "selected";
+            }
+            mapList += '<option value="'+myKey+'" '+selected+'>'+myKey+'</option>'
             
         }
         mapList += '</select>';
-        this.gameInfo.append('<div class="info"><span><b>Mapas</b></span><select id="map_sel">'+mapList+'</div>');
+        this.gameInfo.append(
+            '<div class="info"><span><b>Mapas</b></span>'+
+            '<div class="info"><span><b>Actual</b></span>'+
+            '<select id="map_sel">'+mapList+'</div>'
+    );
         
         this.dbgContainer.append('<div class="clear"></div>');
         /*--------------- Events ------------*/
