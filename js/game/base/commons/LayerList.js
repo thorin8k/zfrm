@@ -163,7 +163,7 @@ var LayerList = Class.extend({
                 var subObj = null;
                 for(subcount = 0;subcount < sublen;subcount += 1){
                       subObj = currObj.objList[subcount];
-                      if(!subObj instanceof FirstPlayer){
+                      if(!(subObj.persistent)){
                           currObj.removeObject(subObj.__id);
                       }
                 }

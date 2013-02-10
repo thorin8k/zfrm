@@ -12,7 +12,7 @@ var FirstPlayer = Object.extend({
     animation: null,
     image: null,
     collisionBox:null,
-    gravity:0,
+    persistent:true,
     start: function(moduleTools){
         this._super(moduleTools);
         var self= this;
@@ -67,7 +67,6 @@ var FirstPlayer = Object.extend({
         this.timer = new FrameTimer();
         this.timer.tick();
         this.image = this.tools.imageList["link.png"];
-        this.centerOnScreen();
         
     },
     centerOnScreen:function(){
@@ -142,14 +141,14 @@ var FirstPlayer = Object.extend({
         for(var i = 0;i < res.length; i+=1){
             if(res[i] !== null){
                 noCollision = false;
-                this.color = 'red';
-                var side = this.tools.collisionUtils.getCollisionSide(this.collisionBox,res[i]);
-                this.collision.setCollision(side);
+                if(res[i] instanceof CollisionBox){
+                    var side = this.tools.collisionUtils.getCollisionSide(this.collisionBox,res[i],false);
+                    this.collision.setCollision(side);
+                }
             }
         }
         if(noCollision){
             //release all collisions if the object has no collision
-            this.color = "yellow";
             this.collision.releaseCollisions();
         }
     },

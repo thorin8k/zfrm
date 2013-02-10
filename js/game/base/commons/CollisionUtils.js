@@ -1,8 +1,7 @@
 var CollisionUtils = Class.extend({
-    getCollisionSide: function (obj1,obj2){
+    getCollisionSide: function (obj1,obj2,reverse){
         var axis = this.getCollisionAxis(obj1, obj2);
         //Invierte el eje de colisiones para los circulos.
-        var reverse = obj1.collisionType === 'Circle' || obj2.collisionType === 'Circle';
         if(axis.x != 0 || axis.y != 0){
             if(axis.x != 0){
                 if(axis.x > 0){

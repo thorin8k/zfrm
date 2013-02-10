@@ -15,6 +15,7 @@ var ObjectLayer = Class.extend({
     getObject: function(sObjectId){
         if (typeof sObjectId === 'string') {
             var oCurrentGameObject = null;
+            var nObjectCount = 0;
             var objLength = this.objList.length;
             for (nObjectCount = 0; nObjectCount < objLength; nObjectCount += 1) {
                 oCurrentGameObject = this.objList[nObjectCount];
@@ -42,10 +43,11 @@ var ObjectLayer = Class.extend({
                 oCurrentGameObject = this.objList[nObjectCount];
                 if (oCurrentGameObject.__id === sObjectId) {
                     this.objsToRemove.push(nObjectCount);
-                    this.tools.game.messageContainer.speak({
-                        message : "#objRemoved#",
-                        data : sObjectId
-                    });
+                    //FIXME tools null?
+//                    this.tools.game.messageContainer.speak({
+//                        message : "#objRemoved#",
+//                        data : sObjectId
+//                    });
                 }
             }
         }

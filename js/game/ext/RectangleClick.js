@@ -33,7 +33,7 @@ var RectangleClick = Clickable.extend({
             if(res[i] !== null){
                 noCollision = false;
                 this.color = 'red';
-                var side = this.tools.collisionUtils.getCollisionSide(this,res[i]);
+                var side = this.tools.collisionUtils.getCollisionSide(this,res[i],false);
                 this.collision.setCollision(side);
             }
         }

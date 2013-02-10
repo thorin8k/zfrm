@@ -5,6 +5,10 @@
          "height":15,
          "name":"capa1",
          "opacity":1,
+         "properties":
+            {
+             "z":1
+            },
          "type":"tilelayer",
          "visible":true,
          "width":40,
@@ -16,6 +20,10 @@
          "height":15,
          "name":"capa2",
          "opacity":1,
+         "properties":
+            {
+             "z":2
+            },
          "type":"tilelayer",
          "visible":true,
          "width":40,
@@ -31,7 +39,7 @@
                  "name":"fp",
                  "properties":
                     {
-                        "gravity":5
+                     "gravity":5
                     },
                  "type":"FirstPlayer",
                  "visible":true,
@@ -40,6 +48,10 @@
                  "y":291
                 }],
          "opacity":1,
+         "properties":
+            {
+             "z":3
+            },
          "type":"objectgroup",
          "visible":true,
          "width":40,
@@ -90,6 +102,10 @@
                  "y":192
                 }],
          "opacity":1,
+         "properties":
+            {
+             "z":4
+            },
          "type":"objectgroup",
          "visible":true,
          "width":40,

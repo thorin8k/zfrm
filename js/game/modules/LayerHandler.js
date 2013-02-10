@@ -72,11 +72,15 @@
             }
             
 	}
-         for(lay in this.layerList){
+         for(var lay in this.layerList){
              //añadimos toda la colección a las capas del juego
              this.tools.game.addLayer(this.layerList[lay].__id,this.layerList[lay]);
          }
          this.canLoadMap = false;
+         //ordenación en el eje z
+         this.tools.game.layerList.sort(function(oObjA, oObjB) {
+               return oObjA.z - oObjB.z;
+         });
          //center on screen
          this.tools.game.callObjectMethods('centerOnScreen',null);
      },
@@ -151,9 +155,15 @@
             }
         }
         layer.__id= currentLayer.name;
-        for(i in currentLayer.properties){
+//        layer.z = parseInt(currentLayer.properties.z);
+        
+        for(var i in currentLayer.properties){
             var prop = currentLayer.properties[i];
-            layer[i] = prop;
+            if(isNaN(prop)){
+                layer[i] = parseInt(prop);
+            }else{
+                layer[i] = prop;
+            }
         }
         layer.width = this.mapWidth;
         layer.height = this.mapHeight;
@@ -181,9 +191,13 @@
          }
          layer.__id= currentLayer.name;
          //establece sus propiedades
-         for(i in currentLayer.properties){
+         for(var i in currentLayer.properties){
             var prop = currentLayer.properties[i];
-            layer[i] = prop;
+            if(isNaN(prop)){
+                layer[i] = parseInt(prop);
+            }else{
+                layer[i] = prop;
+            }
          }
          //lo añadimos a la colleción   
          this.layerList.push(layer);

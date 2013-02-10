@@ -9,8 +9,8 @@ var Circle = Object.extend({
             obj : this,
             callback: 'handleCollision'
         });
-        this.movement.setMovement('right', this.speed);  
-        this.movement.setMovement('up', this.speed);  
+//        this.movement.setMovement('right', this.speed);  
+//        this.movement.setMovement('up', this.speed);  
     },
     update : function (canvas) {
         if(this.reaction.isMoving()){
@@ -68,7 +68,7 @@ var Circle = Object.extend({
                     
                 }
                 if(res[i].collisionType === 'Rectangle'){
-                    var side = this.tools.collisionUtils.getCollisionSide(this,res[i]);
+                    var side = this.tools.collisionUtils.getCollisionSide(this,res[i],true);
                     this.color = 'red';
                     
                     if(side === 'right' ){
@@ -107,6 +107,11 @@ var Circle = Object.extend({
         result += "color:"+this.color+'</br>';
         result += "collisionType:"+this.collisionType+'</br>';
         return  result;
+    },
+    changeViewPort: function(pos){
+        
+        this.x+= pos.x;
+        this.y+= pos.y;
     }
     
 

@@ -18,6 +18,7 @@ and open the template in the editor.
         <canvas id="canvas" width="640" height="480"></canvas>
         <script type="text/javascript" src="./js/libs/jquery/jquery.js"></script>
         <script type="text/javascript" src="./js/libs/jquery/Class.js"></script>
+        
         <script type="text/javascript" src="./js/libs/canvasText/canvasText.js"></script>
         <script type="text/javascript" src="./js/game/base/commons/Constants.js"></script>
         <script type="text/javascript" src="./js/game/base/commons/CollisionUtils.js"></script>
@@ -111,7 +112,7 @@ and open the template in the editor.
                 layer.addObject('fp',fp);
                 layer.z = 3;
                 
-                game.addLayerToQueue('objects',layer);
+                //game.addLayerToQueue('objects',layer);
                 
                 game.startGame();
                 
@@ -126,7 +127,6 @@ and open the template in the editor.
             window.addEventListener("click", function (eEvent) {
                 game.executionKey(eEvent);
             }, false);
-            
         </script>
     </body>
 </html>

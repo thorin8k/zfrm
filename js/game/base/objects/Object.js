@@ -18,6 +18,7 @@ var Object= Class.extend({
     speed: 5,
     weight:10,
     z: 0,
+    gravity:0,
     tools:null,
     init:function(){
         this.movement = new Movement();

@@ -38,8 +38,8 @@ var CollisionBox = Class.extend({
             canvas.bufferContext.rect(this.x, this.y, this.width, this.height);
             canvas.bufferContext.fillStyle = this.color;
             canvas.bufferContext.closePath();
-            canvas.bufferContext.lineWidth = 2;
-            canvas.bufferContext.strokeStyle = 'black';
+            canvas.bufferContext.lineWidth = 1;
+            canvas.bufferContext.strokeStyle = 'red';
             canvas.bufferContext.stroke();
         }
     },
