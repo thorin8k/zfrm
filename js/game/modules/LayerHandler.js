@@ -12,6 +12,7 @@
     image: null,
     tileMap: null,
     mapWidth: '',
+    mapHeight: '',
     tileWidth: '',
     tileHeight: '',
     layers: '',
@@ -57,12 +58,12 @@
         this.layers = this.tileMap.layers;
         this.imageCols = this.tileMap.tilesets[0].imagewidth / this.tileWidth;
         this.imageRows = this.tileMap.tilesets[0].imageheight / this.tileHeight;
-        var currentLayer;
-        var currentLayerLen;
+        var currentLayer,
+        currentLayerLen = this.layers.length;
         // Vamos a pintar todos los elementos de una capa, y al finalizar, pasaremos a la siguiente capa.
 	// Recordemos que cada capa contiene un conjunto de elementos. En nuestro caso, la primera
 	// capa contiene el suelo, y la segunda capa elementos como las sillas, mesas, etc.
-	for (var nCount = 0; nCount < this.layers.length; nCount += 1) { 
+	for (var nCount = 0; nCount < currentLayerLen; nCount += 1) { 
             currentLayer = this.layers[nCount];
             //en función del tipo creamos un tipo de capa o otro
             if(this.layers[nCount].type === 'tilelayer'){
@@ -159,7 +160,7 @@
         
         for(var i in currentLayer.properties){
             var prop = currentLayer.properties[i];
-            if(isNaN(prop)){
+            if(!isNaN(prop)){
                 layer[i] = parseInt(prop);
             }else{
                 layer[i] = prop;
@@ -185,7 +186,11 @@
              object.height=currObj.height;
              for(i in currObj.properties){
                  var prop = currObj.properties[i];
-                 object[i] = prop;
+                 if(!isNaN(prop)){
+                    object[i] = parseInt(prop);
+                }else{
+                    object[i] = prop;
+                }
              }
              layer.addObject(currObj.name,object);
          }
@@ -193,7 +198,7 @@
          //establece sus propiedades
          for(var i in currentLayer.properties){
             var prop = currentLayer.properties[i];
-            if(isNaN(prop)){
+            if(!isNaN(prop)){
                 layer[i] = parseInt(prop);
             }else{
                 layer[i] = prop;
