@@ -24,7 +24,7 @@ var FirstPlayer = Object.extend({
         this.collisionBox.handleCollision = function(res){
             //asignar una llamada a handle collision que redireccione a la de este objeto
             self.handleCollision(res);
-        }
+        };
         
         //añadir la collision box al módulo de collisiones
         this.tools.messageContainer.speak({
@@ -57,12 +57,12 @@ var FirstPlayer = Object.extend({
                 { name: 'walk_down_2', x: 1, y: 3 },
                 { name: 'walk_down_3', x: 2, y: 3 },
                 { name: 'walk_down_4', x: 3, y: 3 },
-                { name: 'walk_down_5', x: 4, y: 3 },
+                { name: 'walk_down_5', x: 4, y: 3 }
                 
             ]
         });
         this.animation = new Animation([
-                { sprite: 'walk_down_1', time: 0.1 },
+                { sprite: 'walk_down_1', time: 0.1 }
             ],this.sprite);
         this.timer = new FrameTimer();
         this.timer.tick();
@@ -86,7 +86,7 @@ var FirstPlayer = Object.extend({
                  { sprite: 'walk_left_2', time: 0.1 },
                  { sprite: 'walk_left_3', time: 0.1 },
                  { sprite: 'walk_left_4', time: 0.1 },
-                 { sprite: 'walk_left_5', time: 0.1 },
+                 { sprite: 'walk_left_5', time: 0.1 }
             ];
             this.tools.game.changeViewPort(+this.speed,0);
         }
@@ -96,7 +96,7 @@ var FirstPlayer = Object.extend({
                  { sprite: 'walk_right_2', time: 0.1 },
                  { sprite: 'walk_right_3', time: 0.1 },
                  { sprite: 'walk_right_4', time: 0.1 },
-                 { sprite: 'walk_right_5', time: 0.1 },
+                 { sprite: 'walk_right_5', time: 0.1 }
             ];
             this.tools.game.changeViewPort(-this.speed,0);
         }
@@ -106,7 +106,7 @@ var FirstPlayer = Object.extend({
                  { sprite: 'walk_up_2', time: 0.1 },
                  { sprite: 'walk_up_3', time: 0.1 },
                  { sprite: 'walk_up_4', time: 0.1 },
-                 { sprite: 'walk_up_5', time: 0.1 },
+                 { sprite: 'walk_up_5', time: 0.1 }
             ];
             this.tools.game.changeViewPort(0,+this.speed);
         }
@@ -117,7 +117,7 @@ var FirstPlayer = Object.extend({
                  { sprite: 'walk_down_2', time: 0.1 },
                  { sprite: 'walk_down_3', time: 0.1 },
                  { sprite: 'walk_down_4', time: 0.1 },
-                 { sprite: 'walk_down_5', time: 0.1 },
+                 { sprite: 'walk_down_5', time: 0.1 }
             ];
             this.tools.game.changeViewPort(0,-this.speed);
         }
@@ -182,25 +182,25 @@ var FirstPlayer = Object.extend({
         if (event.keyCode === 39) {
             this.movement.unSetMovement('right');
             this.animation._frames = [
-            { sprite: 'walk_right_5', time: 0.1 },
+            { sprite: 'walk_right_5', time: 0.1 }
         ];
         }
         if (event.keyCode === 37) {
             this.movement.unSetMovement('left');
             this.animation._frames = [
-            { sprite: 'walk_left_1', time: 0.1 },
+            { sprite: 'walk_left_1', time: 0.1 }
         ];
         }
         if (event.keyCode === 38) {
             this.movement.unSetMovement('up');
             this.animation._frames = [
-            { sprite: 'walk_up_1', time: 0.1 },
+            { sprite: 'walk_up_1', time: 0.1 }
         ];
         }
         if (event.keyCode === 40) {
             this.movement.unSetMovement('down');
             this.animation._frames = [
-            { sprite: 'walk_down_1', time: 0.1 },
+            { sprite: 'walk_down_1', time: 0.1 }
         ];
         }
     },
