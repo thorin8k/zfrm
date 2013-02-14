@@ -91,18 +91,11 @@
              var actualTileset = this.tileMap.tilesets[i];
              var nextTileset = this.tileMap.tilesets[i+1];
              if(tileId >=  actualTileset.firstgid){
-                 if(nextTileset === undefined){
+                 if(nextTileset === undefined || tileId <= nextTileset.firstgid){
                      this.image = this.tools.imageList[actualTileset.name];
                      this.imageCols = actualTileset.imagewidth / this.tileWidth;
                      this.imageRows = actualTileset.imageheight / this.tileHeight;
-                     this.nTileId = this.nTileId-actualTileset.firstgid+1;
-                     break;
-                 }else if(tileId <= nextTileset.firstgid){
-                     this.image = this.tools.imageList[actualTileset.name];
-                     this.imageCols = actualTileset.imagewidth / this.tileWidth;
-                     this.imageRows = actualTileset.imageheight / this.tileHeight;
-                     this.nTileId = this.nTileId-actualTileset.firstgid+1;
-                     break;
+                     return tileId-actualTileset.firstgid+1;                     
                  }
              }
          }
@@ -115,12 +108,12 @@
         for (var nDataCount = 0; nDataCount < currentLayerDataLen; nDataCount += 1) {
 
             // nTileId contiene el ID del tile que queremos dibujar.
-            this.nTileId = currentLayer.data[nDataCount];
-            this.getActualTileset(this.nTileId);
+            this.nTileId = this.getActualTileset(currentLayer.data[nDataCount]);
+            
             // Necesitamos saber en que columna de la imagen se encuentra el tile
             // con nTileId. Restamos una unidad ya que los arrays empiezan por el índice 0,
             // en lugar del índice 1.
-            this.nSourceX = Math.floor(this.nTileId % this.imageCols) -1;
+            this.nSourceX = Math.floor((this.nTileId-1) % this.imageCols);
 
             // Si nSourceX === -1 quiere decir que la ID del tile era 0, por lo tanto, es un tile
             // donde no debemos pintar nada. Si es distinto a -1, entonces hay que pintar.
@@ -128,12 +121,15 @@
                 // Hasta el momento nSourceX contenía la columna, pero necesitamos saber la posición
                 // en píxeles de dicha columna.
                 this.nSourceX *= this.tileWidth; 
+                
+
                 // Igual que con nSourceX, necesitamos saber la fila dentro de la imágen en la que se
                 // encuentra el nTileId.
-                this.nSourceY = Math.floor(this.nTileId / this.imageCols);
+                this.nSourceY = Math.floor((this.nTileId-1) / this.imageCols);
                 // Ahora tenemos la fila, y necesitamos saber la posición en píxeles de dicha fila.
                 this.nSourceY *= this.tileHeight;
-
+                
+                
                 // Finalmente pintamos el tile.
                 var cell = new ImageObj(this.image);
                 cell.x = this.nAxisX;
@@ -156,7 +152,6 @@
             }
         }
         layer.__id= currentLayer.name;
-//        layer.z = parseInt(currentLayer.properties.z);
         
         for(var i in currentLayer.properties){
             var prop = currentLayer.properties[i];

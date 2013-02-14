@@ -7,7 +7,7 @@
          "opacity":1,
          "properties":
             {
-             "z":0
+             "z":"0"
             },
          "type":"tilelayer",
          "visible":true,
@@ -22,7 +22,7 @@
          "opacity":1,
          "properties":
             {
-             "z":1
+             "z":"1"
             },
          "type":"tilelayer",
          "visible":true,
@@ -42,7 +42,6 @@
 
                     },
                  "type":"FirstPlayer",
-                 "visible":true,
                  "width":64,
                  "x":1456,
                  "y":657
@@ -50,7 +49,7 @@
          "opacity":1,
          "properties":
             {
-             "z":2
+             "z":"2"
             },
          "type":"objectgroup",
          "visible":true,
@@ -65,7 +64,7 @@
          "opacity":1,
          "properties":
             {
-             "z":3
+             "z":"3"
             },
          "type":"tilelayer",
          "visible":true,
@@ -85,7 +84,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":22,
                  "x":1413,
                  "y":652
@@ -98,7 +96,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":1911,
                  "x":3,
                  "y":4
@@ -111,7 +108,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":1911,
                  "x":7,
                  "y":1079
@@ -124,7 +120,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":0,
                  "x":3,
                  "y":15
@@ -137,7 +132,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":3,
                  "x":1911,
                  "y":16
@@ -145,7 +139,7 @@
          "opacity":1,
          "properties":
             {
-             "z":2
+             "z":"2"
             },
          "type":"objectgroup",
          "visible":true,

@@ -5,6 +5,10 @@
          "height":15,
          "name":"capa1",
          "opacity":0.899999976158142,
+         "properties":
+            {
+             "z":"0"
+            },
          "type":"tilelayer",
          "visible":true,
          "width":40,
@@ -16,6 +20,10 @@
          "height":15,
          "name":"capa2",
          "opacity":1,
+         "properties":
+            {
+             "z":"1"
+            },
          "type":"tilelayer",
          "visible":true,
          "width":40,
@@ -27,6 +35,10 @@
          "height":15,
          "name":"capa3",
          "opacity":1,
+         "properties":
+            {
+             "z":"3"
+            },
          "type":"tilelayer",
          "visible":true,
          "width":40,
