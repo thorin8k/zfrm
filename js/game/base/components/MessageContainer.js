@@ -40,8 +40,7 @@
                 handler: fpHandler
             });
         }
-    },
-            
+    },     
     unlisten:function(message,module){
         //FIXME Testing
         var sMessage = '',
