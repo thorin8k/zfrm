@@ -1,5 +1,8 @@
 /**
- * Función importada del proyecto cyan
+ * Clase generada partiendo del proyecto cyan. Se ha modificado para que 
+ * soporte la carga de mapas json.
+ * 
+ * @author Thorin8k
  */
  var AssetManager = Class.extend({
     // Número de imágenes cargadas correctamente.
