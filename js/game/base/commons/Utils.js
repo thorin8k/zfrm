@@ -1,3 +1,9 @@
+/**
+ * Funciones útiles.
+ * 
+ * @author Thorin8k
+ */
+
 function cleanArray(actual){
   var newArray = new Array();
   for(var i = 0; i<actual.length; i++){

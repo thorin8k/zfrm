@@ -176,6 +176,9 @@ var FirstPlayer = Object.extend({
         if (event.keyCode === 40) {
             this.movement.setMovement('down', this.speed);
         }
+        if (event.keyCode === 32) {
+            console.log("ay")
+        }
     },
     keyup : function (event) {
         this.animation._frameIndex = 0;

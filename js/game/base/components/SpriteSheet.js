@@ -1,6 +1,8 @@
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * 
+ * Clase de gestión de sprites
+ * 
+ * @author Thorin8k
  */
 var SpriteSheet = Class.extend({
     _sprites: [],

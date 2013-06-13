@@ -1,3 +1,8 @@
+/**
+ * Clase de animación
+ * 
+ * @author Thorin8k
+ */
 var Animation = Class.extend({
     _frames: [],
     _frame: null,

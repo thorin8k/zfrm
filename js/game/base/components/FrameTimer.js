@@ -1,6 +1,8 @@
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Timer para controlar los sprites.
+ * 
+ * @author Thorin8k
+ * 
  */
 var FrameTimer = Class.extend({
     _lastTick:null,

@@ -1,5 +1,7 @@
 /**
- * Función importada del proyecto cyan
+ * Clase de gestión de assets. Importada del proyecto cyan
+ * 
+ * Modificada por thorin8k
  */
  var AssetManager = Class.extend({
     // Número de imágenes cargadas correctamente.
