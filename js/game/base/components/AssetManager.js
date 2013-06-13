@@ -1,7 +1,8 @@
 /**
- * Clase de gestión de assets. Importada del proyecto cyan
+ * Clase generada partiendo del proyecto cyan. Se ha modificado para que 
+ * soporte la carga de mapas json.
  * 
- * Modificada por thorin8k
+ * @author Thorin8k
  */
  var AssetManager = Class.extend({
     // Número de imágenes cargadas correctamente.

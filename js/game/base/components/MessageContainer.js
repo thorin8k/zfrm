@@ -49,8 +49,7 @@
             nMessages = message.length;
         for (nMessage = 0; nMessage < nMessages; nMessage += 1) {
             sMessage = message[nMessage];
-            // Si el mensaje no existe, creamos un array para
-            // dicho mensaje.
+            
             if (typeof this[sMessage] !== 'undefined') {
                 var nListenersLength = this[sMessage].length;
                 for (var nCount = 0; nCount < nListenersLength; nCount += 1) {
