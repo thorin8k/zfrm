@@ -4,6 +4,7 @@
  * 
  * Este rectangulo puede moverse por la pantalla con las flechas.
  * 
+ * //TODO: Sería la hostia hacer cuadraditos que hagan snapping unos con otros...
  */
 var Rectangle = Object.extend({
     color: 'red',

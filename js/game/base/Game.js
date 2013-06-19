@@ -8,7 +8,7 @@
  */
 var Game = Class.extend({
     //objeto canvas, gestión de buffer
-    oCanvas: null,
+    oCanvas: null,//TODO: Parar el juego y los movimientos del pj si el canvas pierde el foco....
     //listado de capas
     layerList: [],
     //listado de modulos
@@ -86,6 +86,10 @@ var Game = Class.extend({
         //Bucle principal de juego
         game.gameLogic();
         //función callback cuando se cargan todas las imagenes.
+        game.messageContainer.speak({
+            message : "#debugMessage#",
+            data : "Comenzando la carga de assets..."
+        });
         this.imageManager.load(function(){ 
             // Notificar a los modulos el evento Start
             game.messageContainer.speak({
@@ -96,13 +100,20 @@ var Game = Class.extend({
             game.callObjectMethods("start", game.moduleTools);
             game.status = STATUS_RUNNING;
             //eliminar layer de carga
-            game.removeLayer('loadingScreen');
+            game.removeLayer('loadingScreen');     
+            game.messageContainer.speak({
+                message : "#debugMessage#",
+                data : "Assets cargados: OK"
+            });
         },this.getLayer('loadingScreen'));
     },
     //Pone el juego en estado iddle y para la ejecución
     pauseGame: function(){
         this.status = STATUS_IDDLE;
         //TODO: no parar la ejecución y poner un menu parando los objetos?
+        //Opciones:
+        //guardar un objecto con el estado actual y ponerlo en segundo plano.
+        //añadir una capa que se superponga a todo lo demas... y eliminar los handler de key del resto de objetos..(esto es algo raro)
         cancelAnimationFrame(this.animFrame);
     },
     //Vuelve el juego al estado running y reinicia la ejecución
@@ -135,6 +146,10 @@ var Game = Class.extend({
         });
         //launch the prestart method to the objects
         this.callObjectMethods("prestart", this.moduleTools);
+        this.messageContainer.speak({
+            message : "#debugMessage#",
+            data : "Iniciando... Modulos cargados: OK."
+        });
     },
     //realiza una llamada en cascada a los métodos pasados.
     callObjectMethods:function(methodName,args){

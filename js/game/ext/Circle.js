@@ -36,6 +36,7 @@ var Circle = Object.extend({
       canvas.bufferContext.stroke();
     },
     handleCollision: function(res){
+        //TODO: Seguimos con problemas en los rebotes de los circulos...
         this.color = 'yellow';
         for(var i = 0;i < res.length; i+=1){
             if(res[i] !== null){

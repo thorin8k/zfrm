@@ -35,7 +35,7 @@
                     this.loadMap(callback,loadingScreen,id,path);
                     break;
             }
-        }        
+        }
     },
     /**
      * Añade una imagen a la lista de descarga.
@@ -51,6 +51,10 @@
             // Incrementamos el valor del contador de cargas satisfactorias.
             self.successCount += 1;
             loadingScreen.setValue(self.getProgress());
+            game.messageContainer.speak({
+                message : "#debugMessage#",
+                data : self.getProgress()/3+"%"
+            });
             // Comprobamos si hemos terminado con la carga de todos los
             // elementos en cola dentro.
             if (self.isDone()) {
@@ -78,6 +82,10 @@
             // Incrementamos el valor del contador de cargas satisfactorias.
             self.successCount += 1;
             loadingScreen.setValue(self.getProgress());
+            game.messageContainer.speak({
+                message : "#debugMessage#",
+                data : self.getProgress()/3+"%"
+            });
             // Comprobamos si hemos terminado con la carga de todos los
             // elementos en cola dentro.
             if (self.isDone()) {

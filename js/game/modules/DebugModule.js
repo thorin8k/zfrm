@@ -37,6 +37,8 @@ var DebugModule = IModule.extend({
         this.dbgContainer.children('.object_cont').append(txt);
     },
     constructDbgView:function(){
+
+        
         this.cancelChecking();
         if(this.tools.game.getLayer('objects') !== null){
             this.objList = this.tools.game.getLayer('objects').objList;

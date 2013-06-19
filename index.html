@@ -20,9 +20,9 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/libs/jquery/Class.js"></script>
         <script type="text/javascript" src="./js/libs/canvasText/canvasText.js"></script>
         
-        <script type="text/javascript" src="./js/game.compiled.js"></script>
+        <!--script type="text/javascript" src="./js/game.compiled.js"></script-->
         
-        <!--script type="text/javascript" src="./js/game/base/commons/Constants.js"></script>
+        <script type="text/javascript" src="./js/game/base/commons/Constants.js"></script>
         <script type="text/javascript" src="./js/game/base/commons/CollisionUtils.js"></script>
         <script type="text/javascript" src="./js/game/base/commons/Utils.js"></script>
         <script type="text/javascript" src="./js/game/base/commons/LayerList.js"></script>
@@ -61,7 +61,8 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/game/modules/fpsModule.js"></script>
         <script type="text/javascript" src="./js/game/modules/LayerHandler.js"></script>
         <script type="text/javascript" src="./js/game/modules/CollisionManager.js"></script>
-        <script type="text/javascript" src="./js/game/modules/DebugModule.js"></script-->
+        <script type="text/javascript" src="./js/game/modules/DebugModule.js"></script>
+        <script type="text/javascript" src="./js/game/modules/DebugConsole.js"></script>
 
         <script type="text/javascript">
             var game;
@@ -78,6 +79,7 @@ and open the template in the editor.
                 game.addModule("LayerMod", new LayerHandler());
                 game.addModule("CollisionManager", new CollisionManager());
                 game.addModule("DbgModule", new DebugModule());
+                game.addModule("DbgConsole", new DebugConsole());
                       
                 /*
                 game.getModule('LayerMod').setTileMap(game.moduleTools.mapList["testcute"]);

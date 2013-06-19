@@ -43,7 +43,7 @@ button:hover,active[type=button]:active,input[type=submit]:active,.specBtn:activ
 /* Game Info*/
 .right_canvas{
     position:fixed;
-    right:30px;
+    right:220px;
     top: 30px;
     min-width:160px;
 }
@@ -88,4 +88,13 @@ button:hover,active[type=button]:active,input[type=submit]:active,.specBtn:activ
     margin-left:15px;
     margin-right:65px;
 
+}
+#console{
+    position:fixed;
+    right:30px;
+    top: 300px;
+}
+#console #console-text{
+    width:350px;
+    height: 300px;
 }
