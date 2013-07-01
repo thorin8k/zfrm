@@ -1,8 +1,5 @@
 /**
  * @Author Thorin8k
- * Clase rectangulo, pinta un rectangulo en las coordenadas indicadas.
- * 
- * Este rectangulo puede moverse por la pantalla con las flechas.
  * 
  */
 var Object= Class.extend({

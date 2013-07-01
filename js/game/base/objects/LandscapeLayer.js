@@ -33,10 +33,6 @@ var LandscapeLayer = Class.extend({
             actualImg = this.imagesList[i];
             layBufferContext.drawImage(actualImg.oImage, actualImg.nSourceX, actualImg.nSourceY, actualImg.width, actualImg.height, actualImg.x, actualImg.y, actualImg.width, actualImg.height);
         }
-        //store in image
-//        this.test=new Image();
-//        this.test.src = this.layBuffer.toDataURL('image/png');
-        
     },
     draw : function (canvas) {
         

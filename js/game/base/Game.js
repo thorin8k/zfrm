@@ -80,7 +80,7 @@ var Game = Class.extend({
         this.callObjectMethods(sEventType, event);
     },
     //Inicio del juego
-    startGame:function(){
+    startGame:function(callback){
         var game = this;
         game.preStart();
         //Bucle principal de juego
@@ -105,6 +105,7 @@ var Game = Class.extend({
                 message : "#debugMessage#",
                 data : "Assets cargados: OK"
             });
+            callback();
         },this.getLayer('loadingScreen'));
     },
     //Pone el juego en estado iddle y para la ejecución
@@ -124,6 +125,10 @@ var Game = Class.extend({
     //llama a change viewport de las capas
     changeViewPort: function(x,y){
         this.callObjectMethods('changeViewPort',{x:x,y:y});
+        this.messageContainer.speak({
+            message : "#changeViewPort#",
+            pos : {x:x,y:y}
+        });
     },
     /* -----------  Private Methods ------------ */
     //Precarga de los módulos

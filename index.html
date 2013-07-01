@@ -55,12 +55,14 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/game/ext/Circle.js"></script>
         <script type="text/javascript" src="./js/game/ext/RectangleClick.js"></script>
         <script type="text/javascript" src="./js/game/ext/FirstPlayer.js"></script>
+        <script type="text/javascript" src="./js/game/ext/Enemy.js"></script>
         <script type="text/javascript" src="./js/game/ext/Text.js"></script>
         <script type="text/javascript" src="./js/game/ext/CollisionBox.js"></script>
         
         <script type="text/javascript" src="./js/game/modules/fpsModule.js"></script>
         <script type="text/javascript" src="./js/game/modules/LayerHandler.js"></script>
         <script type="text/javascript" src="./js/game/modules/CollisionManager.js"></script>
+        <script type="text/javascript" src="./js/game/modules/LightManager.js"></script>
         <script type="text/javascript" src="./js/game/modules/DebugModule.js"></script>
         <script type="text/javascript" src="./js/game/modules/DebugConsole.js"></script>
 
@@ -78,6 +80,7 @@ and open the template in the editor.
                 game.addModule("fpsMod", new FpsModule());  
                 game.addModule("LayerMod", new LayerHandler());
                 game.addModule("CollisionManager", new CollisionManager());
+                game.addModule("LightManager", new LightManager());
                 game.addModule("DbgModule", new DebugModule());
                 game.addModule("DbgConsole", new DebugConsole());
                       
@@ -88,8 +91,10 @@ and open the template in the editor.
                 */
                                                
                 // Añadimos algunas imágenes a la lista de descarga
-                game.imageManager.addAsset('image','pokeset','img/pokeset.png');
-                game.imageManager.addAsset('image','link.png','img/oorjG.png');
+                //game.imageManager.addAsset('image','pokeset','img/pokeset.png');
+                game.imageManager.addAsset('image','skeleton.png','img/Example-skeleton.png');
+                game.imageManager.addAsset('image','zombie.png','img/Monster-zombie.png');
+                game.imageManager.addAsset('image','link.png','img/test2.png');
                 game.imageManager.addAsset('image','tilea1','img/tilea1.png');
                 game.imageManager.addAsset('image','tilea2','img/tilea2.png');
                 game.imageManager.addAsset('image','tilea3','img/tilea3.png');
@@ -105,20 +110,22 @@ and open the template in the editor.
                 game.imageManager.addAsset('image','tilek','img/tilek.png');
                 game.imageManager.addAsset('image','tilesetsall','img/tilesetsall.png');
                 game.imageManager.addAsset('image','01_background','img/01_background.jpg');
-                game.imageManager.addAsset('map','testcute','map/testcute.json');
-                game.imageManager.addAsset('map','test2','map/test2.json');
+                //game.imageManager.addAsset('map','testcute','map/testcute.json');
+                //game.imageManager.addAsset('map','test2','map/test2.json');
                 game.imageManager.addAsset('map','tileMap','map/tileMap.json');
                 
-                var layer = new ObjectLayer();
-                var fp = new FirstPlayer();
-                fp.x=200;
-                fp.y= 200;
-                layer.addObject('fp',fp);
-                layer.z = 3;
+                //var layer = new ObjectLayer();
+                //var fp = new FirstPlayer();
+                //fp.x=200;
+                //fp.y= 200;
+                //layer.addObject('fp',fp);
+                //layer.z = 6;
                 
-                //game.addLayerToQueue('objects',layer);
+                //var layer = new FogLayer();
+                //game.addLayerToQueue('fog',layer);
                 
-                game.startGame();
+                game.startGame(afterGameLoad);
+                
                 
             });
             //Event Handling
@@ -131,6 +138,13 @@ and open the template in the editor.
             window.addEventListener("click", function (eEvent) {
                 game.executionKey(eEvent);
             }, false);
+            
+            function afterGameLoad(){
+                game.messageContainer.speak({
+                    message : "#loadMap#",
+                    mapName : "tileMap"
+                });
+            }
         </script>
     </body>
 </html>

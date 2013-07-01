@@ -35,7 +35,7 @@ var CollisionManager = IModule.extend({
                 if(object1.__id !== object2.__id){
                     //register axis penetration of all collisions
                     var col = this.collide(object1,object2)
-                    if(col != null){
+                    if(col !== null){
                         result.push(col);
                     }
                 }

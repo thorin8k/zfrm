@@ -41,7 +41,7 @@
     preloadMap:function(notification){
         //TODO loading screen?
         this.tools.game.clearLandscape();
-        this.tools.game.addLayer('loadingScreen',new LoadingScreen());
+        //this.tools.game.addLayer('loadingScreen',new LoadingScreen());
         this.tools.game.actualMap = notification.mapName;
         this.setTileMap(this.tools.mapList[notification.mapName]);
         this.canLoadMap = true;
@@ -77,14 +77,14 @@
             }else if(this.layers[nCount].type === 'objectgroup'){
                 this.addObjectLayer(currentLayer);
             }
-            this.tools.game.getLayer('loadingScreen').setValue(nCount*300/currentLayerLen);
+            //this.tools.game.getLayer('loadingScreen').setValue(nCount*300/currentLayerLen);
 	}
          for(var lay in this.layerList){
              //añadimos toda la colección a las capas del juego
              this.tools.game.addLayer(this.layerList[lay].__id,this.layerList[lay]);
          }
          this.canLoadMap = false;
-         this.tools.game.removeLayer('loadingScreen');
+         //this.tools.game.removeLayer('loadingScreen');
          //ordenación en el eje z
          this.tools.game.layerList.sort(function(oObjA, oObjB) {
                return oObjA.z - oObjB.z;
