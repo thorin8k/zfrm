@@ -53,7 +53,7 @@
             loadingScreen.setValue(self.getProgress());
             game.messageContainer.speak({
                 message : "#debugMessage#",
-                data : self.getProgress()/3+"%"
+                data : Math.round(self.getProgress()/3 * 100) / 100+"%"
             });
             // Comprobamos si hemos terminado con la carga de todos los
             // elementos en cola dentro.
@@ -84,7 +84,7 @@
             loadingScreen.setValue(self.getProgress());
             game.messageContainer.speak({
                 message : "#debugMessage#",
-                data : self.getProgress()/3+"%"
+                data : Math.round(self.getProgress()/3 * 100) / 100+"%"
             });
             // Comprobamos si hemos terminado con la carga de todos los
             // elementos en cola dentro.

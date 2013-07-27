@@ -92,7 +92,7 @@ button:hover,active[type=button]:active,input[type=submit]:active,.specBtn:activ
 #console{
     position:fixed;
     right:30px;
-    top: 300px;
+    top: 340px;
 }
 #console #console-text{
     width:350px;

@@ -39,7 +39,7 @@
         
     },
     preloadMap:function(notification){
-        //TODO loading screen?
+        //TODO loading screen? no creo que merezca la pena, el tiempo de carga es infimo
         this.tools.game.clearLandscape();
         //this.tools.game.addLayer('loadingScreen',new LoadingScreen());
         this.tools.game.actualMap = notification.mapName;
@@ -64,12 +64,14 @@
         this.layers = this.tileMap.layers;
         this.imageCols = this.tileMap.tilesets[0].imagewidth / this.tileWidth;
         this.imageRows = this.tileMap.tilesets[0].imageheight / this.tileHeight;
+        
         var currentLayer,
-        currentLayerLen = this.layers.length;
+        currentLayerLen = this.layers.length,
+        nCount = 0;
         // Vamos a pintar todos los elementos de una capa, y al finalizar, pasaremos a la siguiente capa.
 	// Recordemos que cada capa contiene un conjunto de elementos. En nuestro caso, la primera
 	// capa contiene el suelo, y la segunda capa elementos como las sillas, mesas, etc.
-	for (var nCount = 0; nCount < currentLayerLen; nCount += 1) { 
+	while (nCount < currentLayerLen) { 
             currentLayer = this.layers[nCount];
             //en función del tipo creamos un tipo de capa o otro
             if(this.layers[nCount].type === 'tilelayer'){
@@ -78,6 +80,7 @@
                 this.addObjectLayer(currentLayer);
             }
             //this.tools.game.getLayer('loadingScreen').setValue(nCount*300/currentLayerLen);
+            nCount++;
 	}
          for(var lay in this.layerList){
              //añadimos toda la colección a las capas del juego
@@ -91,10 +94,14 @@
          });
          //center on screen
          this.tools.game.callObjectMethods('centerOnScreen',null);
+         //After load
+         game.messageContainer.speak({message : "#reloadDbg#"});
      },
      getActualTileset:function(tileId){
-         var length = this.tileMap.tilesets.length;
-         for(var i = 0;i<length;i+=1){
+         var i=0,
+            length = this.tileMap.tilesets.length;
+    
+         while(i<length){
              var actualTileset = this.tileMap.tilesets[i];
              var nextTileset = this.tileMap.tilesets[i+1];
              if(tileId >=  actualTileset.firstgid){
@@ -105,14 +112,17 @@
                      return tileId-actualTileset.firstgid+1;                     
                  }
              }
+             i++;
          }
      },
      addLandscapeLayer: function(currentLayer,currentLayerDataLen){
          // Variables para controlar en qué posición del Canvas debemos pintar.
         this.nAxisX = 0;
         this.nAxisY = 0;
-        var layer = new LandscapeLayer();
-        for (var nDataCount = 0; nDataCount < currentLayerDataLen; nDataCount += 1) {
+        var nDataCount = 0,
+        layer = new LandscapeLayer();
+
+        while(nDataCount < currentLayerDataLen) {
 
             // nTileId contiene el ID del tile que queremos dibujar.
             this.nTileId = this.getActualTileset(currentLayer.data[nDataCount]);
@@ -157,6 +167,7 @@
                 this.nAxisX = 0;
                 this.nAxisY += this.tileHeight;
             }
+            nDataCount++;
         }
         layer.__id= currentLayer.name;
         
@@ -176,17 +187,20 @@
      },
      addObjectLayer:function(currentLayer){
          //añade una capa de objetos.
-         var layer = new ObjectLayer();
+         var nDataCount = 0,
+                 layLength = currentLayer.objects.length,
+                 layer = new ObjectLayer();
+         
          //recorre todos los objetos en la capa y los genera
-         for (var nDataCount = 0; nDataCount < currentLayer.objects.length; nDataCount += 1) {
-             var currObj = currentLayer.objects[nDataCount];
+         while (nDataCount < layLength) {
+             var currObj = currentLayer.objects[nDataCount],
+                object = new window[currObj.type](this.tools);
              
-             var object = new window[currObj.type](this.tools);
              object.x=currObj.x;
              object.y=currObj.y;
              object.width=currObj.width;
              object.height=currObj.height;
-             for(i in currObj.properties){
+             for(var i in currObj.properties){
                  var prop = currObj.properties[i];
                  if(!isNaN(prop)){
                     object[i] = parseInt(prop);
@@ -195,6 +209,7 @@
                 }
              }
              layer.addObject(currObj.name,object);
+             nDataCount++;
          }
          layer.__id= currentLayer.name;
          //establece sus propiedades

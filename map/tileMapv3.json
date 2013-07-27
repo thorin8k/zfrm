@@ -39,78 +39,24 @@
                  "name":"fp",
                  "properties":
                     {
-                     "z":"1"
+
                     },
                  "type":"FirstPlayer",
-                 "visible":true,
-                 "width":64,
+                 "width":32,
                  "x":1456,
                  "y":657
                 }, 
                 {
-                 "height":64,
+                 "height":32,
                  "name":"enemy1",
                  "properties":
                     {
-                     "z":"1"
+
                     },
                  "type":"Enemy",
-                 "visible":true,
-                 "width":64,
-                 "x":1165,
-                 "y":743
-                }, 
-                {
-                 "height":64,
-                 "name":"enemy5",
-                 "properties":
-                    {
-                     "z":"1"
-                    },
-                 "type":"Enemy",
-                 "visible":true,
-                 "width":64,
-                 "x":1017,
-                 "y":688
-                }, 
-                {
-                 "height":64,
-                 "name":"enemy4",
-                 "properties":
-                    {
-                     "z":"1"
-                    },
-                 "type":"Enemy",
-                 "visible":true,
-                 "width":64,
-                 "x":910,
-                 "y":490
-                }, 
-                {
-                 "height":64,
-                 "name":"enemy2",
-                 "properties":
-                    {
-                     "z":"1"
-                    },
-                 "type":"Enemy",
-                 "visible":true,
-                 "width":64,
-                 "x":1162,
-                 "y":318
-                }, 
-                {
-                 "height":64,
-                 "name":"enemy3",
-                 "properties":
-                    {
-                     "z":"1"
-                    },
-                 "type":"Enemy",
-                 "visible":true,
-                 "width":64,
-                 "x":969,
-                 "y":360
+                 "width":32,
+                 "x":1406,
+                 "y":738
                 }],
          "opacity":1,
          "properties":
@@ -150,7 +96,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":22,
                  "x":1413,
                  "y":652
@@ -163,7 +108,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":1911,
                  "x":3,
                  "y":4
@@ -176,7 +120,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":1911,
                  "x":7,
                  "y":1079
@@ -189,7 +132,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":0,
                  "x":3,
                  "y":15
@@ -202,7 +144,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":3,
                  "x":1911,
                  "y":16
@@ -215,7 +156,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":11,
                  "x":607,
                  "y":4
@@ -228,7 +168,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":371,
                  "x":620,
                  "y":285
@@ -241,7 +180,6 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":1,
                  "x":987,
                  "y":13
@@ -254,25 +192,9 @@
 
                     },
                  "type":"CollisionBox",
-                 "visible":true,
                  "width":157,
                  "x":1087,
                  "y":448
-                }, 
-                {
-                 "height":16,
-                 "name":"lampLight",
-                 "properties":
-                    {
-                     "intensity":"50",
-                     "screenCenter":"true",
-                     "size":"180"
-                    },
-                 "type":"Light",
-                 "visible":true,
-                 "width":16,
-                 "x":1420,
-                 "y":652
                 }],
          "opacity":1,
          "properties":

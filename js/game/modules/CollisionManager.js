@@ -29,9 +29,11 @@ var CollisionManager = IModule.extend({
         for(var obj1 in this.collideSubscriptions){
             var result = [];
             var object1 = this.collideSubscriptions[obj1].object;
+            if(object1 == null) continue;
             object1.collision.releaseCollisions();
             for(var obj2 in this.collideSubscriptions){
                 var object2 = this.collideSubscriptions[obj2].object;
+                if(object2 == null) continue;
                 if(object1.__id !== object2.__id){
                     //register axis penetration of all collisions
                     var col = this.collide(object1,object2)

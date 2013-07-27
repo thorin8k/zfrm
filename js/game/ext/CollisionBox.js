@@ -17,10 +17,26 @@ var CollisionBox = Class.extend({
     color: 'grey',
     collisionType: 'Rectangle',
     tools:null,
-    init:function(){
+    parent: null,
+    init:function(id,x,y,width,height,tools,parent){
         this.collision = new Collision();
         this.movement = new Movement();
+        this.__id = id;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.parent = parent;
+        this.tools = tools;
         
+        if(this.tools != null){
+            //añadir la collision box al módulo de collisiones
+            this.tools.messageContainer.speak({
+                message : "#collisionSubs#",
+                obj : this,
+                callback: 'handleCollision'
+            });
+        }
     },
     start: function(moduleTools){
         

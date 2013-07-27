@@ -1,4 +1,3 @@
-
 STATUS_IDDLE='iddle';STATUS_RUNNING='running';STATUS_STOPPED='stopped';;var CollisionUtils=Class.extend({getCollisionSide:function(obj1,obj2,reverse){var axis=this.getCollisionAxis(obj1,obj2);if(axis.x!=0||axis.y!=0){if(axis.x!=0){if(axis.x>0){if(!reverse){return'left';}else{return'right';}}
 if(axis.x<0){if(!reverse){return'right';}else{return'left';}}}else if(axis.y!=0){if(axis.y>0){if(!reverse){return'top';}else{return'bottom';}}
 if(axis.y<0){if(!reverse){return'bottom';}else{return'top';}}}}

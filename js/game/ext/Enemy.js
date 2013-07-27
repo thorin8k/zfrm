@@ -7,73 +7,72 @@ var Enemy = Object.extend({
     sprite:null,
     animation: null,
     image: null,
+    speed:1,
+    persistent:true,
     collisionBox:null,
-    speed:2,
+    collisionCorrectionX: 23,
+    collisionCorrectionY: 30,
+    light: null,
     start: function(moduleTools){
         this._super(moduleTools);
+        
         var self= this;
+        
         //Crear una collisionbox 
-        this.collisionBox = new CollisionBox();
-        this.collisionBox.width = 15;
-        this.collisionBox.height = 30;
-        this.collisionBox.tools = moduleTools;
-        this.collisionBox.__id = this.__id;
+        this.collisionBox = new CollisionBox(this.__id,this.x,this.y,18,30,moduleTools,this);
         this.collisionBox.handleCollision = function(res){
             //asignar una llamada a handle collision que redireccione a la de este objeto
             self.handleCollision(res);
         };
         
-        //añadir la collision box al módulo de collisiones
-        this.tools.messageContainer.speak({
-            message : "#collisionSubs#",
-            obj : this.collisionBox,
-            callback: 'handleCollision'
-        });
-        //añadir el objeto al módulo de luces...
-        this.tools.messageContainer.speak({
-            message : "#lightSubs#",
-            obj : this,
-            centerOnScreen: true,
-            size: 40
-        });
+        this.light = new Light(this.__id,(this.x+this.width/2),(this.y+this.height/2),60,80,this.tools,true);
+        
         //Crear el mapa de sprites
         this.sprite = new SpriteSheet({
-            width: 60,
-            height: 60,
+            width: this.width,
+            height: this.height,
             sprites: [
-                { name: 'stand' },
-                { name: 'walk_left_1', x: 0, y: 0 },
-                { name: 'walk_left_2', x: 1, y: 0 },
-                { name: 'walk_left_3', x: 2, y: 0 },
-                { name: 'walk_left_4', x: 3, y: 0 },
-                { name: 'walk_left_5', x: 4, y: 0 },
+                { name: 'stand' , x: 0, y: 4},
+                { name: 'walk_left_1', x: 0, y: 2 },
+                { name: 'walk_left_2', x: 1, y: 2 },
+                { name: 'walk_left_3', x: 2, y: 2 },
+                { name: 'walk_left_4', x: 3, y: 2 },
+                { name: 'walk_left_5', x: 4, y: 2 },
+                { name: 'walk_left_6', x: 5, y: 2 },
+                { name: 'walk_left_7', x: 6, y: 2 },
                 { name: 'walk_right_1', x: 0, y: 1 },
                 { name: 'walk_right_2', x: 1, y: 1 },
                 { name: 'walk_right_3', x: 2, y: 1 },
                 { name: 'walk_right_4', x: 3, y: 1 },
                 { name: 'walk_right_5', x: 4, y: 1 },
-                { name: 'walk_up_1', x: 0, y: 2 },
-                { name: 'walk_up_2', x: 1, y: 2 },
-                { name: 'walk_up_3', x: 2, y: 2 },
-                { name: 'walk_up_4', x: 3, y: 2 },
-                { name: 'walk_up_5', x: 4, y: 2 },
-                { name: 'walk_down_1', x: 0, y: 3 },
-                { name: 'walk_down_2', x: 1, y: 3 },
-                { name: 'walk_down_3', x: 2, y: 3 },
-                { name: 'walk_down_4', x: 3, y: 3 },
-                { name: 'walk_down_5', x: 4, y: 3 }
+                { name: 'walk_right_6', x: 5, y: 1 },
+                { name: 'walk_right_7', x: 6, y: 1 },
+                { name: 'walk_up_1', x: 0, y: 3 },
+                { name: 'walk_up_2', x: 1, y: 3 },
+                { name: 'walk_up_3', x: 2, y: 3 },
+                { name: 'walk_up_4', x: 3, y: 3 },
+                { name: 'walk_up_5', x: 4, y: 3 },
+                { name: 'walk_up_6', x: 5, y: 3 },
+                { name: 'walk_up_7', x: 6, y: 3 },
+                { name: 'walk_down_1', x: 0, y: 0 },
+                { name: 'walk_down_2', x: 1, y: 0 },
+                { name: 'walk_down_3', x: 2, y: 0 },
+                { name: 'walk_down_4', x: 3, y: 0 },
+                { name: 'walk_down_5', x: 4, y: 0 },
+                { name: 'walk_down_6', x: 5, y: 0 },
+                { name: 'walk_down_7', x: 6, y: 0 }
                 
             ]
         });
         
         this.animation = new Animation([
-                { sprite: 'walk_left_1', time: 0.1 }
+                { sprite: 'stand', time: 0.1 }
             ],this.sprite);
         this.timer = new FrameTimer();
         this.timer.tick();
         this.image = this.tools.imageList["zombie.png"];
         
-        //this.movement.setMovement('up', this.speed);
+        this.movement.setMovement('up', this.speed);
         
         
     },
@@ -99,20 +98,100 @@ var Enemy = Object.extend({
             this.collision.releaseCollisions();
         }
     },
+    searchForEnemy:function(){
+        this.movement.stop();
+        this.destx = this.tools.game.getLayer('objects').getObject('fp').x;
+        this.desty = this.tools.game.getLayer('objects').getObject('fp').y;
+        
+        if(this.x < this.destx){
+            //Move Right
+            this.movement.setMovement('right', this.speed);
+        }
+        if(this.x > this.destx){
+            //Move left
+            this.movement.setMovement('left', this.speed);
+        }
+        if(this.y > this.desty){
+            //Move up
+            this.movement.setMovement('up', this.speed);
+        }
+        if(this.y < this.desty){
+            //Move down
+            this.movement.setMovement('down', this.speed);
+        }
+    },
     update: function(canvas){
+    
+        this.searchForEnemy();
         if(this.isMoving()){
-            this.move(false);            
+            this.move(false);
+            this.light.updatePos((this.x+this.width/2),(this.y+this.height/2));
         }
         
-        this.collisionBox.x = this.x+24;
-        this.collisionBox.y = this.y+24;
+        if (this.movement.left !== 0 && !this.collision.left) {
+            this.animation._frames = [
+                 { sprite: 'walk_left_1', time: 0.1 },
+                 { sprite: 'walk_left_2', time: 0.1 },
+                 { sprite: 'walk_left_3', time: 0.1 },
+                 { sprite: 'walk_left_4', time: 0.1 },
+                 { sprite: 'walk_left_5', time: 0.1 },
+                 { sprite: 'walk_left_6', time: 0.1 },
+                 { sprite: 'walk_left_7', time: 0.1 }
+            ];
+        }
+        if (this.movement.right !== 0 && !this.collision.right) {
+            this.animation._frames = [
+                 { sprite: 'walk_right_1', time: 0.1 },
+                 { sprite: 'walk_right_2', time: 0.1 },
+                 { sprite: 'walk_right_3', time: 0.1 },
+                 { sprite: 'walk_right_4', time: 0.1 },
+                 { sprite: 'walk_right_5', time: 0.1 },
+                 { sprite: 'walk_right_6', time: 0.1 },
+                 { sprite: 'walk_right_7', time: 0.1 },
+            ];
+        }
+        if (this.movement.up !== 0 && !this.collision.top) {
+            this.animation._frames = [
+                 { sprite: 'walk_up_1', time: 0.1 },
+                 { sprite: 'walk_up_2', time: 0.1 },
+                 { sprite: 'walk_up_3', time: 0.1 },
+                 { sprite: 'walk_up_4', time: 0.1 },
+                 { sprite: 'walk_up_5', time: 0.1 },
+                 { sprite: 'walk_up_6', time: 0.1 },
+                 { sprite: 'walk_up_7', time: 0.1 },
+            ];
+        }
+        if (this.movement.down !== 0 && !this.collision.bottom) {
+            
+            this.animation._frames = [
+                 { sprite: 'walk_down_1', time: 0.1 },
+                 { sprite: 'walk_down_2', time: 0.1 },
+                 { sprite: 'walk_down_3', time: 0.1 },
+                 { sprite: 'walk_down_4', time: 0.1 },
+                 { sprite: 'walk_down_5', time: 0.1 },
+                 { sprite: 'walk_down_6', time: 0.1 },
+                 { sprite: 'walk_down_7', time: 0.1 },
+            ];
+        }
+        
+        this.collisionBox.x = this.x + this.collisionCorrectionX;
+        this.collisionBox.y = this.y + this.collisionCorrectionY;
     },
     draw : function (canvas) {
+
+        this.animation.animate(this.timer.getSeconds());
         var frame = this.animation.getSprite();
         canvas.bufferContext.drawImage(this.image, frame.x, frame.y, 60, 60, this.x, this.y, 60, 60);
         this.timer.tick();
         
         this.collisionBox.draw(canvas);
+        
+//        canvas.bufferContext.beginPath();
+//        canvas.bufferContext.rect(this.x, this.y, this.width, this.height);
+//        canvas.bufferContext.closePath();
+//        canvas.bufferContext.lineWidth = 2;
+//        canvas.bufferContext.strokeStyle = 'black';
+//        canvas.bufferContext.stroke();
     },
     toString:function(){
         var test = this._super();

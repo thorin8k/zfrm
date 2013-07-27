@@ -11,35 +11,27 @@ var FirstPlayer = Object.extend({
     sprite:null,
     animation: null,
     image: null,
-    collisionBox:null,
+    light: null,
     persistent:true,
-    sword: false,
+    weapon: false,
     speed: 3,
+    collisionBox:null,
+    collisionCorrectionX: 23,
+    collisionCorrectionY: 30,
     start: function(moduleTools){
         this._super(moduleTools);
         var self= this;
         //Crear una collisionbox 
-        this.collisionBox = new CollisionBox();
-        this.collisionBox.width = 15;
-        this.collisionBox.height = 30;
-        this.collisionBox.tools = moduleTools;
-        this.collisionBox.__id = this.__id;
+        this.collisionBox = new CollisionBox(this.__id,this.x,this.y,18,30,moduleTools,this);
         this.collisionBox.handleCollision = function(res){
             //asignar una llamada a handle collision que redireccione a la de este objeto
             self.handleCollision(res);
         };
         
-        //añadir la collision box al módulo de collisiones
-        this.tools.messageContainer.speak({
-            message : "#collisionSubs#",
-            obj : this.collisionBox,
-            callback: 'handleCollision'
-        });
-        
         //Crear el mapa de sprites
         this.sprite = new SpriteSheet({
-            width: 64,
-            height: 64,
+            width: this.width,
+            height: this.height,
             sprites: [
                 { name: 'stand', x: 7, y: 0},
                 { name: 'walk_left_1', x: 0, y: 2 },
@@ -73,7 +65,7 @@ var FirstPlayer = Object.extend({
             ]
         });
         
-        var equippedSword = this.getEquipedSword();
+        
         this.animation = new Animation([
                 { sprite: 'stand', time: 0.1 }
             ],this.sprite);
@@ -87,17 +79,10 @@ var FirstPlayer = Object.extend({
         this.x = 300;
         this.y = 240;
         
-        //añadir el objeto al módulo de luces...
-        this.tools.messageContainer.speak({
-            message : "#lightSubs#",
-            obj : this,
-            centerOnScreen: false,
-            size: 100,
-            intensity:30
-        });
+        this.light = new Light(this.__id,(this.x+this.width/2),(this.y+this.height/2),100,95,this.tools,false);
     },
     update: function(canvas){
-        var equippedSword = this.getEquipedSword();
+        var equipedWeapon = this.getEquipedSword();
         if(this.gravity!==0){
             if(!this.collision.bottom){
                 this.y+=this.gravity;
@@ -105,67 +90,73 @@ var FirstPlayer = Object.extend({
         }
         if (this.movement.left !== 0 && !this.collision.left) {
             this.animation._frames = [
-                 { sprite: 'walk'+equippedSword+'_left_1', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_left_2', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_left_3', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_left_4', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_left_5', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_left_6', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_left_7', time: 0.1 }
+                 { sprite: 'walk'+equipedWeapon+'_left_1', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_left_2', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_left_3', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_left_4', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_left_5', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_left_6', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_left_7', time: 0.1 }
             ];
             this.tools.game.changeViewPort(+this.speed,0);
         }
         if (this.movement.right !== 0 && !this.collision.right) {
             this.animation._frames = [
-                 { sprite: 'walk'+equippedSword+'_right_1', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_right_2', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_right_3', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_right_4', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_right_5', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_right_6', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_right_7', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_right_1', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_right_2', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_right_3', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_right_4', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_right_5', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_right_6', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_right_7', time: 0.1 },
             ];
             this.tools.game.changeViewPort(-this.speed,0);
         }
         if (this.gravity===0 && this.movement.up !== 0 && !this.collision.top) {
             this.animation._frames = [
-                 { sprite: 'walk'+equippedSword+'_up_1', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_up_2', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_up_3', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_up_4', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_up_5', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_up_6', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_up_7', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_up_1', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_up_2', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_up_3', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_up_4', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_up_5', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_up_6', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_up_7', time: 0.1 },
             ];
             this.tools.game.changeViewPort(0,+this.speed);
         }
         if (this.movement.down !== 0 && !this.collision.bottom) {
             
             this.animation._frames = [
-                 { sprite: 'walk'+equippedSword+'_down_1', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_down_2', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_down_3', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_down_4', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_down_5', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_down_6', time: 0.1 },
-                 { sprite: 'walk'+equippedSword+'_down_7', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_down_1', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_down_2', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_down_3', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_down_4', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_down_5', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_down_6', time: 0.1 },
+                 { sprite: 'walk'+equipedWeapon+'_down_7', time: 0.1 },
             ];
             this.tools.game.changeViewPort(0,-this.speed);
         }
         
 //      correción de la posición del collisionbox
-        this.collisionBox.x = this.x+23;
-        this.collisionBox.y = this.y+30;
+        this.collisionBox.x = this.x + this.collisionCorrectionX;
+        this.collisionBox.y = this.y + this.collisionCorrectionY;
     },
     draw : function (canvas) {
         
-            this.animation.animate(this.timer.getSeconds());
-            var frame = this.animation.getSprite();
-            canvas.bufferContext.drawImage(this.image, frame.x, frame.y, this.width, this.height, this.x, this.y, this.width, this.height);
-            this.timer.tick();
+        this.animation.animate(this.timer.getSeconds());
+        var frame = this.animation.getSprite();
+        canvas.bufferContext.drawImage(this.image, frame.x, frame.y, this.width, this.height, this.x, this.y, this.width, this.height);
+        this.timer.tick();
 
-            this.collisionBox.draw(canvas);
+        this.collisionBox.draw(canvas);
         
+//        canvas.bufferContext.beginPath();
+//        canvas.bufferContext.rect(this.x, this.y, this.width, this.height);
+//        canvas.bufferContext.closePath();
+//        canvas.bufferContext.lineWidth = 2;
+//        canvas.bufferContext.strokeStyle = 'black';
+//        canvas.bufferContext.stroke();
     },
     handleCollision: function(res){
         var noCollision = true;
@@ -176,6 +167,9 @@ var FirstPlayer = Object.extend({
                     var side = this.tools.collisionUtils.getCollisionSide(this.collisionBox,res[i],false);
                     this.collision.setCollision(side);
                 }
+                if(res[i].parent && res[i].parent instanceof Enemy){
+                    this.kill();
+                }
             }
         }
         if(noCollision){
@@ -183,71 +177,62 @@ var FirstPlayer = Object.extend({
             this.collision.releaseCollisions();
         }
     },
-    toString:function(){
-        var test = this._super();
-        var result = "";
-        result += test;
-        result += "color:"+this.color+'</br>';
-        result += "collisionType:"+this.collisionType+'</br>';
-        return  result;
-    },
     keydown : function (event) {
-        if (event.keyCode === 39) {
-            
+        if (event.keyCode === KEY_RIGHT) {
             this.movement.setMovement('right', this.speed);
         }
-        if (event.keyCode === 37) {
-            
+        if (event.keyCode === KEY_LEFT) {
             this.movement.setMovement('left', this.speed);
         }
-        if (event.keyCode === 38) {
-            
+        if (event.keyCode === KEY_UP) {
             this.movement.setMovement('up', this.speed);
         }
-        if (event.keyCode === 40) {
+        if (event.keyCode === KEY_DOWN) {
             this.movement.setMovement('down', this.speed);
         }
-        if (event.keyCode === 32) {
-            console.log("ay")
+        if (event.keyCode === KEY_ACTION) {
+            console.log("ay");
         }
     },
     keyup : function (event) {
-        var equippedSword = this.getEquipedSword();
+        var equipedWeapon = this.getEquipedSword();
         this.animation._frameIndex = 0;
-        if (event.keyCode === 39) {
+        if (event.keyCode === KEY_RIGHT) {
             this.movement.unSetMovement('right');
             this.animation._frames = [
-            { sprite: 'walk'+equippedSword+'_right_1', time: 0.1 }
-        ];
+                { sprite: 'walk'+equipedWeapon+'_right_1', time: 0.1 }
+            ];
         }
-        if (event.keyCode === 37) {
+        if (event.keyCode === KEY_LEFT) {
             this.movement.unSetMovement('left');
             this.animation._frames = [
-            { sprite: 'walk'+equippedSword+'_left_1', time: 0.1 }
-        ];
+                { sprite: 'walk'+equipedWeapon+'_left_1', time: 0.1 }
+            ];
         }
-        if (event.keyCode === 38) {
+        if (event.keyCode === KEY_UP) {
             this.movement.unSetMovement('up');
             this.animation._frames = [
-            { sprite: 'walk'+equippedSword+'_up_1', time: 0.1 }
-        ];
+                { sprite: 'walk'+equipedWeapon+'_up_1', time: 0.1 }
+            ];
         }
-        if (event.keyCode === 40) {
+        if (event.keyCode === KEY_DOWN) {
             this.movement.unSetMovement('down');
             this.animation._frames = [
-            { sprite: 'walk'+equippedSword+'_down_1', time: 0.1 }
-        ];
+                { sprite: 'walk'+equipedWeapon+'_down_1', time: 0.1 }
+            ];
         }
     },
     kill:function(test){
-        this.tools.game.getLayer('objects').removeObject('fp');
+        this.movement.stop();
+        //this.speed = 0;
+        
     },
     getEquipedSword: function(){
-        var equippedSword = "";
-        if(this.sword){
-            equippedSword = "_sword";
+        var equipedWeapon = "";
+        if(this.weapon){
+            equipedWeapon = "_sword";
         }
-        return equippedSword;
+        return equipedWeapon;
     },
     toString:function(){
         var test = this._super();

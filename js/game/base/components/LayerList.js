@@ -23,14 +23,15 @@ var LayerList = Class.extend({
     },
     getItem:function(sId){
         if (typeof sId === 'string') {
-            var nObjectCount = 0;
-            var oCurrentGameObject = null;
-            var objListLength = this.layerList.length;
-            for (nObjectCount = 0; nObjectCount < objListLength; nObjectCount += 1) {
-                oCurrentGameObject = this.layerList[nObjectCount];
-                if (oCurrentGameObject.__id === sId) {
-                    return oCurrentGameObject;
+            var nObjectCount = 0,
+            currentLayer = null,
+            objListLength = this.layerList.length;
+            while(nObjectCount < objListLength){
+                currentLayer = this.layerList[nObjectCount];
+                if (currentLayer.__id === sId) {
+                    return currentLayer;
                 }
+                nObjectCount++;
             }
         }
         return null;
@@ -56,68 +57,75 @@ var LayerList = Class.extend({
     },
     getItemIdx:function(sId){
         if (typeof sObjectId === 'string') {
-            var nObjectCount = 0;
-            var oCurrentGameObject = null;
-            var objListLength = this.count();
-            for (nObjectCount = 0; nObjectCount < objListLength; nObjectCount += 1) {
-                oCurrentGameObject = this.getItemByIdx(nObjectCount);
-                if (oCurrentGameObject.__id === sId) {
+            var nObjectCount = 0,
+            currentLayer = null,
+            objListLength = this.count();
+    
+            while(nObjectCount < objListLength) {
+                currentLayer = this.getItemByIdx(nObjectCount);
+                if (currentLayer.__id === sId) {
                     return nObjectCount;
                 }
+                nObjectCount++;
             }
         }
         return null;
     },
     removeItem:function(sId){
         if (typeof sId === 'string') {
-            var oCurrentGameObject = null;
-            var nObjectCount = 0;
-            var nGameObjectsLength = this.count();
+            var currentLayer = null,
+            nObjectCount = 0,
+            nGameObjectsLength = this.count();
  
-            for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
-                oCurrentGameObject = this.getItemByIdx(nObjectCount);
-                if (oCurrentGameObject.__id === sId) {
+            while (nObjectCount < nGameObjectsLength) {
+                currentLayer = this.getItemByIdx(nObjectCount);
+                if (currentLayer.__id === sId) {
                     this.layersToRemove.push(nObjectCount);
                 }
+                nObjectCount++;
             }
         }
     },
     clearRemoveds:function(){
         //Elimina los objetos presentes en el array de objetos para eliminar
         //del array principal de capas
-        var nRemoveLength = this.layersToRemove.length;
-        
-        var nCount = 0;
-        var nCurrentObject = 0;
- 
-        for (nCount = 0; nCount < nRemoveLength; nCount += 1) {
-              nCurrentObject = this.layersToRemove[nCount];
-              //this.layerList.splice(nCurrentObject, 1);
-              delete this.layerList[nCurrentObject];
+        var nRemoveLength = this.layersToRemove.length,
+        nCount = 0,
+        currentLayer = 0;
+        if(nRemoveLength !== 0){
+            while (nCount < nRemoveLength) {
+                  currentLayer = this.layersToRemove[nCount];
+                  //this.layerList.splice(currentLayer, 1);
+                  delete this.layerList[currentLayer];
+                  nCount++;
+            }
+            this.layerList = cleanArray(this.layerList);
+            this.layersToRemove = [];
         }
-        this.layerList = cleanArray(this.layerList);
-        this.layersToRemove = [];
-        
+       
         //Recorre las capas, en caso de existir, buscando objetos en la collección
         // de removibles y los elimina
-        var oCurrentGameObject = null;
-        var nObjectCount = 0;
-        var nGameObjectsLength = this.layerList.length;
-        for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
-            oCurrentGameObject = this.layerList[nObjectCount];
-            if(oCurrentGameObject.objsToRemove){
-                nRemoveLength = oCurrentGameObject.objsToRemove.length;
-                nCount = 0;
-                nCurrentObject = 0;
+        var currentLayer = null,
+        nLayerCount = 0,
+        layerListLength = this.layerList.length;
 
-                for (nCount = 0; nCount < nRemoveLength; nCount += 1) {
-                      nCurrentObject = oCurrentGameObject.objsToRemove[nCount];
-                      //oCurrentGameObject.objList.splice(nCurrentObject, 1);
-                      delete oCurrentGameObject.objList[nCurrentObject];
+        while (nLayerCount < layerListLength) {
+            currentLayer = this.layerList[nLayerCount];
+            if(currentLayer.objsToRemove && currentLayer.objsToRemove.length !== 0){
+                nRemoveLength = currentLayer.objsToRemove.length;
+                nCount = 0;
+                currentLayer = 0;
+
+                while (nCount < nRemoveLength) {
+                      currentLayer = currentLayer.objsToRemove[nCount];
+                      //currentLayer.objList.splice(currentLayer, 1);
+                      delete currentLayer.objList[currentLayer];
+                      nCount++;
                 }
-                oCurrentGameObject.objList = cleanArray(oCurrentGameObject.objList);
-                oCurrentGameObject.objsToRemove = [];
+                currentLayer.objList = cleanArray(currentLayer.objList);
+                currentLayer.objsToRemove = [];
             }
+            nLayerCount++;
         }
     },
     sort:function(sortFn){
@@ -131,29 +139,32 @@ var LayerList = Class.extend({
     },
     processQueue: function(){
         //Añade los objetos existentes el la cola a la coleción principal
-        var nQueueLength = this.queueList.length;
-        var nCount = 0;
-        var nCurrentObject = 0;
+        var nQueueLength = this.queueList.length,
+        nCount = 0,
+        currentLayer = 0;
         if(nQueueLength === 0) return;
-        for (nCount = 0; nCount < nQueueLength; nCount += 1) {
-              nCurrentObject = this.queueList[nCount];
+        
+        while (nCount < nQueueLength) {
+              currentLayer = this.queueList[nCount];
               //Añade los obj al array principal
-              this.layerList.push(nCurrentObject);
+              this.layerList.push(currentLayer);
               //ejecuta su método start en caso de disponer de el
-              if(nCurrentObject['start']){
+              if(currentLayer['start']){
                   //Ejecuta su método start si lo tienen
-                  nCurrentObject['start']();
-              }else if(nCurrentObject['callObjectMethods']){
-                  nCurrentObject['callObjectMethods']('start',this.tools);
+                  currentLayer['start']();
+              }else if(currentLayer['callObjectMethods']){
+                  currentLayer['callObjectMethods']('start',this.tools);
               }
+              nCount++;
         }
         this.queueList = [];
     },
     clearLandscape: function(){
-        var count = 0;
-        var len = this.count();
-        var currObj = null;
-        for (count = 0; count < len; count += 1){
+        var count = 0,
+        len = this.count(),
+        currObj = null;
+        
+        while (count < len){
             currObj = this.getItemByIdx(count);
             if(currObj instanceof LandscapeLayer || currObj.__id !== 'objects'){
                 this.removeItem(currObj.__id);
@@ -168,6 +179,7 @@ var LayerList = Class.extend({
                       }
                 }
             }
+            count++;
         }
     }
 })

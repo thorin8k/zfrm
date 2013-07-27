@@ -6,6 +6,10 @@
  </properties>
  <tileset firstgid="1" name="tilea1" tilewidth="32" tileheight="32">
   <image source="../img/tilea1.png" width="512" height="384"/>
+  <terraintypes>
+   <terrain name="New Terrain" tile="-1"/>
+  </terraintypes>
+  <tile id="72" terrain="0,0,0,"/>
  </tileset>
  <tileset firstgid="193" name="tilea2" tilewidth="32" tileheight="32">
   <image source="../img/tilea2.png" width="512" height="384"/>
@@ -66,8 +70,36 @@
   <properties>
    <property name="z" value="2"/>
   </properties>
-  <object name="fp" type="FirstPlayer" x="1456" y="657" width="32" height="64"/>
-  <object name="enemy1" type="Enemy" x="1406" y="738" width="26" height="62"/>
+  <object name="fp" type="FirstPlayer" x="1456" y="657" width="64" height="64">
+   <properties>
+    <property name="z" value="1"/>
+   </properties>
+  </object>
+  <object name="enemy1" type="Enemy" x="1165" y="743" width="64" height="64">
+   <properties>
+    <property name="z" value="1"/>
+   </properties>
+  </object>
+  <object name="enemy5" type="Enemy" x="1017" y="688" width="64" height="64">
+   <properties>
+    <property name="z" value="1"/>
+   </properties>
+  </object>
+  <object name="enemy4" type="Enemy" x="910" y="490" width="64" height="64">
+   <properties>
+    <property name="z" value="1"/>
+   </properties>
+  </object>
+  <object name="enemy2" type="Enemy" x="1162" y="318" width="64" height="64">
+   <properties>
+    <property name="z" value="1"/>
+   </properties>
+  </object>
+  <object name="enemy3" type="Enemy" x="969" y="360" width="64" height="64">
+   <properties>
+    <property name="z" value="1"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer name="capa3" width="60" height="34">
   <properties>
@@ -90,5 +122,12 @@
   <object name="botpiramid" type="CollisionBox" x="620" y="285" width="371"/>
   <object name="rightpiramid" type="CollisionBox" x="987" y="13" width="1" height="268"/>
   <object name="lake" type="CollisionBox" x="1087" y="448" width="157" height="157"/>
+  <object name="lampLight" type="Light" x="1420" y="652" width="16" height="16">
+   <properties>
+    <property name="intensity" value="50"/>
+    <property name="screenCenter" value="true"/>
+    <property name="size" value="180"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

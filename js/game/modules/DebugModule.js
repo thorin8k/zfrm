@@ -11,6 +11,8 @@ var DebugModule = IModule.extend({
         tools.messageContainer.listen(["#dbgObjInfo#"], this.getObjectInfo, this);
         tools.messageContainer.listen(["#start#"], this.start, this);
         tools.messageContainer.listen(["#draw#"], this.startChecking, this);
+        tools.messageContainer.listen(["#reloadDbg#"], this.start, this);
+        
         
     },
     start:function(){
@@ -35,9 +37,20 @@ var DebugModule = IModule.extend({
         txt +='</div>';
         $('#dbg_container .object_cont').children('#object_cont'+notification.id).remove();
         this.dbgContainer.children('.object_cont').append(txt);
+        
+        //Clean Values - Nullify pattern
+        obj = txt = null;
     },
     constructDbgView:function(){
-
+        var self = this,
+        select = '<option></option>', 
+        txt = "", 
+        buttonStart = null, 
+        buttonEnd = null, 
+        buttonShow = null, 
+        buttonPause = null, 
+        buttonUpd = null, 
+        buttonkill = null;
         
         this.cancelChecking();
         if(this.tools.game.getLayer('objects') !== null){
@@ -70,14 +83,20 @@ var DebugModule = IModule.extend({
             //'<input type="button" value="Kill Link!" id="killLink"/>'+
             '</div>'
         );
-        
+        buttonStart = $('#launchDBG');
+        buttonEnd = $('#cancelDBG');
+        buttonShow = $('#showDBG');
+        buttonPause = $('#pauseGame');
+        buttonUpd = $('#updateDBG');
+        buttonkill = $('#killLink');
         
         
         //Combo Boxes
-        var select = '<option></option>';
+        
         for (var myKey in this.objList){
-            select += '<option value="'+this.objList[myKey].__id+'">'+this.objList[myKey].__id+'</option>'
-            
+            if(this.objList[myKey].__id!= null){
+                select += '<option value="'+this.objList[myKey].__id+'">'+this.objList[myKey].__id+'</option>'
+            }
         }
         select += '</select>';
         this.dbgContainer.append(
@@ -87,10 +106,7 @@ var DebugModule = IModule.extend({
             '</div>'
         );
         this.dbgContainer.append("<div  class='object_cont'></div>");
-        //Game Info
-        var txt = "";
-        
-        
+        //Game Info        
         txt +='<span><b>Game Layers:</b> '+this.tools.game.layerList.count()+'</span>'
         if(this.objList !== null){
             txt += '<span><b>Game Objects:</b> '+ this.objList.length  +'</span>';
@@ -106,7 +122,9 @@ var DebugModule = IModule.extend({
         if(this.tools.game.moduleList.length !== 0){
             var txt = "<span><b>Modules </b></span>";
             for(var modK in this.tools.game.moduleList){
-                txt += '<span>'+this.tools.game.moduleList[modK].__id+'</span>';
+                if(this.tools.game.moduleList[modK].__id){
+                    txt += '<span>'+this.tools.game.moduleList[modK].__id+'</span>';
+                }
             }
             this.gameInfo.append('<div class="info">'+txt+'</div>');
         }
@@ -125,11 +143,11 @@ var DebugModule = IModule.extend({
             '<div class="info"><span><b>Mapas</b></span>'+
             '<div class="info"><span><b>Actual</b></span>'+
             '<select id="map_sel">'+mapList+'</div>'
-    );
+        );
         
         this.dbgContainer.append('<div class="clear"></div>');
         /*--------------- Events ------------*/
-        var self = this;
+        
         $('#map_sel').change(function(){
            self.tools.messageContainer.speak({
                 message : "#loadMap#",
@@ -149,13 +167,6 @@ var DebugModule = IModule.extend({
                 self.updOrSetSetting('drawCollisionRects',false);
             }
         });
-        
-        var buttonStart = $('#launchDBG');
-        var buttonEnd = $('#cancelDBG');
-        var buttonShow = $('#showDBG');
-        var buttonPause = $('#pauseGame');
-        var buttonUpd = $('#updateDBG');
-        var buttonkill = $('#killLink');
         buttonStart.click(function(){
             self.debugging = true;
         });
@@ -184,6 +195,10 @@ var DebugModule = IModule.extend({
         buttonkill.click(function(){
             self.tools.game.getLayer('objects').getObject('fp').kill('test');
         });
+        
+        //Clean values - Nullify pattern
+        select = txt = buttonStart = buttonEnd = 
+        buttonShow = buttonPause = buttonUpd = buttonkill = null;
     },
     updOrSetSetting: function(key,value){
       this.tools.game.updOrSetSetting(key,value);  

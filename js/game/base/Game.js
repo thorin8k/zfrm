@@ -55,25 +55,31 @@ var Game = Class.extend({
             var oCurrentModule = null, 
             nObjectCount = 0,
             moduleLength = this.moduleList.length;
-            
-            
-            for (nObjectCount = 0; nObjectCount < moduleLength; nObjectCount += 1) {
+    
+            while(nObjectCount < moduleLength){
                 oCurrentModule = this.moduleList[nObjectCount];
-                if (oCurrentModule !== null && oCurrentModule !== undefined && oCurrentModule.__id === moduleId) {
+                if (oCurrentModule != null && oCurrentModule.__id === moduleId) {
                     return oCurrentModule;
                 }
+                nObjectCount++;
             }
         }
         return null;
     },
     //TODO: método para descargar un módulo (descargar todos sus listeners)
+    
     //forma de implementar los eventos de teclado y ratón
     executionKey: function(event){
         //Llamamos al método de todos los objetos del juego que implementen 
         //este tipo de evento
         var sEventType = event.type;
  
-        if (event.keyCode !== 17 && event.keyCode !== 116) {
+        if (event.keyCode === KEY_ACTION ||
+            event.keyCode === KEY_DOWN ||
+            event.keyCode === KEY_UP ||
+            event.keyCode === KEY_RIGHT || 
+            event.keyCode === KEY_LEFT) {
+        
             event.preventDefault();
         }
  
@@ -133,15 +139,16 @@ var Game = Class.extend({
     /* -----------  Private Methods ------------ */
     //Precarga de los módulos
     preStart: function(){
-        var module;
-        var nObjectCount = 0;
-        var nGameObjectsLength = this.moduleList.length;
+        var module, 
+        nObjectCount = 0,
+        nGameObjectsLength = this.moduleList.length;
         
-        for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
+        while(nObjectCount < nGameObjectsLength){
             module = this.moduleList[nObjectCount];
             if (typeof module !== 'undefined') {
                 module.loadModule(this.moduleTools);
             }
+            nObjectCount++;
         }
         
         // Notificar a los modulos el evento preStart
@@ -160,11 +167,11 @@ var Game = Class.extend({
     callObjectMethods:function(methodName,args){
         //Recorre todos los objetos del juego buscando aquellos que tengan el metodo pasado
         //ejecutandolo al encontrarlos.
-        var oCurrentGameObject = null;
-        var nObjectCount = 0;
-        var nGameObjectsLength = this.layerList.count();
- 
-        for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
+        var oCurrentGameObject = null,
+        nObjectCount = 0,
+        nGameObjectsLength = this.layerList.count();
+        
+       while(nObjectCount < nGameObjectsLength) {
             oCurrentGameObject = this.layerList.getItemByIdx(nObjectCount);
             if (oCurrentGameObject[methodName]) {
                 oCurrentGameObject[methodName](args);
@@ -173,6 +180,7 @@ var Game = Class.extend({
                 //Si la capa en cuestión implementa este método se ejecuta también
                 oCurrentGameObject['callObjectMethods'](methodName,args);
             }
+            nObjectCount++;
         }
     }, 
     //Lógica de ejecución
@@ -222,8 +230,7 @@ var Game = Class.extend({
         this.callObjectMethods("draw", this.oCanvas);
         // Notificar a los modulos el evento draw
         this.messageContainer.speak({
-            message : "#draw#",
-            data : null
+            message : "#draw#"
         });
 
         // Limpiamos el área de dibujo de nuestro canvas principal.
@@ -232,6 +239,7 @@ var Game = Class.extend({
         this.oCanvas.mainContext.drawImage(this.oCanvas.buffer, 0, 0);
     },
     /* ----------- Fin Private Methods ------------ */
+    
     /* ---- WRAPPERS -----*/
     setSettings:function(settings){
         this.settings = settings;

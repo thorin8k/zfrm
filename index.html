@@ -17,7 +17,7 @@ and open the template in the editor.
     <body>
         <canvas id="canvas" width="640" height="480"></canvas>
         <script type="text/javascript" src="./js/libs/jquery/jquery.js"></script>
-        <script type="text/javascript" src="./js/libs/jquery/Class.js"></script>
+        <script type="text/javascript" src="./js/game/base/objects/Class.js"></script>
         <script type="text/javascript" src="./js/libs/canvasText/canvasText.js"></script>
         
         <!--script type="text/javascript" src="./js/game.compiled.js"></script-->
@@ -25,11 +25,12 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/game/base/commons/Constants.js"></script>
         <script type="text/javascript" src="./js/game/base/commons/CollisionUtils.js"></script>
         <script type="text/javascript" src="./js/game/base/commons/Utils.js"></script>
-        <script type="text/javascript" src="./js/game/base/commons/LayerList.js"></script>
+        
         <script type="text/javascript" src="./js/game/base/components/FrameIntervalImpl.js"></script>
         
         
         <script type="text/javascript" src="./js/game/base/Game.js"></script>
+        <script type="text/javascript" src="./js/game/base/components/LayerList.js"></script>
         <script type="text/javascript" src="./js/game/base/components/CanvasExt.js"></script>
         <script type="text/javascript" src="./js/game/base/components/ModuleTools.js"></script>
         <script type="text/javascript" src="./js/game/base/components/MessageContainer.js"></script>
@@ -50,6 +51,7 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/game/base/objects/Movement.js"></script>
         <script type="text/javascript" src="./js/game/base/objects/Collision.js"></script>
         <script type="text/javascript" src="./js/game/base/objects/LoadingScreen.js"></script>
+        <script type="text/javascript" src="./js/game/base/objects/Light.js"></script>
 
         <script type="text/javascript" src="./js/game/ext/Rectangle.js"></script>
         <script type="text/javascript" src="./js/game/ext/Circle.js"></script>
@@ -76,22 +78,15 @@ and open the template in the editor.
                 game = new Game("canvas");
                 
                 //añadimos modulos
-               
-                game.addModule("fpsMod", new FpsModule());  
                 game.addModule("LayerMod", new LayerHandler());
                 game.addModule("CollisionManager", new CollisionManager());
                 game.addModule("LightManager", new LightManager());
                 game.addModule("DbgModule", new DebugModule());
                 game.addModule("DbgConsole", new DebugConsole());
-                      
-                /*
-                game.getModule('LayerMod').setTileMap(game.moduleTools.mapList["testcute"]);
-
-                game.getModule('LayerMod').parseFromJSON();
-                */
-                                               
+                game.addModule("fpsMod", new FpsModule());  
+                
                 // Añadimos algunas imágenes a la lista de descarga
-                //game.imageManager.addAsset('image','pokeset','img/pokeset.png');
+                game.imageManager.addAsset('image','pokeset','img/pokeset.png');
                 game.imageManager.addAsset('image','skeleton.png','img/Example-skeleton.png');
                 game.imageManager.addAsset('image','zombie.png','img/Monster-zombie.png');
                 game.imageManager.addAsset('image','link.png','img/test2.png');
@@ -128,23 +123,32 @@ and open the template in the editor.
                 
                 
             });
-            //Event Handling
-            window.addEventListener("keydown", function (eEvent) {
-                game.executionKey(eEvent);
-            }, false);
-            window.addEventListener("keyup", function (eEvent) {
-                game.executionKey(eEvent);
-            }, false);
-            window.addEventListener("click", function (eEvent) {
-                game.executionKey(eEvent);
-            }, false);
-            
             function afterGameLoad(){
                 game.messageContainer.speak({
                     message : "#loadMap#",
                     mapName : "tileMap"
                 });
             }
+            
+            
+            //Event Handling
+            window.addEventListener("keydown", function (eEvent) {
+                if(document.activeElement.tagName=='BODY'){
+                    game.executionKey(eEvent);
+                }
+            }, false);
+            window.addEventListener("keyup", function (eEvent) {
+                if(document.activeElement.tagName=='BODY'){
+                    game.executionKey(eEvent);
+                }
+            }, false);
+            window.addEventListener("click", function (eEvent) {
+                if(document.activeElement.tagName=='BODY'){
+                    game.executionKey(eEvent);
+                }
+            }, false);
+            
+            
         </script>
     </body>
 </html>
