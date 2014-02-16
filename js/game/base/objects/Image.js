@@ -11,7 +11,7 @@ var ImageObj = Object.extend({
       this._super(tools);
     },
     draw : function (canvas) {
-        canvas.bufferContext.drawImage(this.oImage, this.nSourceX, this.nSourceY, this.size.width, this.size.height, this.position.x, this.position.y, this.size.width, this.size.height);
+        canvas.bufferContext.drawImage(this.oImage, this.nSourceX, this.nSourceY, this.width, this.height, this.x, this.y, this.width, this.height);
     },
     toString: function(){
         var result = "";

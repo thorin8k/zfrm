@@ -2,8 +2,6 @@
 //js.php
 require 'jsmin.php';
 
-
-
 $compileOrder=array(
     "Constants.js",
     "CollisionUtils.js",
@@ -28,19 +26,25 @@ $compileOrder=array(
     "Movement.js",
     "Collision.js",
     "LoadingScreen.js",
+    "Light.js",
     "Rectangle.js",
+    "Box.js",
     "Circle.js",
     "RectangleClick.js",
     "FirstPlayer.js",
+    "MainMenu.js",
+    "Enemy.js",
     "Text.js",
     "CollisionBox.js",
     "fpsModule.js",
     "LayerHandler.js",
     "CollisionManager.js",
+    "LightManager.js",
     "DebugModule.js",
+    "DebugConsole.js",
 );
 
-compile($compileOrder,"game.compiled.js","../js/game","",true);
+compile($compileOrder,"../js/game.compiled.js","../js/game","",true);
 
 
 function checkCanGzip(){
@@ -73,7 +77,7 @@ function gzDocOut($contents, $level=6){
  * En caso de no recibir nada, se guardará en un directorio por defecto.
  */
 function compile($compileOrder,$outputName,$path,$type="",$debug = false){
-
+    
     foreach($compileOrder as $file) {
 
         $f = searchJsFile($file,$path,$debug);
@@ -87,15 +91,21 @@ function compile($compileOrder,$outputName,$path,$type="",$debug = false){
     $output = JSMin::minify(implode(";\n", $buffer));
 
     if ($type == "gz") {
-        if($debug) echo "<br/>Writing gz file to: ../js/".$outputName.".gz";
-        $file = fopen("../js/".$outputName.".gz","w");
+        if($debug){
+            echo "<br/>Writing gz file to: ".$outputName.".gz";
+        }
+        $file = fopen($outputName.".gz","w");
         fwrite($file,gzDocOut($output));
     } elseif ($type == "plain") {
-        if($debug) echo "<br/>Output generated file here:";
+        if($debug){
+            echo "<br/>Output generated file here:";
+        }
         echo $output;
     } else {
-        if($debug) echo "<br/>Writing file to: ../js/".$outputName;
-        $file = fopen("../js/".$outputName, 'w');
+        if($debug){
+            echo "<br/>Writing file to: ".$outputName;
+        }
+        $file = fopen($outputName, 'w');
         fwrite($file,$output);
     }
 }
@@ -104,12 +114,12 @@ function searchJsFile($name,$path,$debug){
     $ite = new RecursiveDirectoryIterator(dirname($path));
     foreach(new RecursiveIteratorIterator($ite) as $file => $fileInfo) {
         $fName = pathinfo($file, PATHINFO_FILENAME).".".pathinfo($file, PATHINFO_EXTENSION);
-
         if ($fName == $name) {
-                if($debug) echo "Compiling: ".$fName."<br/>";
-                return $fileInfo->openFile('r');
+            if($debug){
+                echo "Compiling: ".$fName."<br/>";
+            }
+            return $fileInfo->openFile('r');
         }
     }
     return null;
 }
-?>

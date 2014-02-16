@@ -17,6 +17,7 @@ var Object= Class.extend({
     z: 0,
     gravity:0,
     tools:null,
+    canMove: true,
     init:function(){
         this.movement = new Movement();
         this.reaction = new Movement();
@@ -33,6 +34,7 @@ var Object= Class.extend({
     update:function(){},
     draw : function (canvas) {},
     move:function(checkDestination){
+        if(!this.canMove)return;
         if (this.movement.right !== 0 && !this.collision.right) {
             //Move right
             this.x += this.movement.right;
@@ -71,6 +73,16 @@ var Object= Class.extend({
     },
     hasCollisions:function(){
         return this.collision.hasCollisions();
+    },
+    pause: function(){
+        this.canMove = false;
+        this.movement.stop();
+        if(this.setStandAnimation){
+            this.setStandAnimation();
+        }
+    },
+    resume: function(){
+        this.canMove = true;
     },
     toString:function(){
         var result = "";

@@ -10,7 +10,16 @@ and open the template in the editor.
         <link  rel="stylesheet" type="text/css" href="./css/dbg.css"/>
         <style>
             #canvas {
-               background-color: #CCC;
+                background-color: #CCC;
+
+/*                background-image: -webkit-linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, gray 75%, gray), -webkit-linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, gray 75%, gray);
+
+                background-image: -moz-linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, gray 75%, gray), -moz-linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, gray 75%, gray);    
+                background-image: linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, gray 75%, gray), 
+                    linear-gradient(45deg, gray 25%, transparent 25%, transparent 75%, black 75%, gray);
+
+                background-size:60px 60px;
+                background-position:0 0, 30px 30px*/
             }
         </style>
     </head>
@@ -20,7 +29,7 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/game/base/objects/Class.js"></script>
         <script type="text/javascript" src="./js/libs/canvasText/canvasText.js"></script>
         
-        <!--script type="text/javascript" src="./js/game.compiled.js"></script-->
+        <!--<script type="text/javascript" src="./js/game.compiled.js"></script>-->
         
         <script type="text/javascript" src="./js/game/base/commons/Constants.js"></script>
         <script type="text/javascript" src="./js/game/base/commons/CollisionUtils.js"></script>
@@ -54,9 +63,11 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/game/base/objects/Light.js"></script>
 
         <script type="text/javascript" src="./js/game/ext/Rectangle.js"></script>
+        <script type="text/javascript" src="./js/game/ext/Box.js"></script>
         <script type="text/javascript" src="./js/game/ext/Circle.js"></script>
         <script type="text/javascript" src="./js/game/ext/RectangleClick.js"></script>
         <script type="text/javascript" src="./js/game/ext/FirstPlayer.js"></script>
+        <script type="text/javascript" src="./js/game/ext/MainMenu.js"></script>
         <script type="text/javascript" src="./js/game/ext/Enemy.js"></script>
         <script type="text/javascript" src="./js/game/ext/Text.js"></script>
         <script type="text/javascript" src="./js/game/ext/CollisionBox.js"></script>
@@ -67,7 +78,7 @@ and open the template in the editor.
         <script type="text/javascript" src="./js/game/modules/LightManager.js"></script>
         <script type="text/javascript" src="./js/game/modules/DebugModule.js"></script>
         <script type="text/javascript" src="./js/game/modules/DebugConsole.js"></script>
-
+        
         <script type="text/javascript">
             var game;
             
@@ -80,7 +91,7 @@ and open the template in the editor.
                 //añadimos modulos
                 game.addModule("LayerMod", new LayerHandler());
                 game.addModule("CollisionManager", new CollisionManager());
-                game.addModule("LightManager", new LightManager());
+                //game.addModule("LightManager", new LightManager());
                 game.addModule("DbgModule", new DebugModule());
                 game.addModule("DbgConsole", new DebugConsole());
                 game.addModule("fpsMod", new FpsModule());  
@@ -90,6 +101,7 @@ and open the template in the editor.
                 game.imageManager.addAsset('image','skeleton.png','img/Example-skeleton.png');
                 game.imageManager.addAsset('image','zombie.png','img/Monster-zombie.png');
                 game.imageManager.addAsset('image','link.png','img/test2.png');
+                game.imageManager.addAsset('image','bgtest','img/squares.jpg');
                 game.imageManager.addAsset('image','tilea1','img/tilea1.png');
                 game.imageManager.addAsset('image','tilea2','img/tilea2.png');
                 game.imageManager.addAsset('image','tilea3','img/tilea3.png');
@@ -109,28 +121,71 @@ and open the template in the editor.
                 //game.imageManager.addAsset('map','test2','map/test2.json');
                 game.imageManager.addAsset('map','tileMap','map/tileMap.json');
                 
-                //var layer = new ObjectLayer();
-                //var fp = new FirstPlayer();
-                //fp.x=200;
-                //fp.y= 200;
-                //layer.addObject('fp',fp);
-                //layer.z = 6;
-                
-                //var layer = new FogLayer();
-                //game.addLayerToQueue('fog',layer);
+
                 
                 game.startGame(afterGameLoad);
                 
                 
             });
             function afterGameLoad(){
-                game.messageContainer.speak({
-                    message : "#loadMap#",
-                    mapName : "tileMap"
-                });
+//                game.messageContainer.speak({
+//                    message : "#loadMap#",
+//                    mapName : "tileMap"
+//                });
+
+                var layer = new ObjectLayer();
+                layer.z = 6;
+                layer.addObject('menu',new MainMenu());
+                var fp = new FirstPlayer();
+                fp.x=200;
+                fp.y= 200;
+                fp.width= 64;
+                fp.height= 64;
+                fp.z= 4;
+                layer.addObject('fp',fp);
+                
+                
+                var sq1 = new Box();
+                sq1.x=100;
+                sq1.y=100;
+                sq1.width= 32;
+                sq1.height= 32;
+                sq1.z= 0;
+                layer.addObject('sq1',sq1);
+                var sq2 = new Box();
+                sq2.x=140;
+                sq2.y=140;
+                sq2.width= 32;
+                sq2.height= 32;
+                sq2.z= 0;
+                layer.addObject('sq2',sq2);
+                var sq3 = new Box();
+                sq3.x=175;
+                sq3.y=175;
+                sq3.width= 32;
+                sq3.height= 32;
+                sq3.z= 0;
+                layer.addObject('sq3',sq3);
+                
+                var bg = new ImageObj(game.moduleTools.imageList['bgtest']);
+                bg.x = 0;
+                bg.y = 0;
+                bg.width = 1600;
+                bg.height = 1200;
+                bg.nSourceX = 0;
+                bg.nSourceY = 0;
+                bg.z = 0;
+                var layerBg = new LandscapeLayer();
+                layerBg.addImage(bg);
+                layer.z = 5;
+                
+                
+                game.addLayerToQueue('objects',layer);
+                game.addLayerToQueue('bg1',layerBg);
             }
-            
-            
+            setTimeout(function(){
+                game.callObjectMethods('centerOnScreen',null);
+            },200);
             //Event Handling
             window.addEventListener("keydown", function (eEvent) {
                 if(document.activeElement.tagName=='BODY'){

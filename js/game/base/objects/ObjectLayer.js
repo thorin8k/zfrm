@@ -31,6 +31,12 @@ var ObjectLayer = Class.extend({
         if (typeof object === 'object') { 
             object.__id = sObjectId;
             this.objList.push(object);
+            if(this.tools !== null && this.tools.game.status === STATUS_RUNNING){
+                //Si el juego esta en ejecución se inicia
+                if(object['start']){
+                    object["start"](this.tools);
+                }
+            }
         }
     },
     removeObject:function(sObjectId){
@@ -51,7 +57,12 @@ var ObjectLayer = Class.extend({
                 }
             }
         }
-    },    
+    },  
+    update:function(){
+        this.objList.sort(function(oObjA, oObjB) {
+            return oObjA.z - oObjB.z;
+        });  
+    },
     callObjectMethods: function(methodName,args){
         var oCurrentGameObject = null;
         var nObjectCount = 0;
@@ -65,8 +76,6 @@ var ObjectLayer = Class.extend({
         }
     },
     mergeWith: function(obj){
-        //Combinar capas solo afectará a las siguientes propiedades
-        //x,y,z
         for(var key in obj.objList){
             var exists = this.getObject(obj.objList[key].__id);
             if(exists === null){

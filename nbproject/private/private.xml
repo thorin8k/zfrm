@@ -18,4 +18,15 @@
             </bookmark>
         </file>
     </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/xampp/htdocs/Pollos-FirstTest/php/Compile.php</file>
+            <file>file:/D:/xampp/htdocs/Pollos-FirstTest/index.html</file>
+            <file>file:/D:/xampp/htdocs/Pollos-FirstTest/js/game/ext/MainMenu.js</file>
+            <file>file:/D:/xampp/htdocs/Pollos-FirstTest/js/libs/canvasText/canvasText.js</file>
+            <file>file:/D:/xampp/htdocs/Pollos-FirstTest/js/game/ext/FirstPlayer.js</file>
+            <file>file:/D:/xampp/htdocs/Pollos-FirstTest/js/game/modules/fpsModule.js</file>
+            <file>file:/D:/xampp/htdocs/Pollos-FirstTest/js/libs/canvasText/autolinebreak.html</file>
+        </group>
+    </open-files>
 </project-private>

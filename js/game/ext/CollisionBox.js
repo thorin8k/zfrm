@@ -49,7 +49,7 @@ var CollisionBox = Class.extend({
         });
     },
     draw : function (canvas) {
-        if(this.tools.settings.drawCollisionRects){
+        if(this.tools!= null && this.tools.settings.drawCollisionRects){
             canvas.bufferContext.beginPath();
             canvas.bufferContext.rect(this.x, this.y, this.width, this.height);
             canvas.bufferContext.fillStyle = this.color;

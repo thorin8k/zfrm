@@ -16,7 +16,6 @@ var DebugConsole = IModule.extend({
    },
    constructDbgView:function(){
        $('body').append("<div id='console'><b>Consola de debug:</b><br/><textarea id='console-text'></textarea><br/><input id='consoleInput' type='text' value=''/></div>");
-       //TODO Add textArea to enter commands
        var self = this;
        $('#consoleInput').keyup(function(e) {
             var keycode = (e.keyCode ? e.keyCode : e.which);

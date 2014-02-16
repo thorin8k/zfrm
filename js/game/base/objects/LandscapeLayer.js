@@ -37,7 +37,11 @@ var LandscapeLayer = Class.extend({
     draw : function (canvas) {
         
         if(this.layBuffer !== null){
+            //Tilesets
            canvas.bufferContext.drawImage(this.layBuffer,this.actualX,this.actualY);
+        }else if(this.imagesList.length == 1){
+            //Capas con una imagen completa
+            canvas.bufferContext.drawImage(this.imagesList[0].oImage,this.actualX,this.actualY);
         }
         
     },
@@ -48,6 +52,6 @@ var LandscapeLayer = Class.extend({
         
         this.actualX+= pos.x;
         this.actualY+= pos.y;
-    }
+    },
 });
 

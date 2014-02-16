@@ -11,18 +11,19 @@ var FirstPlayer = Object.extend({
     sprite:null,
     animation: null,
     image: null,
+    timer: null,
     light: null,
     persistent:true,
     weapon: false,
     speed: 3,
     collisionBox:null,
     collisionCorrectionX: 23,
-    collisionCorrectionY: 30,
+    collisionCorrectionY: 35,
     start: function(moduleTools){
         this._super(moduleTools);
         var self= this;
         //Crear una collisionbox 
-        this.collisionBox = new CollisionBox(this.__id,this.x,this.y,18,30,moduleTools,this);
+        this.collisionBox = new CollisionBox(this.__id,this.x,this.y,18,25,moduleTools,this);
         this.collisionBox.handleCollision = function(res){
             //asignar una llamada a handle collision que redireccione a la de este objeto
             self.handleCollision(res);
@@ -75,13 +76,16 @@ var FirstPlayer = Object.extend({
         
     },
     centerOnScreen:function(){
-        this.tools.game.changeViewPort(-(this.x-300),-(this.y-240));
-        this.x = 300;
-        this.y = 240;
-        
-        this.light = new Light(this.__id,(this.x+this.width/2),(this.y+this.height/2),100,95,this.tools,false);
+        if(this.tools !== null){
+            this.tools.game.changeViewPort(-(this.x-300),-(this.y-240));
+            this.x = 300;
+            this.y = 240;
+
+            this.light = new Light(this.__id,(this.x+this.width/2),(this.y+this.height/2),100,95,this.tools,false);
+        }
     },
     update: function(canvas){
+        if(this.tools === null){ return; }
         var equipedWeapon = this.getEquipedSword();
         if(this.gravity!==0){
             if(!this.collision.bottom){
@@ -89,61 +93,35 @@ var FirstPlayer = Object.extend({
             }
         }
         if (this.movement.left !== 0 && !this.collision.left) {
-            this.animation._frames = [
-                 { sprite: 'walk'+equipedWeapon+'_left_1', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_left_2', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_left_3', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_left_4', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_left_5', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_left_6', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_left_7', time: 0.1 }
-            ];
+            this.setMovementAnimation( 'left');
             this.tools.game.changeViewPort(+this.speed,0);
         }
         if (this.movement.right !== 0 && !this.collision.right) {
-            this.animation._frames = [
-                 { sprite: 'walk'+equipedWeapon+'_right_1', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_right_2', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_right_3', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_right_4', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_right_5', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_right_6', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_right_7', time: 0.1 },
-            ];
+            
+            this.setMovementAnimation('right');
             this.tools.game.changeViewPort(-this.speed,0);
         }
         if (this.gravity===0 && this.movement.up !== 0 && !this.collision.top) {
-            this.animation._frames = [
-                 { sprite: 'walk'+equipedWeapon+'_up_1', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_up_2', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_up_3', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_up_4', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_up_5', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_up_6', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_up_7', time: 0.1 },
-            ];
+            
+            this.setMovementAnimation( 'up')
             this.tools.game.changeViewPort(0,+this.speed);
         }
         if (this.movement.down !== 0 && !this.collision.bottom) {
             
-            this.animation._frames = [
-                 { sprite: 'walk'+equipedWeapon+'_down_1', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_down_2', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_down_3', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_down_4', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_down_5', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_down_6', time: 0.1 },
-                 { sprite: 'walk'+equipedWeapon+'_down_7', time: 0.1 },
-            ];
+            this.setMovementAnimation( 'down');
             this.tools.game.changeViewPort(0,-this.speed);
         }
         
 //      correción de la posición del collisionbox
-        this.collisionBox.x = this.x + this.collisionCorrectionX;
-        this.collisionBox.y = this.y + this.collisionCorrectionY;
+        if(this.collisionBox !== null){
+            this.collisionBox.x = this.x + this.collisionCorrectionX;
+            this.collisionBox.y = this.y + this.collisionCorrectionY;
+        }
     },
     draw : function (canvas) {
-        
+        if(this.timer === null){
+            return;
+        }
         this.animation.animate(this.timer.getSeconds());
         var frame = this.animation.getSprite();
         canvas.bufferContext.drawImage(this.image, frame.x, frame.y, this.width, this.height, this.x, this.y, this.width, this.height);
@@ -163,6 +141,15 @@ var FirstPlayer = Object.extend({
         for(var i = 0;i < res.length; i+=1){
             if(res[i] !== null){
                 noCollision = false;
+                if(res[i].parent && res[i].parent instanceof Box){
+                    this.speed = 1;
+                    
+                    if(res[i].parent.hasCollisions()){
+                        var side = this.tools.collisionUtils.getCollisionSide(this.collisionBox,res[i],false);
+                        this.collision.setCollision(side);
+                    }
+                    continue;
+                }
                 if(res[i] instanceof CollisionBox){
                     var side = this.tools.collisionUtils.getCollisionSide(this.collisionBox,res[i],false);
                     this.collision.setCollision(side);
@@ -175,9 +162,13 @@ var FirstPlayer = Object.extend({
         if(noCollision){
             //release all collisions if the object has no collision
             this.collision.releaseCollisions();
+            this.speed = 3;
         }
     },
     keydown : function (event) {
+        if(this.tools === null){ return; }
+        if(!this.canMove)return;
+        
         if (event.keyCode === KEY_RIGHT) {
             this.movement.setMovement('right', this.speed);
         }
@@ -195,35 +186,29 @@ var FirstPlayer = Object.extend({
         }
     },
     keyup : function (event) {
-        var equipedWeapon = this.getEquipedSword();
+        if(this.tools === null){ return; }
+        if(!this.canMove)return;
+        
         this.animation._frameIndex = 0;
         if (event.keyCode === KEY_RIGHT) {
             this.movement.unSetMovement('right');
-            this.animation._frames = [
-                { sprite: 'walk'+equipedWeapon+'_right_1', time: 0.1 }
-            ];
+            this.releaseMovementAnimation('right');
         }
         if (event.keyCode === KEY_LEFT) {
             this.movement.unSetMovement('left');
-            this.animation._frames = [
-                { sprite: 'walk'+equipedWeapon+'_left_1', time: 0.1 }
-            ];
+            this.releaseMovementAnimation('left');
         }
         if (event.keyCode === KEY_UP) {
             this.movement.unSetMovement('up');
-            this.animation._frames = [
-                { sprite: 'walk'+equipedWeapon+'_up_1', time: 0.1 }
-            ];
+            this.releaseMovementAnimation('up');
         }
         if (event.keyCode === KEY_DOWN) {
             this.movement.unSetMovement('down');
-            this.animation._frames = [
-                { sprite: 'walk'+equipedWeapon+'_down_1', time: 0.1 }
-            ];
+            this.releaseMovementAnimation('down');
         }
     },
     kill:function(test){
-        this.movement.stop();
+        this.tools.game.pauseGame();
         //this.speed = 0;
         
     },
@@ -244,5 +229,36 @@ var FirstPlayer = Object.extend({
         result += "coll.y:"+this.collisionBox.y+'</br>';
         return  result;
     },
+    setMovementAnimation: function(direction){
+        if(this.animation === null){
+            return;
+        }
+        this.animation._frames = [
+            { sprite: 'walk'+this.getEquipedSword()+'_'+direction+'_1', time: 0.1 },
+            { sprite: 'walk'+this.getEquipedSword()+'_'+direction+'_2', time: 0.1 },
+            { sprite: 'walk'+this.getEquipedSword()+'_'+direction+'_3', time: 0.1 },
+            { sprite: 'walk'+this.getEquipedSword()+'_'+direction+'_4', time: 0.1 },
+            { sprite: 'walk'+this.getEquipedSword()+'_'+direction+'_5', time: 0.1 },
+            { sprite: 'walk'+this.getEquipedSword()+'_'+direction+'_6', time: 0.1 },
+            { sprite: 'walk'+this.getEquipedSword()+'_'+direction+'_7', time: 0.1 },
+       ];
+    },
+    releaseMovementAnimation: function(direction){
+        if(this.animation === null){
+            return;
+        }
+        this.animation._frames = [
+            { sprite: 'walk'+this.getEquipedSword()+'_'+direction+'_1', time: 0.1 }
+        ];
+    },
+    setStandAnimation: function(){
+        if(this.animation === null){
+            return;
+        }
+        this.animation._frameIndex = 0;
+        this.animation._frames = [
+            { sprite: 'stand', time: 0.1 }
+        ];
+    }
 });
 

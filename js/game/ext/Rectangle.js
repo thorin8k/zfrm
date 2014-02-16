@@ -50,6 +50,11 @@ var Rectangle = Object.extend({
         result += "color:"+this.color+'</br>';
         result += "collisionType:"+this.collisionType+'</br>';
         return  result;
+    },
+    changeViewPort: function(pos){
+        
+        this.x+= pos.x;
+        this.y+= pos.y;
     }
 
 });

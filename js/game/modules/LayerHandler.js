@@ -190,7 +190,7 @@
          var nDataCount = 0,
                  layLength = currentLayer.objects.length,
                  layer = new ObjectLayer();
-         
+         layer.tools = this.tools;
          //recorre todos los objetos en la capa y los genera
          while (nDataCount < layLength) {
              var currObj = currentLayer.objects[nDataCount],

@@ -6,6 +6,7 @@ var Enemy = Object.extend({
     collisionType: 'Rectangle',
     sprite:null,
     animation: null,
+    timer: null,
     image: null,
     speed:1,
     persistent:true,
@@ -99,6 +100,7 @@ var Enemy = Object.extend({
         }
     },
     searchForEnemy:function(){
+        if(this.tools === null) return;
         this.movement.stop();
         this.destx = this.tools.game.getLayer('objects').getObject('fp').x;
         this.desty = this.tools.game.getLayer('objects').getObject('fp').y;
@@ -121,7 +123,8 @@ var Enemy = Object.extend({
         }
     },
     update: function(canvas){
-    
+        if(!this.canMove)return;
+        
         this.searchForEnemy();
         if(this.isMoving()){
             this.move(false);
@@ -129,56 +132,26 @@ var Enemy = Object.extend({
         }
         
         if (this.movement.left !== 0 && !this.collision.left) {
-            this.animation._frames = [
-                 { sprite: 'walk_left_1', time: 0.1 },
-                 { sprite: 'walk_left_2', time: 0.1 },
-                 { sprite: 'walk_left_3', time: 0.1 },
-                 { sprite: 'walk_left_4', time: 0.1 },
-                 { sprite: 'walk_left_5', time: 0.1 },
-                 { sprite: 'walk_left_6', time: 0.1 },
-                 { sprite: 'walk_left_7', time: 0.1 }
-            ];
+            this.setMovementAnimation('left');
         }
         if (this.movement.right !== 0 && !this.collision.right) {
-            this.animation._frames = [
-                 { sprite: 'walk_right_1', time: 0.1 },
-                 { sprite: 'walk_right_2', time: 0.1 },
-                 { sprite: 'walk_right_3', time: 0.1 },
-                 { sprite: 'walk_right_4', time: 0.1 },
-                 { sprite: 'walk_right_5', time: 0.1 },
-                 { sprite: 'walk_right_6', time: 0.1 },
-                 { sprite: 'walk_right_7', time: 0.1 },
-            ];
+            this.setMovementAnimation('right');
         }
         if (this.movement.up !== 0 && !this.collision.top) {
-            this.animation._frames = [
-                 { sprite: 'walk_up_1', time: 0.1 },
-                 { sprite: 'walk_up_2', time: 0.1 },
-                 { sprite: 'walk_up_3', time: 0.1 },
-                 { sprite: 'walk_up_4', time: 0.1 },
-                 { sprite: 'walk_up_5', time: 0.1 },
-                 { sprite: 'walk_up_6', time: 0.1 },
-                 { sprite: 'walk_up_7', time: 0.1 },
-            ];
+            this.setMovementAnimation('up');
         }
         if (this.movement.down !== 0 && !this.collision.bottom) {
-            
-            this.animation._frames = [
-                 { sprite: 'walk_down_1', time: 0.1 },
-                 { sprite: 'walk_down_2', time: 0.1 },
-                 { sprite: 'walk_down_3', time: 0.1 },
-                 { sprite: 'walk_down_4', time: 0.1 },
-                 { sprite: 'walk_down_5', time: 0.1 },
-                 { sprite: 'walk_down_6', time: 0.1 },
-                 { sprite: 'walk_down_7', time: 0.1 },
-            ];
+            this.setMovementAnimation('down');
         }
-        
-        this.collisionBox.x = this.x + this.collisionCorrectionX;
-        this.collisionBox.y = this.y + this.collisionCorrectionY;
+        if(this.collisionBox !== null){
+            this.collisionBox.x = this.x + this.collisionCorrectionX;
+            this.collisionBox.y = this.y + this.collisionCorrectionY;
+        }
     },
     draw : function (canvas) {
-
+        if(this.timer === null){
+            return;
+        }
         this.animation.animate(this.timer.getSeconds());
         var frame = this.animation.getSprite();
         canvas.bufferContext.drawImage(this.image, frame.x, frame.y, 60, 60, this.x, this.y, 60, 60);
@@ -203,5 +176,36 @@ var Enemy = Object.extend({
         result += "coll.y:"+this.collisionBox.y+'</br>';
         return  result;
     },
+    setMovementAnimation: function(direction){
+        if(this.animation === null){
+            return;
+        }
+        this.animation._frames = [
+            { sprite: 'walk_'+direction+'_1', time: 0.1 },
+            { sprite: 'walk_'+direction+'_2', time: 0.1 },
+            { sprite: 'walk_'+direction+'_3', time: 0.1 },
+            { sprite: 'walk_'+direction+'_4', time: 0.1 },
+            { sprite: 'walk_'+direction+'_5', time: 0.1 },
+            { sprite: 'walk_'+direction+'_6', time: 0.1 },
+            { sprite: 'walk_'+direction+'_7', time: 0.1 }
+        ];
+    },
+    releaseMovementAnimation: function(direction){
+        if(this.animation === null){
+            return;
+        }
+        this.animation._frames = [
+            { sprite: 'walk_'+direction+'_1', time: 0.1 }
+        ]; 
+    },
+    setStandAnimation: function(){
+        if(this.animation === null){
+            return;
+        }
+        this.animation._frameIndex = 0;
+        this.animation._frames = [
+            { sprite: 'stand', time: 0.1 }
+        ];
+    }
 });
 

@@ -117,16 +117,12 @@ var Game = Class.extend({
     //Pone el juego en estado iddle y para la ejecución
     pauseGame: function(){
         this.status = STATUS_IDDLE;
-        //TODO: no parar la ejecución y poner un menu parando los objetos?
-        //Opciones:
-        //guardar un objecto con el estado actual y ponerlo en segundo plano.
-        //añadir una capa que se superponga a todo lo demas... y eliminar los handler de key del resto de objetos..(esto es algo raro)
-        cancelAnimationFrame(this.animFrame);
+        this.callObjectMethods('pause');
     },
     //Vuelve el juego al estado running y reinicia la ejecución
     resumeGame: function(){
         this.status = STATUS_RUNNING;
-        this.gameLogic();
+        this.callObjectMethods('resume');
     },
     //llama a change viewport de las capas
     changeViewPort: function(x,y){
@@ -262,6 +258,9 @@ var Game = Class.extend({
     },
     clearLandscape: function(){
         this.layerList.clearLandscape();
+    },
+    lostFocus: function(){
+        this.pauseGame();
     }
     /* ---- FIN WRAPPERS -----*/
 });

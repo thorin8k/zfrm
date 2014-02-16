@@ -106,6 +106,7 @@ var LayerList = Class.extend({
         //Recorre las capas, en caso de existir, buscando objetos en la collección
         // de removibles y los elimina
         var currentLayer = null,
+        currObj = null,
         nLayerCount = 0,
         layerListLength = this.layerList.length;
 
@@ -114,13 +115,13 @@ var LayerList = Class.extend({
             if(currentLayer.objsToRemove && currentLayer.objsToRemove.length !== 0){
                 nRemoveLength = currentLayer.objsToRemove.length;
                 nCount = 0;
-                currentLayer = 0;
 
                 while (nCount < nRemoveLength) {
-                      currentLayer = currentLayer.objsToRemove[nCount];
-                      //currentLayer.objList.splice(currentLayer, 1);
-                      delete currentLayer.objList[currentLayer];
-                      nCount++;
+                    currObj = currentLayer.objsToRemove[nCount];
+                    //currentLayer.objList.splice(currentLayer, 1);
+                    if(typeof currObj.objList !== 'undefined' )
+                        delete currentLayer.objList[currObj];
+                    nCount++;
                 }
                 currentLayer.objList = cleanArray(currentLayer.objList);
                 currentLayer.objsToRemove = [];
@@ -151,7 +152,7 @@ var LayerList = Class.extend({
               //ejecuta su método start en caso de disponer de el
               if(currentLayer['start']){
                   //Ejecuta su método start si lo tienen
-                  currentLayer['start']();
+                  currentLayer['start'](this.tools);
               }else if(currentLayer['callObjectMethods']){
                   currentLayer['callObjectMethods']('start',this.tools);
               }
