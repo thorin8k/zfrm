@@ -122,7 +122,7 @@
   <object name="botpiramid" type="CollisionBox" x="620" y="285" width="371"/>
   <object name="rightpiramid" type="CollisionBox" x="987" y="13" width="1" height="268"/>
   <object name="lake" type="CollisionBox" x="1087" y="448" width="157" height="157"/>
-  <object name="lampLight" type="Light" x="1420" y="652" width="16" height="16">
+  <object name="lampLight" type="Light" x="1415" y="586" width="16" height="16">
    <properties>
     <property name="intensity" value="50"/>
     <property name="screenCenter" value="true"/>

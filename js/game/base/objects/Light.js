@@ -23,6 +23,7 @@ var Light = Class.extend({
         this.intensity = intensity;
         this.tools = tools;
         this.screenCenter = screenCenter;
+        console.log(screenCenter)
         
         if(this.tools != null){
             //En este punto los objetos light añadidos directamente a las capas no disponen de una construcción

@@ -83,15 +83,12 @@ and open the template in the editor.
             var game;
             
             $(document).ready(function(){
-                
-                
-                
                 game = new Game("canvas");
                 
                 //añadimos modulos
                 game.addModule("LayerMod", new LayerHandler());
                 game.addModule("CollisionManager", new CollisionManager());
-                //game.addModule("LightManager", new LightManager());
+                game.addModule("LightManager", new LightManager());
                 game.addModule("DbgModule", new DebugModule());
                 game.addModule("DbgConsole", new DebugConsole());
                 game.addModule("fpsMod", new FpsModule());  
@@ -117,15 +114,12 @@ and open the template in the editor.
                 game.imageManager.addAsset('image','tilek','img/tilek.png');
                 game.imageManager.addAsset('image','tilesetsall','img/tilesetsall.png');
                 game.imageManager.addAsset('image','01_background','img/01_background.jpg');
-                //game.imageManager.addAsset('map','testcute','map/testcute.json');
-                //game.imageManager.addAsset('map','test2','map/test2.json');
-                game.imageManager.addAsset('map','tileMap','map/tileMap.json');
-                
+                game.imageManager.addAsset('map','testcute','map/testcute.json');
+                game.imageManager.addAsset('map','test2','map/test2.json');
+                game.imageManager.addAsset('map','tileMap','map/tileMap5.json');
 
-                
                 game.startGame(afterGameLoad);
-                
-                
+
             });
             function afterGameLoad(){
 //                game.messageContainer.speak({
@@ -133,59 +127,59 @@ and open the template in the editor.
 //                    mapName : "tileMap"
 //                });
 
-                var layer = new ObjectLayer();
-                layer.z = 6;
-                layer.addObject('menu',new MainMenu());
-                var fp = new FirstPlayer();
-                fp.x=200;
-                fp.y= 200;
-                fp.width= 64;
-                fp.height= 64;
-                fp.z= 4;
-                layer.addObject('fp',fp);
-                
-                
-                var sq1 = new Box();
-                sq1.x=100;
-                sq1.y=100;
-                sq1.width= 32;
-                sq1.height= 32;
-                sq1.z= 0;
-                layer.addObject('sq1',sq1);
-                var sq2 = new Box();
-                sq2.x=140;
-                sq2.y=140;
-                sq2.width= 32;
-                sq2.height= 32;
-                sq2.z= 0;
-                layer.addObject('sq2',sq2);
-                var sq3 = new Box();
-                sq3.x=175;
-                sq3.y=175;
-                sq3.width= 32;
-                sq3.height= 32;
-                sq3.z= 0;
-                layer.addObject('sq3',sq3);
-                
-                var bg = new ImageObj(game.moduleTools.imageList['bgtest']);
-                bg.x = 0;
-                bg.y = 0;
-                bg.width = 1600;
-                bg.height = 1200;
-                bg.nSourceX = 0;
-                bg.nSourceY = 0;
-                bg.z = 0;
-                var layerBg = new LandscapeLayer();
-                layerBg.addImage(bg);
-                layer.z = 5;
-                
-                
-                game.addLayerToQueue('objects',layer);
-                game.addLayerToQueue('bg1',layerBg);
+//                var layer = new ObjectLayer();
+//                layer.z = 6;
+////                layer.addObject('menu',new MainMenu());
+//                var fp = new FirstPlayer();
+//                fp.x=200;
+//                fp.y= 200;
+//                fp.width= 64;
+//                fp.height= 64;
+//                fp.z= 4;
+//                layer.addObject('fp',fp);
+//
+//
+//                var sq1 = new Box();
+//                sq1.x=100;
+//                sq1.y=100;
+//                sq1.width= 32;
+//                sq1.height= 32;
+//                sq1.z= 0;
+//                layer.addObject('sq1',sq1);
+//                var sq2 = new Box();
+//                sq2.x=140;
+//                sq2.y=140;
+//                sq2.width= 32;
+//                sq2.height= 32;
+//                sq2.z= 0;
+//                layer.addObject('sq2',sq2);
+//                var sq3 = new Box();
+//                sq3.x=175;
+//                sq3.y=175;
+//                sq3.width= 32;
+//                sq3.height= 32;
+//                sq3.z= 0;
+//                layer.addObject('sq3',sq3);
+//
+//                var bg = new ImageObj(game.moduleTools.imageList['bgtest']);
+//                bg.x = 0;
+//                bg.y = 0;
+//                bg.width = 1600;
+//                bg.height = 1200;
+//                bg.nSourceX = 0;
+//                bg.nSourceY = 0;
+//                bg.z = 0;
+//                var layerBg = new LandscapeLayer();
+//                layerBg.addImage(bg);
+//                layer.z = 5;
+
+
+//                game.addLayerToQueue('objects',layer);
+//                game.addLayerToQueue('bg1',layerBg);
             }
-            setTimeout(function(){
-                game.callObjectMethods('centerOnScreen',null);
-            },200);
+//            setTimeout(function(){
+//                game.callObjectMethods('centerOnScreen',null);
+//            },200);
             //Event Handling
             window.addEventListener("keydown", function (eEvent) {
                 if(document.activeElement.tagName=='BODY'){
