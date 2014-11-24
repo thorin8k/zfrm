@@ -1,18 +1,20 @@
 var ObjectLayer = Class.extend({
-    z:0,
-    objList : [],
-    objsToRemove: [],
-    tools:null,
-    init: function(objs){
+    z: 0,
+    objList: null,
+    objsToRemove: null,
+    tools: null,
+    paused: false,
+    init: function (objs) {
         this.objList = [];
-        if(objs !== null && objs !== undefined){
+        this.objsToRemove = [];
+        if (objs !== null && objs !== undefined) {
             this.objList = objs;
         }
     },
-    prestart:function(tools){
+    prestart: function (tools) {
         this.tools = tools;
     },
-    getObject: function(sObjectId){
+    getObject: function (sObjectId) {
         if (typeof sObjectId === 'string') {
             var oCurrentGameObject = null;
             var nObjectCount = 0;
@@ -26,48 +28,48 @@ var ObjectLayer = Class.extend({
         }
         return null;
     },
-    addObject: function(sObjectId,object){
+    addObject: function (sObjectId, object) {
         //añade el objeto pasado
-        if (typeof object === 'object') { 
+        if (typeof object === 'object') {
+
             object.__id = sObjectId;
             this.objList.push(object);
-            if(this.tools !== null && this.tools.game.status === STATUS_RUNNING){
+            if (this.tools !== null && this.tools.game.status === STATUS_RUNNING) {
                 //Si el juego esta en ejecución se inicia
+                //Esto provoca una doble inicialización de los objetos, eliminar en caso de que de problemas(en algún momento lo puse pero no se porque)
                 if(object['start']){
                     object["start"](this.tools);
                 }
             }
         }
     },
-    removeObject:function(sObjectId){
+    removeObject: function (sObjectId) {
         if (typeof sObjectId === 'string') {
-            var oCurrentGameObject = null;
-            var nObjectCount = 0;
             var nGameObjectsLength = this.objList.length;
- 
-            for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
-                oCurrentGameObject = this.objList[nObjectCount];
+
+            for (var i = 0; i < nGameObjectsLength; i++) {
+                var oCurrentGameObject = this.objList[i];
                 if (oCurrentGameObject.__id === sObjectId) {
-                    this.objsToRemove.push(nObjectCount);
-                    //FIXME tools null?
-//                    this.tools.game.messageContainer.speak({
-//                        message : "#objRemoved#",
-//                        data : sObjectId
-//                    });
+                    this.objsToRemove.push(sObjectId);
+                    this.tools.game.messageContainer.speak({
+                        message: "#objRemoved#",
+                        data: sObjectId
+                    });
                 }
             }
         }
-    },  
-    update:function(){
-        this.objList.sort(function(oObjA, oObjB) {
-            return oObjA.z - oObjB.z;
-        });  
     },
-    callObjectMethods: function(methodName,args){
+    update: function () {
+        this.objList.sort(function (oObjA, oObjB) {
+            return oObjA.z - oObjB.z;
+        });
+    },
+    callObjectMethods: function (methodName, args) {
+        if(this.paused) return;
         var oCurrentGameObject = null;
         var nObjectCount = 0;
         var nGameObjectsLength = this.objList.length;
- 
+
         for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
             oCurrentGameObject = this.objList[nObjectCount];
             if (oCurrentGameObject[methodName]) {
@@ -75,12 +77,12 @@ var ObjectLayer = Class.extend({
             }
         }
     },
-    mergeWith: function(obj){
-        for(var key in obj.objList){
+    mergeWith: function (obj) {
+        for (var key in obj.objList) {
             var exists = this.getObject(obj.objList[key].__id);
-            if(exists === null){
+            if (exists === null) {
                 this.addObject(obj.objList[key].__id, obj.objList[key]);
-            }else{
+            } else {
                 exists.x = obj.objList[key].x;
                 exists.y = obj.objList[key].y;
                 exists.z = obj.objList[key].z;
@@ -88,9 +90,9 @@ var ObjectLayer = Class.extend({
                 exists.gravity = obj.objList[key].gravity;
                 //TODO: More properties?
             }
-            
+
         }
-        
+
     }
 });
 

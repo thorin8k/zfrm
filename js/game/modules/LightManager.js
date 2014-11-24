@@ -1,18 +1,22 @@
 /**
- *  Oscuridad: 0 - 100 ( 0= Mas claro|| 100 = Mas oscuro)
+ *  Oscuridad: 0 - 99 ( 0= Mas claro|| 99 = Mas oscuro)
  *  
- *  Intensidad Luces: 0-100 ( 0 mas oscuro || 100 mas claro)
+ *  Intensidad Luces: 0-99 ( 0 mas oscuro || 99 mas claro)
  * 
  * @type @exp;IModule@call;extend
  */
 var LightManager = IModule.extend({
-    z:15,
+    z:25,
     fogCanvas: null,
     //Oscuridad
-    dark:80,
+    dark:99,
+    turnOff: false,
+    enabled: true,
     lightList:[],
     addSubscription:function(notification){
-        this.lightList.push(notification.obj);  
+        if(!this.getSubByObjId(notification.obj.__id)){
+            this.lightList.push(notification.obj);
+        }
     },
     start:function(){
         this.fogCanvas = document.createElement('canvas');
@@ -35,7 +39,18 @@ var LightManager = IModule.extend({
         tools.messageContainer.listen(["#draw#"], this.draw, this);
         tools.messageContainer.listen(["#changeViewPort#"], this.updateViewportObjects, this);
         tools.messageContainer.listen(["#start#"], this.start, this);
-        
+        tools.messageContainer.listen(["#changeDarkness#"], this.setDark, this);
+        tools.messageContainer.listen(["#turnTheLights#"], this.turnLights, this);
+    },
+    setDark: function(notification){
+        this.dark = notification.dark;
+    },
+    turnLights: function(notification){
+        if(this.turnOff){
+            this.turnOff = false;
+        }else{
+            this.turnOff = true;
+        }
     },
     unloadModule: function(){
         if(this.tools!=null){
@@ -43,10 +58,12 @@ var LightManager = IModule.extend({
             this.tools.messageContainer.unlisten(["#draw#"], this);
             this.tools.messageContainer.unlisten(["#changeViewPort#"], this);
             this.tools.messageContainer.unlisten(["#start#"], this);
+            this.tools.messageContainer.unlisten(["#changeDarkness#"], this);
+            this.tools.messageContainer.unlisten(["#turnTheLights#"], this);
         }
     },
     draw: function(){
-        if(this.fogCanvas !== null){
+        if(this.fogCanvas !== null && this.enabled){
             this.fogCanvas.width = this.tools.canvas.main.width;
             this.fogCanvas.height = this.tools.canvas.main.height;
             var fogCanvasContext = this.fogCanvas.getContext('2d');
@@ -56,7 +73,10 @@ var LightManager = IModule.extend({
             fogCanvasContext.fillStyle = "rgba(0, 0, 0, "+parseFloat("0."+this.dark)+")";
             fogCanvasContext.closePath();
             fogCanvasContext.fill();
-            this.computeLights(fogCanvasContext);
+            if(!this.turnOff){
+                this.computeLights(fogCanvasContext);
+            }
+
         
             this.tools.canvas.bufferContext.drawImage(this.fogCanvas,0,0);
         }
@@ -74,7 +94,7 @@ var LightManager = IModule.extend({
      updateViewportObjects:function(notification){
         for(var i = 0;i<this.lightList.length;i+=1){
             var light = this.lightList[i];
-            if(light.screenCenter){
+            if(light.screenCenter === "true"){
                 light.x+= notification.pos.x;
                 light.y+= notification.pos.y;
             }

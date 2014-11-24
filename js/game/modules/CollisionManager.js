@@ -12,7 +12,7 @@ var CollisionManager = IModule.extend({
  
             for (nObjectCount = 0; nObjectCount < nGameObjectsLength; nObjectCount += 1) {
                 oCurrentGameObject = this.collideSubscriptions[nObjectCount];
-                if (oCurrentGameObject.object.__id === notification.data) {
+                if (typeof oCurrentGameObject !== "undefined" && oCurrentGameObject.object.__id === notification.data) {
                     this.collideSubscriptions.splice(nObjectCount,1);
                 }
             }

@@ -32,6 +32,7 @@ var FpsModule = IModule.extend({
                 canvas: this.ownCanvas,
                 context: ownBuffer,
                 fontSize: '11px',
+                fontFamily: 'Verdana',
                 fontWeight: 'bold',
                 fontColor: 'red',
                 lineHeight: "22"

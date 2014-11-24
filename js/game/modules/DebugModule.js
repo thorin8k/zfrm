@@ -50,7 +50,7 @@ var DebugModule = IModule.extend({
         buttonShow = null, 
         buttonPause = null, 
         buttonUpd = null, 
-        buttonkill = null;
+        buttonShowMenu = null;
         
         this.cancelChecking();
         if(this.tools.game.getLayer('objects') !== null){
@@ -80,7 +80,7 @@ var DebugModule = IModule.extend({
             '<input type="button" value="Show!" id="showDBG"/>'+
             '<input type="button" value="Pause!" id="pauseGame"/>'+
             '<input type="button" value="UpdateDbg!" id="updateDBG"/>'+
-            //'<input type="button" value="Kill Link!" id="killLink"/>'+
+            '<input type="button" value="Main Menu" id="showMenu"/>'+
             '</div>'
         );
         buttonStart = $('#launchDBG');
@@ -88,7 +88,7 @@ var DebugModule = IModule.extend({
         buttonShow = $('#showDBG');
         buttonPause = $('#pauseGame');
         buttonUpd = $('#updateDBG');
-        buttonkill = $('#killLink');
+        buttonShowMenu = $('#showMenu');
         
         
         //Combo Boxes
@@ -184,7 +184,6 @@ var DebugModule = IModule.extend({
                 self.tools.game.pauseGame();
                 $(this).val('Resume!');
             }else{
-                self.debugging = true;
                 self.tools.game.resumeGame();
                 $(this).val('Pause!');
             }
@@ -192,13 +191,18 @@ var DebugModule = IModule.extend({
         buttonUpd.click(function(){
             self.constructDbgView();
         });
-        buttonkill.click(function(){
-            self.tools.game.getLayer('objects').getObject('fp').kill('test');
+        buttonShowMenu.click(function(){
+            var layer = new ObjectLayer();
+            layer.z = 26;
+            layer.addObject('menu',new MainMenu());
+
+            self.tools.game.addLayerToQueue('menu',layer);
+            game.pauseGame();
         });
         
         //Clean values - Nullify pattern
         select = txt = buttonStart = buttonEnd = 
-        buttonShow = buttonPause = buttonUpd = buttonkill = null;
+        buttonShow = buttonPause = buttonUpd = buttonShowMenu = null;
     },
     updOrSetSetting: function(key,value){
       this.tools.game.updOrSetSetting(key,value);  

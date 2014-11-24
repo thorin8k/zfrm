@@ -3,6 +3,7 @@ var Movement = Class.extend({
     left: 0,
     up: 0,
     down: 0,
+    jump: null,
     setMovement:function(direction,speed){
         this[direction] = speed;
     },
@@ -36,6 +37,9 @@ var Movement = Class.extend({
     toString: function(){
         var result = this.getSignedActualSpeed();
         return 'movement.x:'+result.x+' <br/> movement.y:'+result.y;
+    },
+    setJump: function(prev){
+        this.jump = prev;
     }
     
     

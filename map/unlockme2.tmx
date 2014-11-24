@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="20" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="dark" value="99"/>
+  <property name="turnOffLights" value="false"/>
+ </properties>
+ <tileset firstgid="1" name="tilesetsall" tilewidth="32" tileheight="32">
+  <image source="../img/tilesetsall.png" width="1024" height="2016"/>
+ </tileset>
+ <layer name="capa1" width="80" height="20">
+  <properties>
+   <property name="z" value="0"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztw6ENAAAMAjAs/z/MD1MTbdIEAAAAAP6qqh4OKbQOEQ==
+  </data>
+ </layer>
+ <objectgroup name="objects" width="80" height="20">
+  <properties>
+   <property name="z" value="1"/>
+  </properties>
+  <object name="fp" type="FirstPlayer" x="1105" y="387" width="64" height="64">
+   <properties>
+    <property name="gravity" value="5"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer name="capa2" width="80" height="20">
+  <properties>
+   <property name="z" value="2"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAAAAAMCXARkAAAE=
+  </data>
+ </layer>
+ <objectgroup name="collisions" width="80" height="20">
+  <properties>
+   <property name="z" value="3"/>
+  </properties>
+  <object name="death_2" type="CollisionBox" x="-313" y="630" width="3078" height="20"/>
+  <object name="floor_2" type="CollisionBox" x="-2" y="483" width="2565" height="126"/>
+ </objectgroup>
+</map>

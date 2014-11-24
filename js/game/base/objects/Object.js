@@ -77,9 +77,6 @@ var Object= Class.extend({
     pause: function(){
         this.canMove = false;
         this.movement.stop();
-        if(this.setStandAnimation){
-            this.setStandAnimation();
-        }
     },
     resume: function(){
         this.canMove = true;

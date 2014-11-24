@@ -41,7 +41,6 @@ var CollisionBox = Class.extend({
     start: function(moduleTools){
         
         this.tools = moduleTools;
-    
         moduleTools.messageContainer.speak({
             message : "#collisionSubs#",
             obj : this,

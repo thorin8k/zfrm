@@ -52,6 +52,6 @@ var LandscapeLayer = Class.extend({
         
         this.actualX+= pos.x;
         this.actualY+= pos.y;
-    },
+    }
 });
 

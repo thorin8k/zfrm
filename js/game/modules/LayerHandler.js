@@ -39,7 +39,7 @@ var LayerHandler = IModule.extend({
 
     },
     preloadMap: function (notification) {
-        //TODO loading screen? no creo que merezca la pena, el tiempo de carga es infimo
+        //TODO loading screen? no creo que merezca la pena, el tiempo de carga es corto
         this.tools.game.clearLandscape();
         //this.tools.game.addLayer('loadingScreen',new LoadingScreen());
         this.tools.game.actualMap = notification.mapName;
@@ -62,6 +62,14 @@ var LayerHandler = IModule.extend({
         this.mapWidth = this.tileWidth * this.tileMap.width;
         this.mapHeight = this.tileHeight * this.tileMap.height;
         this.layers = this.tileMap.layers;
+        game.messageContainer.speak({
+            message: "#changeDarkness#",
+            dark: this.tileMap.properties.dark
+        });
+        game.messageContainer.speak({
+            message: "#turnTheLights#",
+            dark: this.tileMap.properties.turnOffLights
+        });
         this.imageCols = this.tileMap.tilesets[0].imagewidth / this.tileWidth;
         this.imageRows = this.tileMap.tilesets[0].imageheight / this.tileHeight;
 

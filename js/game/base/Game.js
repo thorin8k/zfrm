@@ -78,6 +78,8 @@ var Game = Class.extend({
             event.keyCode === KEY_DOWN ||
             event.keyCode === KEY_UP ||
             event.keyCode === KEY_RIGHT || 
+            event.keyCode === KEY_ESC ||
+            event.keyCode === KEY_ENTER ||
             event.keyCode === KEY_LEFT) {
         
             event.preventDefault();
@@ -194,7 +196,7 @@ var Game = Class.extend({
         this.executionUpdate();
         //Dibujar
         this.executionDraw();
-        
+
         //Al final de la ejecución volvemos a llamar al request animation Frame
         var self = this; //Reasignación por error en set interval en la referencia this
         this.animFrame = requestAnimationFrame(function(){self.gameLogic();});
@@ -206,7 +208,7 @@ var Game = Class.extend({
         this.layerList.clearRemoveds();
     },
     executionAddFromQueue: function(){
-        if(this.status === STATUS_RUNNING){
+        if(this.status !== STATUS_STOPPED){
             this.layerList.processQueue();
         }
     },

@@ -6,9 +6,9 @@ $compileOrder=array(
     "Constants.js",
     "CollisionUtils.js",
     "Utils.js",
-    "LayerList.js",
     "FrameIntervalImpl.js",
     "Game.js",
+    "LayerList.js",
     "CanvasExt.js",
     "ModuleTools.js",
     "MessageContainer.js",
@@ -36,12 +36,13 @@ $compileOrder=array(
     "Enemy.js",
     "Text.js",
     "CollisionBox.js",
+    "Trigger.js",
     "fpsModule.js",
     "LayerHandler.js",
     "CollisionManager.js",
     "LightManager.js",
     "DebugModule.js",
-    "DebugConsole.js",
+    "DebugConsole.js"
 );
 
 compile($compileOrder,"../js/game.compiled.js","../js/game","",true);
